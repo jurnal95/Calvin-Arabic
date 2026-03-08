@@ -65,10 +65,44 @@ input:focus{border-color:var(--gold)}
 .db-table td{padding:10px 12px;border-bottom:1px solid rgba(48,32,10,.5);color:var(--body);vertical-align:top}
 .db-table tr:hover td{background:rgba(255,255,255,.015)}
 .cefr-badge{padding:3px 8px;border-radius:5px;font-size:11px;font-weight:700;font-family:'Outfit',sans-serif}
+/* QR modal */
+#qr-modal{position:fixed;inset:0;background:rgba(0,0,0,.85);display:none;align-items:center;justify-content:center;z-index:9998}
+#qr-modal.open{display:flex}
+#qr-box{background:linear-gradient(160deg,#181006,#201508);border:1px solid var(--border);border-radius:20px;padding:32px;text-align:center;max-width:340px;width:90%}
+/* Leaderboard */
+.lb-row{display:grid;grid-template-columns:32px 1fr 60px 60px;align-items:center;gap:10px;padding:10px 14px;border-radius:10px;margin-bottom:6px}
+.lb-row:nth-child(1){background:rgba(212,175,55,.1);border:1px solid rgba(212,175,55,.25)}
+.lb-row:nth-child(2){background:rgba(180,180,180,.06);border:1px solid rgba(180,180,180,.15)}
+.lb-row:nth-child(3){background:rgba(180,100,30,.07);border:1px solid rgba(180,100,30,.2)}
+.lb-row:nth-child(n+4){background:rgba(255,255,255,.02);border:1px solid var(--border)}
+/* PDF print */
+@media print{
+  .no-print{display:none!important}
+  body{background:#fff;color:#111}
+  .card{background:#fff;border:1px solid #ddd;box-shadow:none}
+  .gold{color:#9a7010}
+  .arabic{color:#333}
+  #screen-result{display:flex!important;min-height:auto}
+}
 </style>
 </head>
 <body>
 <div id="notif"></div>
+
+<!-- QR Modal -->
+<div id="qr-modal">
+  <div id="qr-box">
+    <div style="font-size:36px;margin-bottom:8px">📱</div>
+    <h3 class="gold" style="font-size:20px;margin-bottom:4px">Scan to Join</h3>
+    <p class="muted" style="font-size:12px;margin-bottom:18px">Bagikan ke peserta</p>
+    <div id="qr-canvas-wrap" style="background:#fff;padding:14px;border-radius:12px;display:inline-block;margin-bottom:14px"></div>
+    <p class="muted" style="font-size:11px;word-break:break-all;margin-bottom:18px" id="qr-url-text"></p>
+    <div style="display:flex;gap:8px">
+      <button onclick="copyQrUrl()" style="flex:1;padding:10px;border-radius:9px;border:1px solid var(--border);background:transparent;color:var(--body);font-size:12px;cursor:pointer">📋 Copy URL</button>
+      <button onclick="closeQr()" style="flex:1;padding:10px;border-radius:9px;border:1px solid var(--border);background:transparent;color:var(--muted);font-size:12px;cursor:pointer">✕ Close</button>
+    </div>
+  </div>
+</div>
 
 <!-- ══ COVER ══ -->
 <div id="screen-cover" class="screen screen-center active">
@@ -92,9 +126,14 @@ input:focus{border-color:var(--gold)}
       <button class="btn-primary" onclick="goRegister()">Mulai Test →</button>
       <div id="cover-error" style="display:none;color:var(--red);font-size:12px;text-align:center;margin-top:10px"></div>
     </div>
-    <button onclick="goDashboard()" style="background:none;border:1px solid var(--border);border-radius:9px;padding:9px 18px;color:var(--muted);font-size:12px;transition:all .2s" onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--gold)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)'">
-      🔒 Provider Dashboard
-    </button>
+    <div style="display:flex;gap:10px;justify-content:center">
+      <button onclick="goDashboard()" style="background:none;border:1px solid var(--border);border-radius:9px;padding:9px 18px;color:var(--muted);font-size:12px;transition:all .2s" onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--gold)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)'">
+        🔒 Provider Dashboard
+      </button>
+      <button onclick="openQr()" style="background:none;border:1px solid var(--border);border-radius:9px;padding:9px 18px;color:var(--muted);font-size:12px;transition:all .2s" onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--gold)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)'">
+        📱 QR Code
+      </button>
+    </div>
   </div>
 </div>
 
@@ -122,7 +161,7 @@ input:focus{border-color:var(--gold)}
 <!-- ══ DASHBOARD MAIN ══ -->
 <div id="screen-dashboard" class="screen" style="padding-top:28px">
   <div class="wrap" style="max-width:900px">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:22px">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
       <div>
         <h2 class="gold" style="font-size:24px">Provider Dashboard</h2>
         <p class="muted" style="font-size:12px">Hasil tes semua peserta</p>
@@ -132,6 +171,11 @@ input:focus{border-color:var(--gold)}
         <button onclick="clearAllResults()" style="padding:9px 16px;border-radius:9px;border:1px solid rgba(232,126,126,.3);background:transparent;color:var(--red);font-size:12px;cursor:pointer">🗑 Clear All</button>
         <button onclick="show('cover')" style="padding:9px 16px;border-radius:9px;border:1px solid var(--border);background:transparent;color:var(--muted);font-size:12px;cursor:pointer">← Exit</button>
       </div>
+    </div>
+    <!-- Tabs -->
+    <div style="display:flex;gap:8px;margin-bottom:20px">
+      <button class="btn-outline active" id="tab-results" onclick="switchDashTab('results')">📋 Peserta</button>
+      <button class="btn-outline" id="tab-leaderboard" onclick="switchDashTab('leaderboard')">🏆 Leaderboard</button>
     </div>
     <!-- Stats -->
     <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px" id="dash-stats"></div>
@@ -153,6 +197,21 @@ input:focus{border-color:var(--gold)}
     </div>
     <!-- Detail modal -->
     <div id="dash-detail" style="display:none"></div>
+    <!-- Leaderboard panel -->
+    <div id="dash-leaderboard" style="display:none">
+      <div class="card" style="padding:24px 28px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px">
+          <h3 style="font-size:15px;font-weight:600">🏆 Leaderboard — Top Peserta</h3>
+          <div style="display:flex;gap:8px">
+            <button class="btn-outline active" id="lb-sort-overall" onclick="renderLeaderboard('overall')" style="font-size:11px;padding:5px 10px">Overall</button>
+            <button class="btn-outline" id="lb-sort-reading" onclick="renderLeaderboard('reading')" style="font-size:11px;padding:5px 10px">Reading</button>
+            <button class="btn-outline" id="lb-sort-speaking" onclick="renderLeaderboard('speaking')" style="font-size:11px;padding:5px 10px">Speaking</button>
+            <button class="btn-outline" id="lb-sort-writing" onclick="renderLeaderboard('writing')" style="font-size:11px;padding:5px 10px">Writing</button>
+          </div>
+        </div>
+        <div id="lb-list"></div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -488,7 +547,10 @@ input:focus{border-color:var(--gold)}
     <div id="result-hero" class="card" style="padding:34px;text-align:center;margin-bottom:14px"></div>
     <div id="result-sections" class="card" style="padding:24px 28px;margin-bottom:14px"></div>
     <div id="result-feedback" class="card" style="padding:24px 28px;margin-bottom:14px"></div>
-    <button class="btn-primary" onclick="restart()" style="margin-bottom:40px">🔄 Ambil Test Baru</button>
+    <div style="display:flex;gap:10px;margin-bottom:40px">
+      <button class="btn-primary no-print" onclick="printResult()" style="background:linear-gradient(135deg,#4a8fc0,#2a6090)">🖨️ Cetak / PDF</button>
+      <button class="btn-primary no-print" onclick="restart()">🔄 Test Baru</button>
+    </div>
   </div>
 </div>
 
@@ -860,10 +922,30 @@ function renderReadingForEdit(){
 
 function submitReading(){
   stopTimer();
-  // Calculate scores
   results.reading.score=0; results.reading.total=testData.reading.length;
   testData.reading.forEach((q,i)=>{ if(readAnswers[i]===q.correct) results.reading.score++; });
-  showNextSection();
+  // Re-render review with ✓/✗ feedback before proceeding
+  const listEl=document.getElementById('read-review-list');
+  listEl.innerHTML=testData.reading.map((q,i)=>{
+    const chosen=readAnswers[i]; const correct=chosen===q.correct;
+    const answered=chosen!==undefined;
+    return`<div style="padding:13px 15px;border-radius:10px;border:1px solid ${!answered?'rgba(232,126,126,.3)':correct?'rgba(126,212,164,.3)':'rgba(232,126,126,.3)'};background:rgba(255,255,255,.02);margin-bottom:10px">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px">
+        <div style="flex:1">
+          <div style="font-size:10px;color:var(--muted);margin-bottom:5px">Soal ${i+1}</div>
+          <div class="arabic" style="font-size:14px;color:#e8d070;line-height:1.6;margin-bottom:6px">${q.passage.slice(0,80)}...</div>
+          <div style="font-size:12px;color:var(--body);margin-bottom:5px">${q.question}</div>
+          ${answered?`<div style="font-size:12px;margin-bottom:3px">Jawaban kamu: <span class="arabic" style="color:${correct?'var(--green)':'var(--red)'}">${q.options[chosen]}</span></div>`:'<div style="color:var(--red);font-size:12px">⚠ Tidak dijawab</div>'}
+          ${!correct&&answered?`<div style="font-size:12px">Jawaban benar: <span class="arabic" style="color:var(--green)">${q.options[q.correct]}</span></div>`:''}
+          ${q.explanation?`<div style="font-size:11px;color:var(--muted);margin-top:5px;line-height:1.5">💡 ${q.explanation}</div>`:''}
+        </div>
+        <span style="font-size:18px;flex-shrink:0">${!answered?'⭕':correct?'✅':'❌'}</span>
+      </div>
+    </div>`;
+  }).join('');
+  // Change button to "Lanjut"
+  const btn=document.querySelector('#screen-reading-review .btn-primary');
+  btn.textContent='Lanjut →'; btn.onclick=()=>showNextSection();
 }
 function forceFinishReading(){ submitReading(); }
 
@@ -1021,7 +1103,26 @@ function submitListening(){
   stopTimer();
   results.listening.score=0; results.listening.total=testData.listening.length;
   testData.listening.forEach((q,i)=>{ if(listAnswers[i]===q.correct) results.listening.score++; });
-  showNextSection();
+  const listEl=document.getElementById('list-review-list');
+  listEl.innerHTML=testData.listening.map((q,i)=>{
+    const chosen=listAnswers[i]; const correct=chosen===q.correct;
+    const answered=chosen!==undefined;
+    return`<div style="padding:13px 15px;border-radius:10px;border:1px solid ${!answered?'rgba(232,126,126,.3)':correct?'rgba(126,212,164,.3)':'rgba(232,126,126,.3)'};background:rgba(255,255,255,.02);margin-bottom:10px">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px">
+        <div style="flex:1">
+          <div style="font-size:10px;color:var(--muted);margin-bottom:5px">Soal ${i+1}</div>
+          <div class="arabic" style="font-size:14px;color:#e8d070;line-height:1.6;margin-bottom:5px">${q.script.slice(0,80)}...</div>
+          <div style="font-size:12px;color:var(--body);margin-bottom:5px">${q.question}</div>
+          ${answered?`<div style="font-size:12px;margin-bottom:3px">Jawaban kamu: <span class="arabic" style="color:${correct?'var(--green)':'var(--red)'}">${q.options[chosen]}</span></div>`:'<div style="color:var(--red);font-size:12px">⚠ Tidak dijawab</div>'}
+          ${!correct&&answered?`<div style="font-size:12px">Jawaban benar: <span class="arabic" style="color:var(--green)">${q.options[q.correct]}</span></div>`:''}
+          ${q.explanation?`<div style="font-size:11px;color:var(--muted);margin-top:5px;line-height:1.5">💡 ${q.explanation}</div>`:''}
+        </div>
+        <span style="font-size:18px;flex-shrink:0">${!answered?'⭕':correct?'✅':'❌'}</span>
+      </div>
+    </div>`;
+  }).join('');
+  const btn=document.querySelector('#screen-listening-review .btn-primary');
+  btn.textContent='Lanjut →'; btn.onclick=()=>showNextSection();
 }
 function forceFinishListening(){ submitListening(); }
 
@@ -1052,6 +1153,7 @@ function renderSpeak(){
   const stages=['introduction','thematic','opinion'];
   stages.forEach((s,i)=>{
     const el=document.getElementById('stage-'+s);
+    if(!el) return;
     if(i<speakIdx){ el.style.background='rgba(126,212,164,.12)'; el.style.color='var(--green)'; el.style.border='1px solid rgba(126,212,164,.3)'; }
     else if(i===speakIdx){ el.style.background='rgba(212,175,55,.12)'; el.style.color='var(--gold)'; el.style.border='1px solid rgba(212,175,55,.3)'; }
     else{ el.style.background='rgba(255,255,255,.02)'; el.style.color='var(--muted)'; el.style.border='1px solid var(--border)'; }
@@ -1117,7 +1219,7 @@ function saveSpeak(){
     document.getElementById('speak-hint').textContent='';
     document.getElementById('speak-voice-panel').style.display='none';
     document.getElementById('speak-type-panel').style.display='none';
-    ['introduction','thematic','opinion'].forEach(s=>{ const el=document.getElementById('stage-'+s); el.style.background='rgba(126,212,164,.12)'; el.style.color='var(--green)'; el.style.border='1px solid rgba(126,212,164,.3)'; });
+    ['introduction','thematic','opinion'].forEach(s=>{ const el=document.getElementById('stage-'+s); if(!el) return; el.style.background='rgba(126,212,164,.12)'; el.style.color='var(--green)'; el.style.border='1px solid rgba(126,212,164,.3)'; });
   } else {
     renderSpeak();
   }
@@ -1518,6 +1620,86 @@ function restart(){
   readIdx=0; listIdx=0; speakIdx=0; writeIdx=0; writeAnswers=[]; readAnswers=[]; listAnswers=[];
   speakAnswers=[]; participant={};
   show('cover');
+}
+
+// ── QR CODE ──────────────────────────────────────────────────────────────────
+function openQr(){
+  const url=window.location.href.split('?')[0];
+  document.getElementById('qr-url-text').textContent=url;
+  const wrap=document.getElementById('qr-canvas-wrap');
+  wrap.innerHTML='';
+  // Use QRCode.js via CDN — load dynamically if not present
+  if(typeof QRCode==='undefined'){
+    const s=document.createElement('script');
+    s.src='https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js';
+    s.onload=()=>{ new QRCode(wrap,{text:url,width:200,height:200,colorDark:'#1a0e04',colorLight:'#ffffff'}); };
+    document.head.appendChild(s);
+  } else {
+    new QRCode(wrap,{text:url,width:200,height:200,colorDark:'#1a0e04',colorLight:'#ffffff'});
+  }
+  document.getElementById('qr-modal').classList.add('open');
+}
+function closeQr(){ document.getElementById('qr-modal').classList.remove('open'); }
+function copyQrUrl(){
+  navigator.clipboard.writeText(window.location.href.split('?')[0]).then(()=>notif('URL copied!',2000));
+}
+document.getElementById('qr-modal').addEventListener('click',function(e){ if(e.target===this) closeQr(); });
+
+// ── PRINT / PDF ───────────────────────────────────────────────────────────────
+function printResult(){
+  window.print();
+}
+
+// ── DASHBOARD TABS ────────────────────────────────────────────────────────────
+function switchDashTab(tab){
+  const isResults=tab==='results';
+  document.getElementById('tab-results').classList.toggle('active',isResults);
+  document.getElementById('tab-leaderboard').classList.toggle('active',!isResults);
+  // Find table card and leaderboard panel
+  const tableSection=document.querySelector('#screen-dashboard .card:last-of-type');
+  document.getElementById('dash-leaderboard').style.display=isResults?'none':'block';
+  // Toggle the results table+stats visibility
+  const statsEl=document.getElementById('dash-stats').parentElement;
+  document.getElementById('dash-stats').style.display=isResults?'grid':'none';
+  // table card
+  const cards=[...document.querySelectorAll('#screen-dashboard .card')];
+  cards.forEach(c=>{ if(c.querySelector('#dash-tbody')) c.style.display=isResults?'block':'none'; });
+  if(!isResults) renderLeaderboard('overall');
+}
+
+// ── LEADERBOARD ───────────────────────────────────────────────────────────────
+function renderLeaderboard(sortBy='overall'){
+  ['overall','reading','speaking','writing'].forEach(k=>{
+    const el=document.getElementById('lb-sort-'+k);
+    if(el) el.classList.toggle('active',k===sortBy);
+  });
+  const all=JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]');
+  if(!all.length){ document.getElementById('lb-list').innerHTML='<p class="muted" style="text-align:center;padding:20px">Belum ada data</p>'; return; }
+  const scored=all.map(r=>({
+    name:r.participant?.name||'—',
+    campus:r.participant?.campus||'—',
+    cefr:r.cefr||'—',
+    overall:r.overall||0,
+    score:sortBy==='overall'?r.overall||0:r.sectionScores?.[sortBy]||0
+  })).filter(r=>r.score>0).sort((a,b)=>b.score-a.score).slice(0,20);
+
+  const medals=['🥇','🥈','🥉'];
+  document.getElementById('lb-list').innerHTML=scored.map((r,i)=>`
+    <div class="lb-row">
+      <div style="text-align:center;font-size:${i<3?'20px':'13px'};font-weight:700;color:${i===0?'var(--gold)':i===1?'#c0c0c0':i===2?'#cd7f32':'var(--muted)'}">${medals[i]||i+1}</div>
+      <div>
+        <div style="font-size:13px;font-weight:600;color:#e8d070">${r.name}</div>
+        <div class="muted" style="font-size:11px">${r.campus}</div>
+      </div>
+      <div style="text-align:center">
+        <div style="font-size:16px;font-family:'Playfair Display',serif;color:${scoreColor(r.score)}">${r.score.toFixed(1)}</div>
+        <div class="muted" style="font-size:10px">/10</div>
+      </div>
+      <div style="text-align:center">
+        <span class="cefr-badge" style="background:${cefrColor(r.cefr)}22;color:${cefrColor(r.cefr)};border:1px solid ${cefrColor(r.cefr)}44">${r.cefr}</span>
+      </div>
+    </div>
+  `).join('');
 }
 </script>
 </body>
