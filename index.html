@@ -435,6 +435,53 @@ input:focus{border-color:var(--gold)}
   </div>
 </div>
 
+
+<!-- ══ READING REVIEW ══ -->
+<div id="screen-reading-review" class="screen" style="padding-top:28px">
+  <div class="wrap">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+      <span style="color:var(--blue);font-size:13px;font-weight:600">📖 Reading — Review Jawaban</span>
+      <div class="timer-box" id="read-review-timer-box"><span style="font-size:13px">⏱</span><span class="timer-num" id="read-review-timer">00:00</span></div>
+    </div>
+    <div class="card fade-in" style="padding:26px 30px">
+      <p style="font-size:13px;color:var(--body);margin-bottom:18px">Periksa jawaban kamu sebelum submit. Klik soal untuk mengubah jawaban.</p>
+      <div id="read-review-list" style="margin-bottom:20px"></div>
+      <button class="btn-primary" onclick="submitReading()">Submit Reading →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ LISTENING REVIEW ══ -->
+<div id="screen-listening-review" class="screen" style="padding-top:28px">
+  <div class="wrap">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+      <span style="color:var(--amber);font-size:13px;font-weight:600">🎧 Listening — Review Jawaban</span>
+      <div class="timer-box" id="list-review-timer-box"><span style="font-size:13px">⏱</span><span class="timer-num" id="list-review-timer">00:00</span></div>
+    </div>
+    <div class="card fade-in" style="padding:26px 30px">
+      <p style="font-size:13px;color:var(--body);margin-bottom:18px">Periksa jawaban kamu sebelum submit. Klik soal untuk mengubah jawaban.</p>
+      <div id="list-review-list" style="margin-bottom:20px"></div>
+      <button class="btn-primary" onclick="submitListening()" style="background:linear-gradient(135deg,var(--amber),#b89030);color:#0a0703">Submit Listening →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ WRITING REVIEW ══ -->
+<div id="screen-writing-review" class="screen" style="padding-top:28px">
+  <div class="wrap">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+      <span style="color:var(--purple);font-size:13px;font-weight:600">✍️ Writing — Review Jawaban</span>
+      <div class="timer-box" id="write-review-timer-box"><span style="font-size:13px">⏱</span><span class="timer-num" id="write-review-timer">00:00</span></div>
+    </div>
+    <div class="card fade-in" style="padding:26px 30px">
+      <p style="font-size:13px;color:var(--body);margin-bottom:18px">Periksa jawaban kamu sebelum submit ke AI. Klik soal untuk mengedit.</p>
+      <div id="write-review-list" style="margin-bottom:20px"></div>
+      <button class="btn-primary" onclick="submitWriteAll()" style="background:linear-gradient(135deg,#D4AF37,#9a7010);color:#0a0703">Submit & Evaluasi AI →</button>
+      <p class="muted" id="write-review-proc" style="font-size:12px;text-align:center;margin-top:10px;display:none">Evaluating with AI...</p>
+    </div>
+  </div>
+</div>
+
 <!-- ══ FINAL RESULT ══ -->
 <div id="screen-result" class="screen screen-center" style="padding-top:28px">
   <div class="wrap fade-in">
@@ -452,8 +499,8 @@ const STORAGE_KEY = 'arabic_test_results';
 
 // Timer durations per section (seconds) based on level
 const TIMERS = {
-  reading:  { 'mixed':20*60, 'A1-A2':15*60, 'B1-B2':20*60, 'C1-C2':25*60 },
-  listening:{ 'mixed':20*60, 'A1-A2':15*60, 'B1-B2':20*60, 'C1-C2':25*60 },
+  reading:  { 'mixed':10*60, 'A1-A2':10*60, 'B1-B2':10*60, 'C1-C2':10*60 },
+  listening:{ 'mixed':10*60, 'A1-A2':10*60, 'B1-B2':10*60, 'C1-C2':10*60 },
   speaking: { 'mixed':15*60, 'A1-A2':10*60, 'B1-B2':15*60, 'C1-C2':20*60 },
   writing:  { 'mixed':25*60, 'A1-A2':20*60, 'B1-B2':25*60, 'C1-C2':35*60 },
 };
@@ -469,6 +516,7 @@ let results = { reading:{score:0,total:0}, listening:{score:0,total:0}, speaking
 let currentSection = '';
 let readIdx=0, listIdx=0, speakIdx=0, writeIdx=0;
 let speakMode='voice', isRec=false, recognition=null, recogLang='ar';
+let writeAnswers=[], readAnswers=[], listAnswers=[];
 let currentTranscript='', speakAnswers=[];
 let audioCtx2=null, analyser2=null, micStream2=null, rafId2=null;
 let currentUtterance=null, scriptShown=false, playCount=0, maxPlays=2;
@@ -717,23 +765,107 @@ function renderReading(){
 }
 
 function selectReading(i){
-  const q=testData.reading[readIdx]; const correct=i===q.correct;
-  if(correct) results.reading.score++; results.reading.total++;
+  const q=testData.reading[readIdx];
+  readAnswers[readIdx]=i;
   document.querySelectorAll('#read-options .opt-mcq').forEach((btn,idx)=>{
     btn.disabled=true;
-    if(idx===q.correct){btn.style.borderColor='var(--green)';btn.style.background='rgba(126,212,164,.09)';btn.style.color='var(--green)';btn.querySelector('span').textContent='✓';}
-    else if(idx===i&&!correct){btn.style.borderColor='var(--red)';btn.style.background='rgba(232,126,126,.09)';btn.style.color='var(--red)';btn.querySelector('span').textContent='✗';}
+    if(idx===i){btn.style.borderColor='var(--gold)';btn.style.background='rgba(212,175,55,.09)';btn.style.color='var(--gold)';}
     else{btn.style.borderColor='#1a1006';btn.style.color='#352010';}
   });
-  document.getElementById('read-explanation').style.display='block';
-  document.getElementById('read-explanation').textContent='💡 '+q.explanation;
   const nxt=document.getElementById('read-next'); nxt.style.display='block';
   document.getElementById('read-progress').style.width=((readIdx+1)/testData.reading.length*100)+'%';
-  nxt.textContent=readIdx+1>=testData.reading.length?'Finish Reading →':'Next →';
+  nxt.textContent=readIdx+1>=testData.reading.length?'Review & Submit →':'Next →';
 }
 
-function nextReading(){ readIdx++; if(readIdx>=testData.reading.length){ stopTimer(); showNextSection(); return; } renderReading(); }
-function forceFinishReading(){ showNextSection(); }
+function nextReading(){
+  readIdx++;
+  if(readIdx>=testData.reading.length){ showReadingReview(); return; }
+  renderReading();
+}
+
+function showReadingReview(){
+  // sync timer display
+  document.getElementById('read-review-timer').textContent=document.getElementById('read-timer').textContent;
+  // override timer to update review timer too
+  clearInterval(sectionTimer);
+  sectionTimeLeft=sectionTimeLeft; // keep remaining
+  const numEl1=document.getElementById('read-timer');
+  const numEl2=document.getElementById('read-review-timer');
+  const box1=document.getElementById('read-timer-box');
+  const box2=document.getElementById('read-review-timer-box');
+  const updateBoth=()=>{
+    const m=Math.floor(sectionTimeLeft/60),s=sectionTimeLeft%60;
+    const t=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+    numEl1.textContent=t; numEl2.textContent=t;
+    if(sectionTimeLeft<=60){box1.classList.add('timer-warn');box2.classList.add('timer-warn');}
+    if(sectionTimeLeft<=0){clearInterval(sectionTimer);submitReading();return;}
+    sectionTimeLeft--;
+  };
+  updateBoth();
+  sectionTimer=setInterval(updateBoth,1000);
+
+  const listEl=document.getElementById('read-review-list');
+  listEl.innerHTML=testData.reading.map((q,i)=>{
+    const chosen=readAnswers[i];
+    const answered=chosen!==undefined;
+    return`<div style="padding:13px 15px;border-radius:10px;border:1px solid ${answered?'rgba(212,175,55,.25)':'rgba(232,126,126,.25)'};background:rgba(255,255,255,.02);margin-bottom:10px;cursor:pointer" onclick="goBackToRead(${i})">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px">
+        <div style="flex:1">
+          <div style="font-size:10px;color:var(--muted);margin-bottom:5px">Soal ${i+1}</div>
+          <div class="arabic" style="font-size:15px;color:#e8d070;line-height:1.6">${q.passage.slice(0,80)}...</div>
+          ${answered?`<div style="margin-top:6px;font-size:12px;color:var(--amber)">Jawaban: <span class="arabic">${q.options[chosen]}</span></div>`:'<div style="color:var(--red);font-size:12px;margin-top:4px">⚠ Belum dijawab</div>'}
+        </div>
+        <span style="font-size:11px;color:${answered?'var(--gold)':'var(--red)'};flex-shrink:0">${answered?'✏️ Edit':'❗ Jawab'}</span>
+      </div>
+    </div>`;
+  }).join('');
+  show('reading-review');
+}
+
+function goBackToRead(idx){
+  readIdx=idx;
+  // re-init timer display (already running)
+  renderReadingForEdit();
+  show('reading');
+}
+
+function renderReadingForEdit(){
+  const q=testData.reading[readIdx]; if(!q) return;
+  document.getElementById('read-progress').style.width=((readIdx)/testData.reading.length*100)+'%';
+  document.getElementById('read-counter').textContent=(readIdx+1)+'/'+testData.reading.length;
+  document.getElementById('read-passage').textContent=q.passage;
+  document.getElementById('read-question').textContent=q.question;
+  document.getElementById('read-explanation').style.display='none';
+  const prevAnswer=readAnswers[readIdx];
+  const nxt=document.getElementById('read-next');
+  nxt.style.display=prevAnswer!==undefined?'block':'none';
+  nxt.textContent='Back to Review →';
+  nxt.onclick=()=>showReadingReview();
+  const optsEl=document.getElementById('read-options'); optsEl.innerHTML='';
+  q.options.forEach((opt,i)=>{
+    const btn=document.createElement('button'); btn.className='opt-mcq';
+    btn.innerHTML=`<span style="width:20px;height:20px;border-radius:50%;border:1.5px solid var(--muted);display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0">${['أ','ب','ج','د'][i]}</span><span class="arabic" style="font-size:16px">${opt}</span>`;
+    if(i===prevAnswer){btn.style.borderColor='var(--gold)';btn.style.background='rgba(212,175,55,.09)';btn.style.color='var(--gold)';}
+    btn.onclick=()=>{ readAnswers[readIdx]=i;
+      document.querySelectorAll('#read-options .opt-mcq').forEach((b,idx)=>{
+        b.style.borderColor=idx===i?'var(--gold)':'var(--border)';
+        b.style.background=idx===i?'rgba(212,175,55,.09)':'rgba(255,255,255,.02)';
+        b.style.color=idx===i?'var(--gold)':'var(--body)';
+      });
+      nxt.style.display='block';
+    };
+    optsEl.appendChild(btn);
+  });
+}
+
+function submitReading(){
+  stopTimer();
+  // Calculate scores
+  results.reading.score=0; results.reading.total=testData.reading.length;
+  testData.reading.forEach((q,i)=>{ if(readAnswers[i]===q.correct) results.reading.score++; });
+  showNextSection();
+}
+function forceFinishReading(){ submitReading(); }
 
 // ══ LISTENING ═════════════════════════════════════════════════════════════════
 function renderListening(){
@@ -792,24 +924,106 @@ function playAudio(){
 function toggleScript(){ scriptShown=!scriptShown; document.getElementById('list-script').style.display=scriptShown?'block':'none'; document.getElementById('script-btn').textContent=scriptShown?'Hide Text':'Show Text'; }
 
 function selectListening(i){
-  const q=testData.listening[listIdx]; const correct=i===q.correct;
-  if(correct) results.listening.score++; results.listening.total++;
-  speechSynthesis.cancel();
+  listAnswers[listIdx]=i;
   document.querySelectorAll('#list-options .opt-mcq').forEach((btn,idx)=>{
     btn.disabled=true;
-    if(idx===q.correct){btn.style.borderColor='var(--green)';btn.style.background='rgba(126,212,164,.09)';btn.style.color='var(--green)';btn.querySelector('span').textContent='✓';}
-    else if(idx===i&&!correct){btn.style.borderColor='var(--red)';btn.style.background='rgba(232,126,126,.09)';btn.style.color='var(--red)';btn.querySelector('span').textContent='✗';}
+    if(idx===i){btn.style.borderColor='var(--gold)';btn.style.background='rgba(212,175,55,.09)';btn.style.color='var(--gold)';}
     else{btn.style.borderColor='#1a1006';btn.style.color='#352010';}
   });
-  document.getElementById('list-explanation').style.display='block';
-  document.getElementById('list-explanation').textContent='💡 '+q.explanation;
   const nxt=document.getElementById('list-next'); nxt.style.display='block';
   document.getElementById('list-progress').style.width=((listIdx+1)/testData.listening.length*100)+'%';
-  nxt.textContent=listIdx+1>=testData.listening.length?'Finish Listening →':'Next →';
+  nxt.textContent=listIdx+1>=testData.listening.length?'Review & Submit →':'Next →';
 }
 
-function nextListening(){ listIdx++; if(listIdx>=testData.listening.length){ stopTimer(); showNextSection(); return; } renderListening(); }
-function forceFinishListening(){ showNextSection(); }
+function nextListening(){
+  listIdx++;
+  if(listIdx>=testData.listening.length){ showListeningReview(); return; }
+  renderListening();
+}
+
+function showListeningReview(){
+  document.getElementById('list-review-timer').textContent=document.getElementById('list-timer').textContent;
+  clearInterval(sectionTimer);
+  const numEl1=document.getElementById('list-timer');
+  const numEl2=document.getElementById('list-review-timer');
+  const box1=document.getElementById('list-timer-box');
+  const box2=document.getElementById('list-review-timer-box');
+  const updateBoth=()=>{
+    const m=Math.floor(sectionTimeLeft/60),s=sectionTimeLeft%60;
+    const t=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+    numEl1.textContent=t; numEl2.textContent=t;
+    if(sectionTimeLeft<=60){box1.classList.add('timer-warn');box2.classList.add('timer-warn');}
+    if(sectionTimeLeft<=0){clearInterval(sectionTimer);submitListening();return;}
+    sectionTimeLeft--;
+  };
+  updateBoth(); sectionTimer=setInterval(updateBoth,1000);
+
+  const listEl=document.getElementById('list-review-list');
+  listEl.innerHTML=testData.listening.map((q,i)=>{
+    const chosen=listAnswers[i]; const answered=chosen!==undefined;
+    return`<div style="padding:13px 15px;border-radius:10px;border:1px solid ${answered?'rgba(232,200,126,.25)':'rgba(232,126,126,.25)'};background:rgba(255,255,255,.02);margin-bottom:10px;cursor:pointer" onclick="goBackToList(${i})">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px">
+        <div style="flex:1">
+          <div style="font-size:10px;color:var(--muted);margin-bottom:5px">Soal ${i+1}</div>
+          <div class="arabic" style="font-size:15px;color:#e8d070;line-height:1.6">${q.script.slice(0,80)}...</div>
+          ${answered?`<div style="margin-top:6px;font-size:12px;color:var(--amber)">Jawaban: <span class="arabic">${q.options[chosen]}</span></div>`:'<div style="color:var(--red);font-size:12px;margin-top:4px">⚠ Belum dijawab</div>'}
+        </div>
+        <span style="font-size:11px;color:${answered?'var(--amber)':'var(--red)'};flex-shrink:0">${answered?'✏️ Edit':'❗ Jawab'}</span>
+      </div>
+    </div>`;
+  }).join('');
+  show('listening-review');
+}
+
+function goBackToList(idx){
+  listIdx=idx; playCount=0;
+  renderListeningForEdit();
+  show('listening');
+}
+
+function renderListeningForEdit(){
+  const q=testData.listening[listIdx]; if(!q) return;
+  scriptShown=false; playCount=0;
+  document.getElementById('list-script').textContent=q.script;
+  document.getElementById('list-script').style.display='none';
+  document.getElementById('script-btn').textContent='Show Text';
+  document.getElementById('audio-status').textContent='Tap Play (max 2x)';
+  document.getElementById('play-btn').textContent='▶ Play (1/2)';
+  document.getElementById('play-btn').disabled=false;
+  document.getElementById('play-btn').style.opacity='1';
+  document.getElementById('list-progress').style.width=(listIdx/testData.listening.length*100)+'%';
+  document.getElementById('list-counter').textContent=(listIdx+1)+'/'+testData.listening.length;
+  document.getElementById('list-question').textContent=q.question;
+  document.getElementById('list-explanation').style.display='none';
+  const prevAnswer=listAnswers[listIdx];
+  const nxt=document.getElementById('list-next');
+  nxt.style.display=prevAnswer!==undefined?'block':'none';
+  nxt.textContent='Back to Review →';
+  nxt.onclick=()=>showListeningReview();
+  const optsEl=document.getElementById('list-options'); optsEl.innerHTML='';
+  q.options.forEach((opt,i)=>{
+    const btn=document.createElement('button'); btn.className='opt-mcq';
+    btn.innerHTML=`<span style="width:20px;height:20px;border-radius:50%;border:1.5px solid var(--muted);display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0">${['أ','ب','ج','د'][i]}</span><span class="arabic" style="font-size:16px">${opt}</span>`;
+    if(i===prevAnswer){btn.style.borderColor='var(--gold)';btn.style.background='rgba(212,175,55,.09)';btn.style.color='var(--gold)';}
+    btn.onclick=()=>{ listAnswers[listIdx]=i;
+      document.querySelectorAll('#list-options .opt-mcq').forEach((b,idx)=>{
+        b.style.borderColor=idx===i?'var(--gold)':'var(--border)';
+        b.style.background=idx===i?'rgba(212,175,55,.09)':'rgba(255,255,255,.02)';
+        b.style.color=idx===i?'var(--gold)':'var(--body)';
+      });
+      nxt.style.display='block';
+    };
+    optsEl.appendChild(btn);
+  });
+}
+
+function submitListening(){
+  stopTimer();
+  results.listening.score=0; results.listening.total=testData.listening.length;
+  testData.listening.forEach((q,i)=>{ if(listAnswers[i]===q.correct) results.listening.score++; });
+  showNextSection();
+}
+function forceFinishListening(){ submitListening(); }
 
 // ══ SPEAKING ══════════════════════════════════════════════════════════════════
 const STAGE_LABELS={ introduction:'👤 Perkenalan', thematic:'🎨 Tematik', opinion:'💭 Opini' };
@@ -860,17 +1074,22 @@ function updateAnswersPreview(){
 
 function setSpeakMode(m){
   speakMode=m;
-  document.getElementById('speak-voice-panel').style.display=m==='voice'?'block':'none';
-  document.getElementById('speak-type-panel').style.display=m==='type'?'block':'none';
-  document.getElementById('btn-voice').classList.toggle('active',m==='voice');
-  document.getElementById('btn-type').classList.toggle('active',m==='type');
+  const vp=document.getElementById('speak-voice-panel');
+  const tp=document.getElementById('speak-type-panel');
+  const bv=document.getElementById('btn-voice');
+  const bt=document.getElementById('btn-type');
+  if(vp) vp.style.display=m==='voice'?'block':'none';
+  if(tp) tp.style.display=m==='type'?'block':'none';
+  if(bv) bv.classList.toggle('active',m==='voice');
+  if(bt) bt.classList.toggle('active',m==='type');
   if(m==='type'&&isRec) stopRec();
   updateSpeakSave();
 }
 
 function updateSpeakSave(){
-  const ans=speakMode==='voice'?currentTranscript:document.getElementById('speak-typed').value;
-  document.getElementById('speak-save').disabled=!ans.trim();
+  const ans=(speakMode==='voice'?currentTranscript:(document.getElementById('speak-typed')?.value||'')).trim();
+  const btn=document.getElementById('speak-save');
+  if(btn) btn.disabled=!ans;
 }
 
 function setRecogLang(lang){
@@ -1015,10 +1234,12 @@ function stopViz(){ cancelAnimationFrame(rafId2); micStream2?.getTracks().forEac
 // ══ WRITING ═══════════════════════════════════════════════════════════════════
 function renderWrite(){
   const q=testData.writing[writeIdx]; if(!q) return;
+  if(writeIdx===0) writeAnswers=[];
   document.getElementById('write-answer').value='';
   document.getElementById('write-eval').style.display='none'; document.getElementById('write-eval').innerHTML='';
   document.getElementById('write-next').style.display='none';
   document.getElementById('write-submit').style.display='block'; document.getElementById('write-submit').disabled=true;
+  document.getElementById('write-proc-msg').textContent='Evaluating with AI...';
   document.getElementById('write-proc-msg').style.display='none';
   document.getElementById('write-wordcount').textContent='0 words';
   document.getElementById('write-progress').style.width=(writeIdx/testData.writing.length*100)+'%';
@@ -1027,28 +1248,87 @@ function renderWrite(){
   document.getElementById('write-en').textContent='📌 '+q.en;
   document.getElementById('write-hint').textContent='💡 '+q.hint;
   document.getElementById('write-hint-min').textContent='Min. ~'+q.min_words+' words';
+  const isLast=writeIdx===testData.writing.length-1;
+  document.getElementById('write-submit').textContent=isLast?'Submit & Evaluasi AI →':'Simpan & Lanjut →';
+  document.getElementById('write-submit').style.background=isLast?'linear-gradient(135deg,#D4AF37,#9a7010)':'linear-gradient(135deg,var(--purple),#8a4ab8)';
+  document.getElementById('write-submit').style.color=isLast?'#0a0703':'#f0e8ff';
 }
 
 async function submitWrite(){
   const ans=document.getElementById('write-answer').value.trim(); if(!ans) return;
-  document.getElementById('write-submit').disabled=true;
-  document.getElementById('write-submit').innerHTML='<span class="spin">⚙️</span> Evaluating...';
-  document.getElementById('write-proc-msg').style.display='block';
+  writeAnswers[writeIdx]=ans;
+  writeIdx++;
+  document.getElementById('write-progress').style.width=(writeIdx/testData.writing.length*100)+'%';
+
+  if(writeIdx<testData.writing.length){
+    renderWrite();
+    return;
+  }
+
+  // All saved — go to review
+  showWritingReview();
+}
+
+function showWritingReview(){
+  document.getElementById('write-review-timer').textContent=document.getElementById('write-timer').textContent;
+  clearInterval(sectionTimer);
+  const numEl1=document.getElementById('write-timer');
+  const numEl2=document.getElementById('write-review-timer');
+  const box1=document.getElementById('write-timer-box');
+  const box2=document.getElementById('write-review-timer-box');
+  const updateBoth=()=>{
+    const m=Math.floor(sectionTimeLeft/60),s=sectionTimeLeft%60;
+    const t=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+    numEl1.textContent=t; numEl2.textContent=t;
+    if(sectionTimeLeft<=60){box1.classList.add('timer-warn');box2.classList.add('timer-warn');}
+    if(sectionTimeLeft<=0){clearInterval(sectionTimer);submitWriteAll();return;}
+    sectionTimeLeft--;
+  };
+  updateBoth(); sectionTimer=setInterval(updateBoth,1000);
+
+  const listEl=document.getElementById('write-review-list');
+  listEl.innerHTML=testData.writing.map((q,i)=>{
+    const ans=writeAnswers[i]||''; const wc=ans.trim()?ans.trim().split(/\s+/).length:0;
+    return`<div style="padding:13px 15px;border-radius:10px;border:1px solid rgba(184,126,232,.25);background:rgba(255,255,255,.02);margin-bottom:10px;cursor:pointer" onclick="goBackToWrite(${i})">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px">
+        <div style="flex:1">
+          <div style="font-size:10px;color:var(--muted);margin-bottom:5px">Task ${i+1} · ${wc} words</div>
+          <div class="arabic" style="font-size:14px;color:#e8d070;line-height:1.6;margin-bottom:5px">${q.ar.slice(0,60)}...</div>
+          ${ans?`<div class="arabic" style="font-size:13px;color:#c8b0e8;line-height:1.5">${ans.slice(0,100)}${ans.length>100?'...':''}</div>`:'<div style="color:var(--red);font-size:12px">⚠ Belum dijawab</div>'}
+        </div>
+        <span style="font-size:11px;color:var(--purple);flex-shrink:0">✏️ Edit</span>
+      </div>
+    </div>`;
+  }).join('');
+  show('writing-review');
+}
+
+function goBackToWrite(idx){
+  writeIdx=idx; renderWrite(); show('writing');
+}
+
+async function submitWriteAll(){
+  stopTimer();
+  document.getElementById('write-review-proc').style.display='block';
+  document.querySelector('#screen-writing-review .btn-primary').disabled=true;
   try{
-    const q=testData.writing[writeIdx];
-    const ev=await groq(
-      'You are an Arabic writing examiner. Respond ONLY with valid JSON, no markdown.',
-      `Task: ${q.ar} (${q.en})\nStudent answer: "${ans}"\nReturn JSON:{"task_achievement":{"score":0-10,"comment":""},"coherence":{"score":0-10,"comment":""},"grammar":{"score":0-10,"comment":"","errors":[]},"vocabulary":{"score":0-10,"comment":"","highlights":[]},"overall":{"score":0-10,"cefr_estimate":"A1/A2/B1/B2/C1/C2","summary":"2-3 sentences","tips":["tip1","tip2"]},"arabic_fb":"1 sentence feedback in Arabic"}`
-    );
-    results.writing.push({q,answer:ans,evaluation:ev});
-    renderWriteEval(ev);
-    document.getElementById('write-submit').style.display='none';
-    document.getElementById('write-proc-msg').style.display='none';
-    document.getElementById('write-eval').style.display='block';
-    document.getElementById('write-next').style.display='block';
-    document.getElementById('write-progress').style.width=((writeIdx+1)/testData.writing.length*100)+'%';
-    document.getElementById('write-next').textContent=writeIdx+1>=testData.writing.length?'Finish Writing →':'Next →';
-  }catch(e){ console.error(e); notif('Eval failed: '+e.message,4000); document.getElementById('write-submit').disabled=false; document.getElementById('write-submit').textContent='Submit →'; document.getElementById('write-proc-msg').style.display='none'; }
+    const ev=await evaluateWriteAll();
+    results.writing=writeAnswers.map((a,i)=>({q:testData.writing[i],answer:a,evaluation:ev}));
+    document.getElementById('write-review-proc').style.display='none';
+    showNextSection();
+  }catch(e){
+    console.error(e); notif('Eval failed: '+e.message,4000);
+    document.getElementById('write-review-proc').style.display='none';
+    document.querySelector('#screen-writing-review .btn-primary').disabled=false;
+  }
+}
+
+async function evaluateWriteAll(){
+  const answersText=writeAnswers.map((ans,i)=>`Task ${i+1}: ${testData.writing[i].ar} (${testData.writing[i].en})\nAnswer: "${ans}"`).join('\n\n');
+  return await groq(
+    'You are an Arabic writing examiner. Evaluate all writing answers holistically. Respond ONLY with valid JSON, no markdown.',
+    `Evaluate these ${writeAnswers.length} Arabic writing answers:\n${answersText}\nReturn JSON:{"task_achievement":{"score":0-10,"comment":""},"coherence":{"score":0-10,"comment":""},"grammar":{"score":0-10,"comment":"","errors":["err"]},"vocabulary":{"score":0-10,"comment":"","highlights":["good"]},"overall":{"score":0-10,"cefr_estimate":"A1/A2/B1/B2/C1/C2","summary":"2-3 sentences","tips":["tip1","tip2"]},"arabic_fb":"1-2 sentences feedback in Arabic"}`
+  );
 }
 
 function renderWriteEval(ev){
@@ -1069,8 +1349,14 @@ function renderWriteEval(ev){
   `;
 }
 
-function nextWrite(){ writeIdx++; if(writeIdx>=testData.writing.length){ stopTimer(); showNextSection(); return; } renderWrite(); }
-function forceFinishWriting(){ showNextSection(); }
+function nextWrite(){ stopTimer(); showNextSection(); }
+function forceFinishWriting(){
+  // Save current answer if any before time runs out
+  const ans=document.getElementById('write-answer')?.value?.trim();
+  if(ans && writeIdx<testData.writing.length) writeAnswers[writeIdx]=ans;
+  if(writeAnswers.some(a=>a)) showWritingReview();
+  else showNextSection();
+}
 
 // ══ UTILS ═════════════════════════════════════════════════════════════════════
 function scoreColor(n){ return n>=8?'#7ed4a4':n>=6?'#D4AF37':n>=4?'#e8b87e':'#e87e7e'; }
@@ -1229,7 +1515,7 @@ function restart(){
   stopTimer(); stopRec(); speechSynthesis.cancel();
   results={reading:{score:0,total:0},listening:{score:0,total:0},speaking:[],writing:[]};
   testData={reading:[],listening:[],speaking:[],writing:[]};
-  readIdx=0; listIdx=0; speakIdx=0; writeIdx=0;
+  readIdx=0; listIdx=0; speakIdx=0; writeIdx=0; writeAnswers=[]; readAnswers=[]; listAnswers=[];
   speakAnswers=[]; participant={};
   show('cover');
 }
