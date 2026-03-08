@@ -10,9 +10,9 @@
 :root{
   --gold:#D4AF37;--gold2:#9a7010;--bg:#080603;--border:#30200a;
   --body:#b89850;--muted:#5a4020;--green:#7ed4a4;--blue:#7eb8e8;
-  --red:#e87e7e;--purple:#b87ee8;--amber:#e8c87e;--card-bg:#181006;
+  --red:#e87e7e;--purple:#b87ee8;--amber:#e8c87e;
 }
-html,body{min-height:100vh;background:linear-gradient(135deg,#080603 0%,#130e06 55%,#080603 100%);color:var(--body);font-family:'Outfit',sans-serif;font-size:15px}
+html,body{min-height:100vh;background:linear-gradient(135deg,#080603 0%,#130e06 55%,#080603 100%);color:var(--body);font-family:'Outfit',sans-serif}
 .arabic{font-family:'Amiri',serif;direction:rtl;unicode-bidi:embed}
 .card{background:linear-gradient(160deg,#181006,#201508);border:1px solid var(--border);border-radius:18px;box-shadow:0 16px 48px rgba(0,0,0,.7),inset 0 1px 0 rgba(212,175,55,.07)}
 .gold{color:var(--gold);font-family:'Playfair Display',serif}
@@ -22,20 +22,33 @@ button{cursor:pointer;font-family:'Outfit',sans-serif}
 .btn-outline:hover,.btn-outline.active{border-color:var(--gold);background:rgba(212,175,55,.09);color:var(--gold)}
 .btn-primary{padding:12px 28px;background:linear-gradient(135deg,var(--gold),var(--gold2));border:none;border-radius:10px;color:#0a0703;font-weight:700;font-size:14px;transition:opacity .15s;width:100%}
 .btn-primary:disabled{opacity:.35;cursor:not-allowed}
+.btn-primary:not(:disabled):hover{opacity:.88}
 textarea{resize:vertical;outline:none;background:rgba(255,255,255,.02);border:2px solid var(--border);border-radius:10px;color:#e8d070;font-family:'Amiri',serif;font-size:18px;direction:rtl;line-height:1.7;padding:14px;width:100%;transition:border-color .2s;min-height:120px}
 textarea:focus{border-color:var(--gold)}
-input[type=text],input[type=password]{outline:none;background:rgba(255,255,255,.03);border:2px solid var(--border);border-radius:10px;color:#e8d070;font-family:'Outfit',sans-serif;font-size:14px;padding:13px 16px;width:100%;transition:border-color .2s}
+input[type=text],input[type=password],input[type=email],input[type=tel]{outline:none;background:rgba(255,255,255,.03);border:2px solid var(--border);border-radius:10px;color:#e8d070;font-family:'Outfit',sans-serif;font-size:14px;padding:12px 14px;width:100%;transition:border-color .2s}
 input:focus{border-color:var(--gold)}
-.screen{display:none;min-height:100vh;padding:24px;justify-content:center;align-items:flex-start;padding-top:40px}
+.screen{display:none;min-height:100vh;padding:24px;justify-content:center;align-items:flex-start;padding-top:36px}
 .screen.active{display:flex}
 .screen-center{align-items:center;padding-top:0}
 .wrap{max-width:680px;width:100%}
-.progress-bar{height:4px;background:#1a1006;border-radius:2px;overflow:hidden;margin-bottom:20px}
+.progress-bar{height:4px;background:#1a1006;border-radius:2px;overflow:hidden;margin-bottom:18px}
 .progress-fill{height:100%;border-radius:2px;transition:width .4s ease}
-.badge{padding:3px 10px;border-radius:5px;font-size:10px;font-family:'Outfit',sans-serif;font-weight:600;letter-spacing:.5px}
-.section-icon{font-size:32px;margin-bottom:8px}
-.loading-dots::after{content:'...';animation:dots 1.5s infinite}
-@keyframes dots{0%{content:'.'}33%{content:'..'}66%{content:'...'}}
+.badge{padding:3px 9px;border-radius:5px;font-size:10px;font-weight:600;letter-spacing:.5px}
+.opt-mcq{padding:11px 14px;border-radius:9px;border:2px solid var(--border);background:rgba(255,255,255,.02);color:var(--body);font-size:13px;text-align:left;width:100%;display:flex;align-items:center;gap:10px;transition:all .15s;margin-bottom:8px}
+.opt-mcq:hover:not(:disabled){border-color:var(--gold)}
+.dim-card{padding:13px;background:rgba(255,255,255,.02);border-radius:11px}
+.score-bar{height:4px;background:#1a1006;border-radius:2px;margin:7px 0}
+.score-fill{height:100%;border-radius:2px;transition:width 1.2s ease}
+.timer-box{display:flex;align-items:center;gap:8px;padding:7px 14px;border-radius:8px;background:rgba(255,255,255,.03);border:1px solid var(--border)}
+.timer-warn{border-color:rgba(232,126,126,.4)!important;background:rgba(232,126,126,.06)!important}
+.timer-warn .timer-num{color:var(--red)!important;animation:pulse 1s infinite}
+.timer-num{font-family:'Playfair Display',serif;font-size:18px;color:var(--gold);font-weight:700;min-width:48px;text-align:center}
+.section-check{display:flex;align-items:center;gap:12px;padding:14px 16px;border-radius:11px;border:2px solid var(--border);cursor:pointer;transition:all .2s;margin-bottom:10px}
+.section-check:hover{border-color:var(--gold)}
+.section-check.selected{border-color:var(--gold);background:rgba(212,175,55,.07)}
+.section-check input[type=checkbox]{width:18px;height:18px;accent-color:var(--gold);cursor:pointer;flex-shrink:0}
+.form-row{margin-bottom:16px}
+.form-label{font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--body);margin-bottom:7px;display:block}
 @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
 @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
 @keyframes ripple{0%{transform:scale(1);opacity:.5}100%{transform:scale(2.5);opacity:0}}
@@ -44,17 +57,14 @@ input:focus{border-color:var(--gold)}
 .fade-in{animation:fadeUp .38s cubic-bezier(.22,1,.36,1) both}
 .bob{animation:bob 3s ease-in-out infinite}
 .spin{animation:spin .9s linear infinite;display:inline-block}
-.pulse{animation:pulse 1.1s ease-in-out infinite}
+.pulse-anim{animation:pulse 1s infinite}
 ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:#0c0904}::-webkit-scrollbar-thumb{background:#4a3208;border-radius:3px}
-#notif{position:fixed;top:18px;right:18px;padding:11px 16px;background:#1a1006;border:1px solid var(--gold);border-radius:9px;color:var(--gold);font-size:13px;z-index:999;display:none;max-width:320px;line-height:1.4}
-.opt-mcq{padding:11px 14px;border-radius:9px;border:2px solid var(--border);background:rgba(255,255,255,.02);color:var(--body);font-size:13px;text-align:left;width:100%;display:flex;align-items:center;gap:10px;transition:all .15s;margin-bottom:8px}
-.opt-mcq:hover:not(:disabled){border-color:var(--gold)}
-.section-tab{padding:10px 16px;border-radius:9px;border:2px solid var(--border);background:transparent;color:var(--muted);font-size:12px;font-weight:600;transition:all .2s;flex:1;text-align:center}
-.section-tab.done{border-color:var(--green);color:var(--green);background:rgba(126,212,164,.08)}
-.section-tab.active{border-color:var(--gold);color:var(--gold);background:rgba(212,175,55,.1)}
-.dim-card{padding:14px;background:rgba(255,255,255,.02);border-radius:11px}
-.score-bar{height:4px;background:#1a1006;border-radius:2px;margin:7px 0}
-.score-fill{height:100%;border-radius:2px;transition:width 1.2s ease}
+#notif{position:fixed;top:16px;right:16px;padding:11px 15px;background:#1a1006;border:1px solid var(--gold);border-radius:9px;color:var(--gold);font-size:13px;z-index:9999;display:none;max-width:300px;line-height:1.4}
+.db-table{width:100%;border-collapse:collapse;font-size:12px}
+.db-table th{padding:10px 12px;text-align:left;color:var(--muted);font-weight:600;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;border-bottom:1px solid var(--border)}
+.db-table td{padding:10px 12px;border-bottom:1px solid rgba(48,32,10,.5);color:var(--body);vertical-align:top}
+.db-table tr:hover td{background:rgba(255,255,255,.015)}
+.cefr-badge{padding:3px 8px;border-radius:5px;font-size:11px;font-weight:700;font-family:'Outfit',sans-serif}
 </style>
 </head>
 <body>
@@ -63,71 +73,189 @@ input:focus{border-color:var(--gold)}
 <!-- ══ COVER ══ -->
 <div id="screen-cover" class="screen screen-center active">
   <div class="wrap fade-in" style="text-align:center">
-    <div class="bob" style="font-size:64px;margin-bottom:10px">🕌</div>
-    <div class="muted" style="font-size:10px;letter-spacing:5px;text-transform:uppercase;margin-bottom:6px">اختبار الكفاءة في اللغة العربية</div>
-    <h1 class="gold" style="font-size:42px;line-height:1.05;margin-bottom:6px">Arabic Proficiency Test</h1>
-    <p class="muted" style="font-size:11px;letter-spacing:3px;margin-bottom:10px;text-transform:uppercase">CEFR A1 – C2 · AI-Powered · 4 Sections</p>
-
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:28px 0">
-      <div class="card" style="padding:18px;text-align:center">
-        <div style="font-size:24px;margin-bottom:6px">📖</div>
-        <div class="gold" style="font-size:13px;margin-bottom:4px">Reading</div>
-        <div class="muted" style="font-size:11px">Baca teks Arab · Jawab pertanyaan</div>
+    <div class="bob" style="font-size:60px;margin-bottom:8px">🕌</div>
+    <div class="muted" style="font-size:10px;letter-spacing:5px;text-transform:uppercase;margin-bottom:4px">اختبار الكفاءة في اللغة العربية</div>
+    <h1 class="gold" style="font-size:40px;line-height:1.05;margin-bottom:4px">Arabic Proficiency Test</h1>
+    <p class="muted" style="font-size:11px;letter-spacing:3px;margin-bottom:28px;text-transform:uppercase">AI-Powered · CEFR A1–C2 · Timed Sections</p>
+    <div class="card" style="padding:24px 28px;text-align:left;margin-bottom:14px">
+      <div id="key-saved-notice" style="display:none;padding:9px 13px;background:rgba(126,212,164,.08);border:1px solid rgba(126,212,164,.2);border-radius:8px;margin-bottom:14px;justify-content:space-between;align-items:center">
+        <span style="color:var(--green);font-size:12px">✅ API key tersimpan</span>
+        <button onclick="forgetKey()" style="background:none;border:none;color:var(--muted);font-size:11px;cursor:pointer">Ganti</button>
       </div>
-      <div class="card" style="padding:18px;text-align:center">
-        <div style="font-size:24px;margin-bottom:6px">🎧</div>
-        <div class="gold" style="font-size:13px;margin-bottom:4px">Listening</div>
-        <div class="muted" style="font-size:11px">Dengar audio Arab · Jawab pertanyaan</div>
+      <div id="key-input-wrap">
+        <div class="form-label">Groq API Key</div>
+        <input id="api-key-input" type="password" placeholder="gsk_..." style="margin-bottom:6px"
+          onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'"
+          onkeydown="if(event.key==='Enter')goRegister()"/>
+        <div class="muted" style="font-size:11px;margin-bottom:16px">Gratis di <a href="https://console.groq.com/keys" target="_blank" style="color:var(--gold)">console.groq.com/keys</a></div>
       </div>
-      <div class="card" style="padding:18px;text-align:center">
-        <div style="font-size:24px;margin-bottom:6px">🎙️</div>
-        <div class="gold" style="font-size:13px;margin-bottom:4px">Speaking</div>
-        <div class="muted" style="font-size:11px">Jawab pertanyaan lisan · Dinilai AI</div>
-      </div>
-      <div class="card" style="padding:18px;text-align:center">
-        <div style="font-size:24px;margin-bottom:6px">✍️</div>
-        <div class="gold" style="font-size:13px;margin-bottom:4px">Writing</div>
-        <div class="muted" style="font-size:11px">Tulis essay Arab · Dinilai AI</div>
-      </div>
-    </div>
-
-    <div class="card" style="padding:20px 24px;margin-bottom:20px;text-align:left" id="key-card">
-      <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;margin-bottom:10px;color:var(--body)">Groq API Key</div>
-      <input id="api-key-input" type="password" placeholder="gsk_..." style="margin-bottom:6px"
-        onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'"
-        onkeydown="if(event.key==='Enter')startTest()"/>
-      <div id="key-saved-notice" style="display:none;padding:8px 12px;background:rgba(126,212,164,.08);border:1px solid rgba(126,212,164,.2);border-radius:8px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center">
-        <span style="color:var(--green);font-size:12px">✅ API key tersimpan di browser ini</span>
-        <button onclick="forgetKey()" style="background:none;border:none;color:var(--muted);font-size:11px;cursor:pointer">Ganti key</button>
-      </div>
-      <div class="muted" style="font-size:11px;margin-bottom:16px">
-        🔒 Key disimpan di browser ini saja · Gratis di <a href="https://console.groq.com/keys" target="_blank" style="color:var(--gold)">console.groq.com/keys</a>
-      </div>
-      <div style="margin-bottom:16px">
-        <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;margin-bottom:10px;color:var(--body)">Target Level</div>
-        <div style="display:flex;gap:7px;flex-wrap:wrap" id="level-btns">
-          <button class="btn-outline active" data-lv="mixed" onclick="setLevel('mixed')">🌐 Mixed (All)</button>
-          <button class="btn-outline" data-lv="A1-A2" onclick="setLevel('A1-A2')">A1–A2 Beginner</button>
-          <button class="btn-outline" data-lv="B1-B2" onclick="setLevel('B1-B2')">B1–B2 Intermediate</button>
-          <button class="btn-outline" data-lv="C1-C2" onclick="setLevel('C1-C2')">C1–C2 Advanced</button>
-        </div>
-      </div>
-      <button class="btn-primary" onclick="startTest()">Mulai Test →</button>
+      <button class="btn-primary" onclick="goRegister()">Mulai Test →</button>
       <div id="cover-error" style="display:none;color:var(--red);font-size:12px;text-align:center;margin-top:10px"></div>
     </div>
-    <p class="muted" style="font-size:11px">Soal di-generate AI tiap sesi · Hasil dalam format CEFR</p>
+    <button onclick="goDashboard()" style="background:none;border:1px solid var(--border);border-radius:9px;padding:9px 18px;color:var(--muted);font-size:12px;transition:all .2s" onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--gold)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)'">
+      🔒 Provider Dashboard
+    </button>
+  </div>
+</div>
+
+<!-- ══ DASHBOARD LOGIN ══ -->
+<div id="screen-dash-login" class="screen screen-center">
+  <div class="wrap fade-in" style="max-width:400px">
+    <button onclick="show('cover')" class="muted" style="background:none;border:none;font-size:13px;margin-bottom:18px">← Back</button>
+    <div class="card" style="padding:32px 36px;text-align:center">
+      <div style="font-size:40px;margin-bottom:10px">🔒</div>
+      <h2 class="gold" style="font-size:22px;margin-bottom:4px">Provider Dashboard</h2>
+      <p class="muted" style="font-size:13px;margin-bottom:24px">Login untuk lihat hasil tes peserta</p>
+      <div style="text-align:left;margin-bottom:16px">
+        <div class="form-label">Password</div>
+        <input id="dash-password" type="password" placeholder="Enter password"
+          onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'"
+          onkeydown="if(event.key==='Enter')loginDash()"/>
+      </div>
+      <button class="btn-primary" onclick="loginDash()">Login →</button>
+      <div id="dash-login-error" style="display:none;color:var(--red);font-size:12px;margin-top:10px"></div>
+      <p class="muted" style="font-size:10px;margin-top:14px">Default password: <span style="color:var(--gold)">arabic2024</span></p>
+    </div>
+  </div>
+</div>
+
+<!-- ══ DASHBOARD MAIN ══ -->
+<div id="screen-dashboard" class="screen" style="padding-top:28px">
+  <div class="wrap" style="max-width:900px">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:22px">
+      <div>
+        <h2 class="gold" style="font-size:24px">Provider Dashboard</h2>
+        <p class="muted" style="font-size:12px">Hasil tes semua peserta</p>
+      </div>
+      <div style="display:flex;gap:10px">
+        <button onclick="exportCSV()" style="padding:9px 16px;border-radius:9px;border:1px solid var(--border);background:transparent;color:var(--body);font-size:12px;cursor:pointer">⬇ Export CSV</button>
+        <button onclick="clearAllResults()" style="padding:9px 16px;border-radius:9px;border:1px solid rgba(232,126,126,.3);background:transparent;color:var(--red);font-size:12px;cursor:pointer">🗑 Clear All</button>
+        <button onclick="show('cover')" style="padding:9px 16px;border-radius:9px;border:1px solid var(--border);background:transparent;color:var(--muted);font-size:12px;cursor:pointer">← Exit</button>
+      </div>
+    </div>
+    <!-- Stats -->
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px" id="dash-stats"></div>
+    <!-- Table -->
+    <div class="card" style="padding:0;overflow:hidden;margin-bottom:14px">
+      <div style="padding:16px 20px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center">
+        <h3 style="font-size:14px;font-weight:600">Peserta</h3>
+        <span class="muted" style="font-size:12px" id="dash-count">0 results</span>
+      </div>
+      <div style="overflow-x:auto">
+        <table class="db-table" id="dash-table">
+          <thead><tr>
+            <th>Nama</th><th>Kampus</th><th>Email</th><th>HP</th>
+            <th>Sesi</th><th>Reading</th><th>Listening</th><th>Speaking</th><th>Writing</th><th>Overall CEFR</th><th>Waktu</th>
+          </tr></thead>
+          <tbody id="dash-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+    <!-- Detail modal -->
+    <div id="dash-detail" style="display:none"></div>
+  </div>
+</div>
+
+<!-- ══ REGISTER ══ -->
+<div id="screen-register" class="screen screen-center">
+  <div class="wrap fade-in" style="max-width:520px">
+    <button onclick="show('cover')" class="muted" style="background:none;border:none;font-size:13px;margin-bottom:18px">← Back</button>
+    <div class="card" style="padding:32px 36px">
+      <div style="font-size:36px;text-align:center;margin-bottom:10px">📝</div>
+      <h2 class="gold" style="font-size:22px;text-align:center;margin-bottom:4px">Data Peserta</h2>
+      <p class="muted" style="font-size:13px;text-align:center;margin-bottom:24px">Isi data diri sebelum memulai tes</p>
+      <div class="form-row"><label class="form-label">Nama Lengkap *</label><input id="reg-name" type="text" placeholder="Ahmad Fauzi" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'"/></div>
+      <div class="form-row"><label class="form-label">Asal Kampus *</label><input id="reg-campus" type="text" placeholder="Universitas Indonesia" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'"/></div>
+      <div class="form-row"><label class="form-label">Nomor HP *</label><input id="reg-phone" type="tel" placeholder="08123456789" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'"/></div>
+      <div class="form-row"><label class="form-label">Email *</label><input id="reg-email" type="email" placeholder="ahmad@email.com" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'"/></div>
+      <div id="reg-error" style="display:none;color:var(--red);font-size:12px;margin-bottom:12px"></div>
+      <button class="btn-primary" onclick="goSessionSelect()">Lanjut →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SESSION SELECT ══ -->
+<div id="screen-session" class="screen screen-center">
+  <div class="wrap fade-in" style="max-width:520px">
+    <button onclick="show('register')" class="muted" style="background:none;border:none;font-size:13px;margin-bottom:18px">← Back</button>
+    <div class="card" style="padding:32px 36px">
+      <div style="font-size:36px;text-align:center;margin-bottom:10px">📋</div>
+      <h2 class="gold" style="font-size:22px;text-align:center;margin-bottom:4px">Pilih Sesi</h2>
+      <p class="muted" style="font-size:13px;text-align:center;margin-bottom:20px">Centang sesi yang ingin diikuti</p>
+      <!-- Quick select -->
+      <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap">
+        <button class="btn-outline" onclick="selectAllSessions()">✅ Semua</button>
+        <button class="btn-outline" onclick="clearAllSessions()">☐ Kosongkan</button>
+      </div>
+      <label class="section-check" id="check-reading">
+        <input type="checkbox" id="sess-reading" onchange="updateSessionUI()">
+        <div style="flex:1">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:3px">
+            <span style="font-size:18px">📖</span>
+            <span style="font-weight:600;color:var(--blue)">Reading</span>
+            <span class="badge" style="background:rgba(126,184,232,.1);border:1px solid rgba(126,184,232,.2);color:var(--blue)">5 soal</span>
+          </div>
+          <div class="muted" style="font-size:11px">Baca teks Arab · Pilihan jawaban Arab · ⏱ 15–25 menit (sesuai level)</div>
+        </div>
+      </label>
+      <label class="section-check" id="check-listening">
+        <input type="checkbox" id="sess-listening" onchange="updateSessionUI()">
+        <div style="flex:1">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:3px">
+            <span style="font-size:18px">🎧</span>
+            <span style="font-weight:600;color:var(--amber)">Listening</span>
+            <span class="badge" style="background:rgba(232,200,126,.1);border:1px solid rgba(232,200,126,.2);color:var(--amber)">5 soal</span>
+          </div>
+          <div class="muted" style="font-size:11px">Dengar audio Arab · Max 2x play · ⏱ 15–25 menit (sesuai level)</div>
+        </div>
+      </label>
+      <label class="section-check" id="check-speaking">
+        <input type="checkbox" id="sess-speaking" onchange="updateSessionUI()">
+        <div style="flex:1">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:3px">
+            <span style="font-size:18px">🎙️</span>
+            <span style="font-weight:600;color:var(--green)">Speaking</span>
+            <span class="badge" style="background:rgba(126,212,164,.1);border:1px solid rgba(126,212,164,.2);color:var(--green)">3 soal</span>
+          </div>
+          <div class="muted" style="font-size:11px">Perkenalan → Tematik → Opini · AI evaluasi akhir · ⏱ 10–20 menit</div>
+        </div>
+      </label>
+      <label class="section-check" id="check-writing">
+        <input type="checkbox" id="sess-writing" onchange="updateSessionUI()">
+        <div style="flex:1">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:3px">
+            <span style="font-size:18px">✍️</span>
+            <span style="font-weight:600;color:var(--purple)">Writing</span>
+            <span class="badge" style="background:rgba(184,126,232,.1);border:1px solid rgba(184,126,232,.2);color:var(--purple)">2 soal</span>
+          </div>
+          <div class="muted" style="font-size:11px">Tulis essay Arab · AI evaluasi · ⏱ 20–35 menit</div>
+        </div>
+      </label>
+      <div style="margin-bottom:16px">
+        <div class="form-label" style="margin-bottom:10px">Target Level</div>
+        <div style="display:flex;gap:7px;flex-wrap:wrap" id="level-btns">
+          <button class="btn-outline active" data-lv="mixed" onclick="setLevel('mixed')">🌐 Mixed</button>
+          <button class="btn-outline" data-lv="A1-A2" onclick="setLevel('A1-A2')">A1–A2</button>
+          <button class="btn-outline" data-lv="B1-B2" onclick="setLevel('B1-B2')">B1–B2</button>
+          <button class="btn-outline" data-lv="C1-C2" onclick="setLevel('C1-C2')">C1–C2</button>
+        </div>
+      </div>
+      <div id="session-total" class="muted" style="font-size:12px;text-align:center;margin-bottom:16px"></div>
+      <button class="btn-primary" id="btn-start-test" onclick="startTest()" disabled>Generate & Mulai Test →</button>
+      <div id="session-error" style="display:none;color:var(--red);font-size:12px;text-align:center;margin-top:10px"></div>
+    </div>
   </div>
 </div>
 
 <!-- ══ GENERATING ══ -->
 <div id="screen-generating" class="screen screen-center">
   <div class="wrap fade-in" style="text-align:center">
-    <div style="font-size:56px;margin-bottom:16px"><span class="spin">⚙️</span></div>
-    <h2 class="gold" style="font-size:28px;margin-bottom:8px">Generating Your Test</h2>
-    <p class="muted" id="gen-status" style="font-size:14px;margin-bottom:24px">Preparing questions with AI...</p>
-    <div style="max-width:300px;margin:0 auto">
-      <div style="display:flex;justify-content:space-between;margin-bottom:6px">
-        <span class="muted" style="font-size:11px" id="gen-label">Reading</span>
+    <div style="font-size:56px;margin-bottom:14px"><span class="spin">⚙️</span></div>
+    <h2 class="gold" style="font-size:26px;margin-bottom:8px">Generating Your Test</h2>
+    <p class="muted" id="gen-status" style="font-size:14px;margin-bottom:22px">Preparing AI questions...</p>
+    <div style="max-width:280px;margin:0 auto">
+      <div style="display:flex;justify-content:space-between;margin-bottom:5px">
+        <span class="muted" style="font-size:11px" id="gen-label">Starting...</span>
         <span class="muted" style="font-size:11px" id="gen-pct">0%</span>
       </div>
       <div class="progress-bar" style="margin-bottom:0"><div class="progress-fill" id="gen-bar" style="width:0%;background:linear-gradient(90deg,var(--gold),var(--gold2))"></div></div>
@@ -137,12 +265,12 @@ input:focus{border-color:var(--gold)}
 
 <!-- ══ SECTION INTRO ══ -->
 <div id="screen-section-intro" class="screen screen-center">
-  <div class="wrap fade-in" style="text-align:center">
-    <div id="intro-icon" style="font-size:64px;margin-bottom:12px"></div>
-    <h2 class="gold" id="intro-title" style="font-size:32px;margin-bottom:6px"></h2>
-    <p id="intro-desc" class="muted" style="font-size:14px;margin-bottom:8px"></p>
-    <p id="intro-count" style="font-size:12px;color:var(--body);margin-bottom:28px"></p>
-    <div class="card" id="intro-tips" style="padding:18px 22px;margin-bottom:24px;text-align:left"></div>
+  <div class="wrap fade-in" style="text-align:center;max-width:500px">
+    <div id="intro-icon" style="font-size:60px;margin-bottom:10px"></div>
+    <h2 id="intro-title" class="gold" style="font-size:30px;margin-bottom:6px"></h2>
+    <p id="intro-desc" class="muted" style="font-size:14px;margin-bottom:6px"></p>
+    <div id="intro-timer-info" style="margin-bottom:18px"></div>
+    <div class="card" id="intro-tips" style="padding:18px 22px;margin-bottom:22px;text-align:left"></div>
     <button class="btn-primary" onclick="beginSection()">Mulai Section →</button>
   </div>
 </div>
@@ -151,21 +279,21 @@ input:focus{border-color:var(--gold)}
 <div id="screen-reading" class="screen">
   <div class="wrap">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-      <span style="color:var(--gold);font-size:13px;font-weight:600">📖 Reading</span>
-      <span class="muted" style="font-size:12px">Q <span id="read-counter">1/5</span></span>
-    </div>
-    <div class="progress-bar"><div class="progress-fill" id="read-progress" style="width:0%;background:linear-gradient(90deg,#7eb8e8,#5a8fc0)"></div></div>
-    <div class="card fade-in" id="read-card" style="padding:28px 32px">
-      <!-- Passage -->
-      <div style="padding:18px;background:rgba(212,175,55,.04);border:1px solid rgba(212,175,55,.09);border-radius:12px;margin-bottom:22px">
-        <div class="muted" style="font-size:10px;letter-spacing:2px;margin-bottom:10px">📄 PASSAGE</div>
-        <div class="arabic" id="read-passage" style="font-size:20px;color:#e8d070;line-height:1.9"></div>
-        <div id="read-passage-trans" style="font-size:12px;color:var(--muted);margin-top:8px;line-height:1.6;font-style:italic"></div>
+      <span style="color:var(--blue);font-size:13px;font-weight:600">📖 Reading</span>
+      <div style="display:flex;align-items:center;gap:10px">
+        <span class="muted" style="font-size:12px">Q <span id="read-counter">1/5</span></span>
+        <div class="timer-box" id="read-timer-box"><span style="font-size:13px">⏱</span><span class="timer-num" id="read-timer">00:00</span></div>
       </div>
-      <!-- Question -->
-      <p id="read-question" style="font-size:15px;font-weight:500;margin-bottom:16px;color:var(--body)"></p>
-      <div id="read-options" style="display:flex;flex-direction:column;gap:0"></div>
-      <div id="read-explanation" style="display:none;margin-top:14px;padding:12px 14px;background:rgba(212,175,55,.05);border:1px solid rgba(212,175,55,.15);border-radius:9px;font-size:12px;line-height:1.6;color:var(--body)"></div>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="read-progress" style="width:0%;background:linear-gradient(90deg,var(--blue),#5a8fc0)"></div></div>
+    <div class="card fade-in" style="padding:26px 30px">
+      <div style="padding:16px;background:rgba(212,175,55,.04);border:1px solid rgba(212,175,55,.09);border-radius:12px;margin-bottom:20px">
+        <div class="muted" style="font-size:10px;letter-spacing:2px;margin-bottom:8px">📄 PASSAGE</div>
+        <div class="arabic" id="read-passage" style="font-size:20px;color:#e8d070;line-height:1.9"></div>
+      </div>
+      <p id="read-question" style="font-size:14px;font-weight:500;margin-bottom:14px;color:var(--body)"></p>
+      <div id="read-options"></div>
+      <div id="read-explanation" style="display:none;margin-top:12px;padding:11px 14px;background:rgba(212,175,55,.05);border:1px solid rgba(212,175,55,.15);border-radius:9px;font-size:12px;line-height:1.6;color:var(--body)"></div>
       <button class="btn-primary" id="read-next" style="margin-top:14px;display:none" onclick="nextReading()">Next →</button>
     </div>
   </div>
@@ -176,29 +304,25 @@ input:focus{border-color:var(--gold)}
   <div class="wrap">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
       <span style="color:var(--amber);font-size:13px;font-weight:600">🎧 Listening</span>
-      <span class="muted" style="font-size:12px">Q <span id="list-counter">1/5</span></span>
+      <div style="display:flex;align-items:center;gap:10px">
+        <span class="muted" style="font-size:12px">Q <span id="list-counter">1/5</span></span>
+        <div class="timer-box" id="list-timer-box"><span style="font-size:13px">⏱</span><span class="timer-num" id="list-timer">00:00</span></div>
+      </div>
     </div>
     <div class="progress-bar"><div class="progress-fill" id="list-progress" style="width:0%;background:linear-gradient(90deg,var(--amber),#b89030)"></div></div>
-    <div class="card fade-in" id="list-card" style="padding:28px 32px">
-      <!-- Audio player -->
-      <div style="text-align:center;padding:20px;background:rgba(232,200,126,.05);border:1px solid rgba(232,200,126,.15);border-radius:12px;margin-bottom:22px">
-        <div class="muted" style="font-size:10px;letter-spacing:2px;margin-bottom:12px">🎧 AUDIO</div>
-        <div id="list-script" class="arabic" style="font-size:18px;color:#e8d070;line-height:1.9;margin-bottom:14px;display:none"></div>
-        <div style="display:flex;align-items:center;justify-content:center;gap:12px">
-          <button onclick="playAudio()" id="play-btn"
-            style="padding:10px 24px;border-radius:20px;border:2px solid var(--amber);background:rgba(232,200,126,.1);color:var(--amber);font-size:13px;font-weight:600;transition:all .2s">
-            ▶ Play Audio
-          </button>
-          <button onclick="toggleScript()" id="script-btn"
-            style="padding:10px 16px;border-radius:20px;border:2px solid var(--border);background:transparent;color:var(--muted);font-size:12px;transition:all .2s">
-            Show Text
-          </button>
+    <div class="card fade-in" style="padding:26px 30px">
+      <div style="text-align:center;padding:18px;background:rgba(232,200,126,.05);border:1px solid rgba(232,200,126,.15);border-radius:12px;margin-bottom:20px">
+        <div class="muted" style="font-size:10px;letter-spacing:2px;margin-bottom:10px">🎧 AUDIO</div>
+        <div id="list-script" class="arabic" style="font-size:18px;color:#e8d070;line-height:1.9;margin-bottom:12px;display:none"></div>
+        <div style="display:flex;align-items:center;justify-content:center;gap:10px">
+          <button onclick="playAudio()" id="play-btn" style="padding:10px 22px;border-radius:20px;border:2px solid var(--amber);background:rgba(232,200,126,.1);color:var(--amber);font-size:13px;font-weight:600;transition:all .2s">▶ Play</button>
+          <button onclick="toggleScript()" id="script-btn" style="padding:10px 14px;border-radius:20px;border:2px solid var(--border);background:transparent;color:var(--muted);font-size:12px;transition:all .2s">Show Text</button>
         </div>
-        <p class="muted" style="font-size:11px;margin-top:10px" id="audio-status">Tap Play to hear the Arabic audio</p>
+        <p class="muted" style="font-size:11px;margin-top:8px" id="audio-status">Tap Play to hear Arabic audio</p>
       </div>
-      <p id="list-question" style="font-size:15px;font-weight:500;margin-bottom:16px;color:var(--body)"></p>
-      <div id="list-options" style="display:flex;flex-direction:column;gap:0"></div>
-      <div id="list-explanation" style="display:none;margin-top:14px;padding:12px 14px;background:rgba(232,200,126,.05);border:1px solid rgba(232,200,126,.2);border-radius:9px;font-size:12px;line-height:1.6;color:var(--body)"></div>
+      <p id="list-question" style="font-size:14px;font-weight:500;margin-bottom:14px;color:var(--body)"></p>
+      <div id="list-options"></div>
+      <div id="list-explanation" style="display:none;margin-top:12px;padding:11px 14px;background:rgba(232,200,126,.05);border:1px solid rgba(232,200,126,.2);border-radius:9px;font-size:12px;line-height:1.6;color:var(--body)"></div>
       <button class="btn-primary" id="list-next" style="margin-top:14px;display:none;background:linear-gradient(135deg,var(--amber),#b89030);color:#0a0703" onclick="nextListening()">Next →</button>
     </div>
   </div>
@@ -209,35 +333,51 @@ input:focus{border-color:var(--gold)}
   <div class="wrap">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
       <span style="color:var(--green);font-size:13px;font-weight:600">🎙️ Speaking</span>
-      <span class="muted" style="font-size:12px">Q <span id="speak-counter">1/3</span></span>
+      <div style="display:flex;align-items:center;gap:10px">
+        <span class="muted" style="font-size:12px">Q <span id="speak-counter">1/3</span></span>
+        <div class="timer-box" id="speak-timer-box"><span style="font-size:13px">⏱</span><span class="timer-num" id="speak-timer">00:00</span></div>
+      </div>
     </div>
     <div class="progress-bar"><div class="progress-fill" id="speak-progress" style="width:0%;background:linear-gradient(90deg,var(--green),#4aa870)"></div></div>
-    <div class="card fade-in" id="speak-card" style="padding:28px 32px">
-      <div style="text-align:center;padding:20px 16px;background:rgba(212,175,55,.04);border:1px solid rgba(212,175,55,.09);border-radius:12px;margin-bottom:18px">
-        <div class="arabic" id="speak-ar" style="font-size:24px;color:#e8d070;line-height:1.65;margin-bottom:8px"></div>
-        <div id="speak-en" style="font-size:13px;color:var(--body)"></div>
+    <!-- Stage indicator -->
+    <div style="display:flex;gap:8px;margin-bottom:14px" id="speak-stages">
+      <div style="flex:1;text-align:center;padding:8px;border-radius:8px;font-size:11px" id="stage-intro">👤 Perkenalan</div>
+      <div style="flex:1;text-align:center;padding:8px;border-radius:8px;font-size:11px" id="stage-thematic">🎨 Tematik</div>
+      <div style="flex:1;text-align:center;padding:8px;border-radius:8px;font-size:11px" id="stage-opinion">💭 Opini</div>
+    </div>
+    <div class="card fade-in" style="padding:26px 30px">
+      <div style="text-align:center;padding:18px;background:rgba(212,175,55,.04);border:1px solid rgba(212,175,55,.09);border-radius:12px;margin-bottom:16px">
+        <div class="arabic" id="speak-ar" style="font-size:24px;color:#e8d070;line-height:1.65;margin-bottom:6px"></div>
+        <div id="speak-en" style="font-size:12px;color:var(--muted)"></div>
       </div>
-      <div style="padding:10px 14px;background:rgba(126,184,232,.04);border:1px solid rgba(126,184,232,.12);border-radius:9px;margin-bottom:18px">
+      <div style="padding:9px 13px;background:rgba(126,184,232,.04);border:1px solid rgba(126,184,232,.12);border-radius:9px;margin-bottom:16px">
         <span id="speak-hint" style="color:#5a8aaf;font-size:12px;line-height:1.55"></span>
       </div>
       <!-- Input toggle -->
-      <div style="display:flex;gap:8px;margin-bottom:18px">
+      <div style="display:flex;gap:8px;margin-bottom:16px">
         <button class="btn-outline active" id="btn-voice" onclick="setSpeakMode('voice')">🎙️ Voice</button>
         <button class="btn-outline" id="btn-type" onclick="setSpeakMode('type')">⌨️ Type</button>
       </div>
       <!-- Voice -->
       <div id="speak-voice-panel">
-        <div style="position:relative;width:90px;height:90px;margin:0 auto 12px;display:flex;align-items:center;justify-content:center">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap">
+          <span class="muted" style="font-size:11px">Language:</span>
+          <div id="lang-btns" style="display:flex;gap:6px">
+            <button class="btn-outline active" data-lang="ar" onclick="setRecogLang('ar')" style="padding:5px 10px;font-size:11px">🇸🇦 Arabic</button>
+            <button class="btn-outline" data-lang="id-ID" onclick="setRecogLang('id-ID')" style="padding:5px 10px;font-size:11px">🇮🇩 Indonesia</button>
+            <button class="btn-outline" data-lang="en-US" onclick="setRecogLang('en-US')" style="padding:5px 10px;font-size:11px">🇺🇸 English</button>
+          </div>
+        </div>
+        <div style="position:relative;width:80px;height:80px;margin:0 auto 10px;display:flex;align-items:center;justify-content:center">
           <div id="rpl1" style="display:none;position:absolute;width:100%;height:100%;border-radius:50%;border:2px solid rgba(126,212,164,.35);animation:ripple 1.6s ease-out infinite"></div>
           <div id="rpl2" style="display:none;position:absolute;width:82%;height:82%;border-radius:50%;border:2px solid rgba(126,212,164,.2);animation:ripple 1.6s ease-out infinite .55s"></div>
-          <button id="mic-btn" onclick="toggleRec()"
-            style="width:66px;height:66px;border-radius:50%;border:3px solid var(--green);background:rgba(126,212,164,.08);font-size:24px;display:flex;align-items:center;justify-content:center;z-index:1;transition:all .2s">🎙️</button>
+          <button id="mic-btn" onclick="toggleRec()" style="width:60px;height:60px;border-radius:50%;border:3px solid var(--green);background:rgba(126,212,164,.08);font-size:22px;display:flex;align-items:center;justify-content:center;z-index:1;transition:all .2s">🎙️</button>
         </div>
-        <div id="speak-bars" style="display:none;display:flex;align-items:flex-end;justify-content:center;gap:3px;height:30px;margin-bottom:8px"></div>
-        <p class="muted" id="speak-rec-status" style="font-size:12px;text-align:center;margin-bottom:12px">Tap 🎙️ to record</p>
-        <div id="speak-transcript-box" style="display:none;padding:11px 14px;background:rgba(255,255,255,.025);border:1px solid var(--border);border-radius:9px;text-align:right;margin-bottom:12px">
+        <div id="speak-bars" style="display:none;display:flex;align-items:flex-end;justify-content:center;gap:3px;height:28px;margin-bottom:8px"></div>
+        <p class="muted" id="speak-rec-status" style="font-size:12px;text-align:center;margin-bottom:10px">Tap 🎙️ to record</p>
+        <div id="speak-transcript-box" style="display:none;padding:10px 13px;background:rgba(255,255,255,.025);border:1px solid var(--border);border-radius:9px;text-align:right;margin-bottom:10px">
           <div style="display:flex;justify-content:space-between;margin-bottom:5px">
-            <span class="muted" style="font-size:10px;letter-spacing:1px">TRANSCRIPT</span>
+            <span class="muted" style="font-size:10px">TRANSCRIPT</span>
             <button onclick="clearSpeak()" style="background:none;border:none;color:var(--muted);font-size:11px;cursor:pointer">✕</button>
           </div>
           <div class="arabic" id="speak-transcript" style="color:#e8d070;font-size:16px;line-height:1.7"></div>
@@ -245,13 +385,18 @@ input:focus{border-color:var(--gold)}
       </div>
       <!-- Type -->
       <div id="speak-type-panel" style="display:none;margin-bottom:12px">
-        <textarea id="speak-typed" rows="4" placeholder="اكتب إجابتك هنا..."></textarea>
+        <textarea id="speak-typed" rows="3" placeholder="اكتب إجابتك هنا..." style="min-height:90px"></textarea>
       </div>
-      <button class="btn-primary" id="speak-submit" onclick="submitSpeak()" style="background:linear-gradient(135deg,var(--green),#4aa870);color:#060e08" disabled>Submit for AI Evaluation →</button>
+      <!-- Answers preview (all 3 before submit) -->
+      <div id="speak-answers-preview" style="display:none;margin-bottom:14px">
+        <div class="muted" style="font-size:10px;letter-spacing:2px;margin-bottom:10px">JAWABAN KAMU</div>
+        <div id="speak-answers-list"></div>
+      </div>
+      <button class="btn-primary" id="speak-save" onclick="saveSpeak()" style="background:linear-gradient(135deg,var(--green),#4aa870);color:#050e07;margin-bottom:8px" disabled>Simpan Jawaban →</button>
+      <button class="btn-primary" id="speak-submit-all" onclick="submitSpeakAll()" style="background:linear-gradient(135deg,#D4AF37,#9a7010);display:none">Submit Semua untuk Evaluasi AI →</button>
       <p class="muted" id="speak-proc-msg" style="font-size:12px;text-align:center;margin-top:8px;display:none">Evaluating with AI...</p>
-      <!-- Eval results -->
       <div id="speak-eval" style="display:none;margin-top:18px"></div>
-      <button class="btn-primary" id="speak-next" style="margin-top:14px;display:none;background:linear-gradient(135deg,var(--green),#4aa870);color:#060e08" onclick="nextSpeak()">Next →</button>
+      <button class="btn-primary" id="speak-next-section" style="margin-top:14px;display:none" onclick="finishSpeaking()">Lanjut ke Section Berikutnya →</button>
     </div>
   </div>
 </div>
@@ -261,316 +406,394 @@ input:focus{border-color:var(--gold)}
   <div class="wrap">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
       <span style="color:var(--purple);font-size:13px;font-weight:600">✍️ Writing</span>
-      <span class="muted" style="font-size:12px">Q <span id="write-counter">1/2</span></span>
+      <div style="display:flex;align-items:center;gap:10px">
+        <span class="muted" style="font-size:12px">Q <span id="write-counter">1/2</span></span>
+        <div class="timer-box" id="write-timer-box"><span style="font-size:13px">⏱</span><span class="timer-num" id="write-timer">00:00</span></div>
+      </div>
     </div>
     <div class="progress-bar"><div class="progress-fill" id="write-progress" style="width:0%;background:linear-gradient(90deg,var(--purple),#8a4ab8)"></div></div>
-    <div class="card fade-in" id="write-card" style="padding:28px 32px">
-      <div style="padding:16px;background:rgba(184,126,232,.05);border:1px solid rgba(184,126,232,.15);border-radius:12px;margin-bottom:18px">
-        <div class="muted" style="font-size:10px;letter-spacing:2px;margin-bottom:8px">✍️ TASK</div>
-        <div class="arabic" id="write-ar" style="font-size:20px;color:#e8d070;line-height:1.8;margin-bottom:6px"></div>
-        <div id="write-en" style="font-size:13px;color:var(--body);line-height:1.6"></div>
+    <div class="card fade-in" style="padding:26px 30px">
+      <div style="padding:14px;background:rgba(184,126,232,.05);border:1px solid rgba(184,126,232,.15);border-radius:12px;margin-bottom:16px">
+        <div class="muted" style="font-size:10px;letter-spacing:2px;margin-bottom:7px">✍️ TASK</div>
+        <div class="arabic" id="write-ar" style="font-size:20px;color:#e8d070;line-height:1.8;margin-bottom:5px"></div>
+        <div id="write-en" style="font-size:12px;color:var(--muted);line-height:1.5"></div>
       </div>
-      <div style="padding:10px 14px;background:rgba(184,126,232,.04);border:1px solid rgba(184,126,232,.1);border-radius:9px;margin-bottom:16px">
+      <div style="padding:9px 13px;background:rgba(184,126,232,.04);border:1px solid rgba(184,126,232,.1);border-radius:9px;margin-bottom:14px">
         <span id="write-hint" style="color:#9a6abf;font-size:12px;line-height:1.55"></span>
       </div>
-      <div class="muted" style="font-size:10px;letter-spacing:2px;margin-bottom:8px;text-transform:uppercase">Your Answer (Arabic)</div>
+      <div class="muted" style="font-size:10px;letter-spacing:2px;margin-bottom:7px;text-transform:uppercase">Jawaban (Arabic)</div>
       <textarea id="write-answer" rows="6" placeholder="اكتب إجابتك هنا..."></textarea>
-      <div style="display:flex;justify-content:space-between;margin-top:6px;margin-bottom:14px">
+      <div style="display:flex;justify-content:space-between;margin-top:5px;margin-bottom:12px">
         <span class="muted" style="font-size:11px" id="write-wordcount">0 words</span>
-        <span class="muted" id="write-hint-min" style="font-size:11px"></span>
+        <span class="muted" style="font-size:11px" id="write-hint-min"></span>
       </div>
-      <button class="btn-primary" id="write-submit" onclick="submitWrite()" style="background:linear-gradient(135deg,var(--purple),#8a4ab8);color:#f0e8ff" disabled>Submit for AI Evaluation →</button>
+      <button class="btn-primary" id="write-submit" onclick="submitWrite()" style="background:linear-gradient(135deg,var(--purple),#8a4ab8);color:#f0e8ff" disabled>Submit untuk Evaluasi AI →</button>
       <p class="muted" id="write-proc-msg" style="font-size:12px;text-align:center;margin-top:8px;display:none">Evaluating with AI...</p>
-      <div id="write-eval" style="display:none;margin-top:18px"></div>
+      <div id="write-eval" style="display:none;margin-top:16px"></div>
       <button class="btn-primary" id="write-next" style="margin-top:14px;display:none;background:linear-gradient(135deg,var(--purple),#8a4ab8);color:#f0e8ff" onclick="nextWrite()">Next →</button>
     </div>
   </div>
 </div>
 
 <!-- ══ FINAL RESULT ══ -->
-<div id="screen-result" class="screen screen-center">
+<div id="screen-result" class="screen screen-center" style="padding-top:28px">
   <div class="wrap fade-in">
-    <div id="result-hero" class="card" style="padding:36px;text-align:center;margin-bottom:16px"></div>
-    <div id="result-sections" class="card" style="padding:26px 30px;margin-bottom:16px"></div>
-    <div id="result-feedback" class="card" style="padding:26px 30px;margin-bottom:16px"></div>
-    <button class="btn-primary" onclick="restart()" style="margin-bottom:40px">🔄 Take New Test</button>
+    <div id="result-hero" class="card" style="padding:34px;text-align:center;margin-bottom:14px"></div>
+    <div id="result-sections" class="card" style="padding:24px 28px;margin-bottom:14px"></div>
+    <div id="result-feedback" class="card" style="padding:24px 28px;margin-bottom:14px"></div>
+    <button class="btn-primary" onclick="restart()" style="margin-bottom:40px">🔄 Ambil Test Baru</button>
   </div>
 </div>
 
 <script>
-// ══ STATE ══════════════════════════════════════════════════════════════════════
+// ══ CONFIG ════════════════════════════════════════════════════════════════════
+const DASH_PASSWORD = 'arabic2024';
+const STORAGE_KEY = 'arabic_test_results';
+
+// Timer durations per section (seconds) based on level
+const TIMERS = {
+  reading:  { 'mixed':20*60, 'A1-A2':15*60, 'B1-B2':20*60, 'C1-C2':25*60 },
+  listening:{ 'mixed':20*60, 'A1-A2':15*60, 'B1-B2':20*60, 'C1-C2':25*60 },
+  speaking: { 'mixed':15*60, 'A1-A2':10*60, 'B1-B2':15*60, 'C1-C2':20*60 },
+  writing:  { 'mixed':25*60, 'A1-A2':20*60, 'B1-B2':25*60, 'C1-C2':35*60 },
+};
+
+// ══ STATE ═════════════════════════════════════════════════════════════════════
 let API_KEY = localStorage.getItem('groq_api_key') || '';
 let TARGET_LEVEL = 'mixed';
+let selectedSessions = [];
+let sessionQueue = [];
+let participant = {};
 let testData = { reading:[], listening:[], speaking:[], writing:[] };
 let results = { reading:{score:0,total:0}, listening:{score:0,total:0}, speaking:[], writing:[] };
 let currentSection = '';
 let readIdx=0, listIdx=0, speakIdx=0, writeIdx=0;
 let speakMode='voice', isRec=false, recognition=null, recogLang='ar';
-let currentTranscript='';
-let audioCtx=null, analyser=null, micStream=null, rafId=null;
-let currentUtterance=null, scriptShown=false;
+let currentTranscript='', speakAnswers=[];
+let audioCtx2=null, analyser2=null, micStream2=null, rafId2=null;
+let currentUtterance=null, scriptShown=false, playCount=0, maxPlays=2;
+let sectionTimer=null, sectionTimeLeft=0;
 
-// ══ UTILS ═════════════════════════════════════════════════════════════════════
+// ══ INIT ══════════════════════════════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', () => {
+  checkSavedKey();
+  document.getElementById('speak-typed').addEventListener('input', updateSpeakSave);
+  document.getElementById('write-answer').addEventListener('input', () => {
+    const v = document.getElementById('write-answer').value;
+    const wc = v.trim() ? v.trim().split(/\s+/).length : 0;
+    document.getElementById('write-wordcount').textContent = wc + ' words';
+    const q = testData.writing[writeIdx];
+    document.getElementById('write-submit').disabled = wc < (q ? Math.floor(q.min_words/2) : 10);
+  });
+  speechSynthesis.getVoices();
+});
+
+// ══ API KEY ═══════════════════════════════════════════════════════════════════
+function checkSavedKey(){
+  if(API_KEY){
+    document.getElementById('key-saved-notice').style.display='flex';
+    document.getElementById('key-input-wrap').style.display='none';
+  }
+}
+function forgetKey(){ localStorage.removeItem('groq_api_key'); API_KEY=''; document.getElementById('key-saved-notice').style.display='none'; document.getElementById('key-input-wrap').style.display='block'; }
+
+// ══ NAVIGATION ════════════════════════════════════════════════════════════════
 function show(id){ document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active')); document.getElementById('screen-'+id).classList.add('active'); window.scrollTo(0,0); }
 function notif(msg,dur=3500){ const el=document.getElementById('notif'); el.textContent=msg; el.style.display='block'; setTimeout(()=>el.style.display='none',dur); }
-function scoreColor(n){ return n>=8?'#7ed4a4':n>=6?'#D4AF37':n>=4?'#e8b87e':'#e87e7e'; }
-function cefrFromScore(s){ return s>=9?'C2':s>=7.5?'C1':s>=6?'B2':s>=4.5?'B1':s>=3?'A2':'A1'; }
+
+function goRegister(){
+  const inputKey = document.getElementById('api-key-input').value.trim();
+  const key = inputKey || API_KEY;
+  const errEl = document.getElementById('cover-error');
+  if(!key){ errEl.style.display='block'; errEl.textContent='Masukkan API key terlebih dahulu.'; return; }
+  if(inputKey){ localStorage.setItem('groq_api_key', inputKey); API_KEY = inputKey; }
+  errEl.style.display='none';
+  show('register');
+}
+
+function goSessionSelect(){
+  const name=document.getElementById('reg-name').value.trim();
+  const campus=document.getElementById('reg-campus').value.trim();
+  const phone=document.getElementById('reg-phone').value.trim();
+  const email=document.getElementById('reg-email').value.trim();
+  const errEl=document.getElementById('reg-error');
+  if(!name||!campus||!phone||!email){ errEl.style.display='block'; errEl.textContent='Semua field wajib diisi.'; return; }
+  participant = { name, campus, phone, email };
+  errEl.style.display='none';
+  show('session');
+  updateSessionUI();
+}
 
 function setLevel(lv){
   TARGET_LEVEL=lv;
   document.querySelectorAll('#level-btns .btn-outline').forEach(b=>b.classList.toggle('active',b.dataset.lv===lv));
+  updateSessionUI();
+}
+
+function updateSessionUI(){
+  const checked = ['reading','listening','speaking','writing'].filter(s=>document.getElementById('sess-'+s).checked);
+  selectedSessions = checked;
+  ['reading','listening','speaking','writing'].forEach(s=>{
+    const el=document.getElementById('check-'+s);
+    if(document.getElementById('sess-'+s).checked) el.classList.add('selected'); else el.classList.remove('selected');
+  });
+  document.getElementById('btn-start-test').disabled = checked.length===0;
+  if(checked.length===0){ document.getElementById('session-total').textContent='Pilih minimal 1 sesi'; return; }
+  const totalMins = checked.reduce((sum,s)=>{ const t=TIMERS[s][TARGET_LEVEL]||TIMERS[s]['mixed']; return sum+Math.round(t/60); },0);
+  document.getElementById('session-total').textContent=`✅ ${checked.length} sesi dipilih · Estimasi ${totalMins} menit`;
+}
+
+function selectAllSessions(){ ['reading','listening','speaking','writing'].forEach(s=>document.getElementById('sess-'+s).checked=true); updateSessionUI(); }
+function clearAllSessions(){ ['reading','listening','speaking','writing'].forEach(s=>document.getElementById('sess-'+s).checked=false); updateSessionUI(); }
+
+function goDashboard(){ show('dash-login'); document.getElementById('dash-password').value=''; }
+function loginDash(){
+  const pw=document.getElementById('dash-password').value;
+  if(pw===DASH_PASSWORD){ renderDashboard(); show('dashboard'); }
+  else{ document.getElementById('dash-login-error').style.display='block'; document.getElementById('dash-login-error').textContent='Password salah.'; }
 }
 
 // ══ GROQ API ══════════════════════════════════════════════════════════════════
-async function groq(systemPrompt, userMsg, json=true){
+async function groq(systemPrompt, userMsg){
   const res = await fetch('https://api.groq.com/openai/v1/chat/completions',{
     method:'POST',
     headers:{'Content-Type':'application/json','Authorization':'Bearer '+API_KEY},
-    body:JSON.stringify({
-      model:'llama-3.3-70b-versatile',
-      max_tokens:1500,
-      temperature:0.4,
-      messages:[{role:'system',content:systemPrompt},{role:'user',content:userMsg}]
-    })
+    body:JSON.stringify({ model:'llama-3.3-70b-versatile', max_tokens:2000, temperature:0.4,
+      messages:[{role:'system',content:systemPrompt},{role:'user',content:userMsg}] })
   });
   const data = await res.json();
   if(data.error) throw new Error(data.error.message||JSON.stringify(data.error));
   const text = data.choices[0].message.content;
-  if(!json) return text;
   return JSON.parse(text.replace(/```json|```/g,'').trim());
 }
 
 // ══ GENERATE TEST ═════════════════════════════════════════════════════════════
 async function startTest(){
-  const inputKey = document.getElementById('api-key-input').value.trim();
-  const savedKey = localStorage.getItem('groq_api_key') || '';
-  const key = inputKey || savedKey;
-  const errEl = document.getElementById('cover-error');
-  if(!key){ errEl.style.display='block'; errEl.textContent='Masukkan API key terlebih dahulu.'; return; }
-  if(inputKey) localStorage.setItem('groq_api_key', inputKey);
-  API_KEY = key; errEl.style.display='none';
+  document.getElementById('session-error').style.display='none';
   show('generating');
+  sessionQueue = [...selectedSessions];
+  testData = { reading:[], listening:[], speaking:[], writing:[] };
+  results = { reading:{score:0,total:0}, listening:{score:0,total:0}, speaking:[], writing:[] };
+
+  const lvMap={'mixed':'A1 to C2, mix of levels','A1-A2':'A1 and A2 beginner','B1-B2':'B1 and B2 intermediate','C1-C2':'C1 and C2 advanced'};
+  const lvDesc=lvMap[TARGET_LEVEL]||'mixed levels';
+  const total=selectedSessions.length;
+  let done=0;
+
+  const setGen=(label,pct)=>{ document.getElementById('gen-label').textContent=label; document.getElementById('gen-pct').textContent=pct+'%'; document.getElementById('gen-bar').style.width=pct+'%'; };
+
   try {
-    await generateAll();
-    showSectionIntro('reading');
+    for(const sess of selectedSessions){
+      setGen(`Generating ${sess}...`, Math.round(done/total*80));
+      if(sess==='reading') testData.reading = await genReading(lvDesc);
+      else if(sess==='listening') testData.listening = await genListening(lvDesc);
+      else if(sess==='speaking') testData.speaking = await genSpeaking(lvDesc);
+      else if(sess==='writing') testData.writing = await genWriting(lvDesc);
+      done++;
+    }
+    setGen('Ready!',100);
+    await new Promise(r=>setTimeout(r,500));
+    showNextSection();
   } catch(e){
     console.error(e);
-    show('cover');
-    errEl.style.display='block';
-    errEl.textContent='Gagal generate soal: '+e.message+'. Cek API key dan koneksi internet.';
+    show('session');
+    document.getElementById('session-error').style.display='block';
+    document.getElementById('session-error').textContent='Gagal generate: '+e.message;
   }
 }
 
-function setGen(label, pct){ document.getElementById('gen-label').textContent=label; document.getElementById('gen-pct').textContent=pct+'%'; document.getElementById('gen-bar').style.width=pct+'%'; }
-
-async function generateAll(){
-  const lvMap = {'mixed':'A1 to C2, mix of levels','A1-A2':'A1 and A2 beginner','B1-B2':'B1 and B2 intermediate','C1-C2':'C1 and C2 advanced'};
-  const lvDesc = lvMap[TARGET_LEVEL]||'mixed levels';
-
-  setGen('Reading questions...', 10);
-  testData.reading = await generateReading(lvDesc);
-  setGen('Listening scripts...', 35);
-  testData.listening = await generateListening(lvDesc);
-  setGen('Speaking questions...', 65);
-  testData.speaking = await generateSpeaking(lvDesc);
-  setGen('Writing tasks...', 85);
-  testData.writing = await generateWriting(lvDesc);
-  setGen('Ready!', 100);
-  await new Promise(r=>setTimeout(r,500));
+async function genReading(lvDesc){
+  return await groq(
+    'You are an Arabic test designer. Respond ONLY with valid JSON array, no markdown.',
+    `Generate 5 Arabic reading comprehension questions for level ${lvDesc}.
+JSON array of 5:
+[{"passage":"Arabic text 3-6 sentences with full diacritics","question":"Question in English","options":["أ) Arabic","ب) Arabic","ج) Arabic","د) Arabic"],"correct":0,"explanation":"English explanation"}]
+All options must be in Arabic. Passage only Arabic.`
+  );
 }
 
-async function generateReading(lvDesc){
-  const sys = `You are an Arabic language test designer. Generate reading comprehension questions. Respond ONLY with valid JSON array, no markdown.`;
-  const usr = `Generate 5 Arabic reading comprehension question sets for level ${lvDesc}.
-Return JSON array of 5 objects:
-[{
-  "passage": "Arabic text passage (3-6 sentences, with full diacritics/harakat)",
-  "passage_translation": "English translation of passage",
-  "question": "Question about the passage (in English)",
-  "options": ["A) option","B) option","C) option","D) option"],
-  "correct": 0,
-  "explanation": "Why this answer is correct"
-}]
-Make passages varied: daily life, culture, narrative, descriptive, informational.`;
-  return await groq(sys, usr);
+async function genListening(lvDesc){
+  return await groq(
+    'You are an Arabic test designer. Respond ONLY with valid JSON array, no markdown.',
+    `Generate 5 Arabic listening items for level ${lvDesc}.
+JSON array of 5:
+[{"script":"Arabic 2-4 sentences with diacritics, conversational","question":"Question in English","options":["أ) Arabic","ب) Arabic","ج) Arabic","د) Arabic"],"correct":0,"explanation":"English explanation"}]
+All options in Arabic.`
+  );
 }
 
-async function generateListening(lvDesc){
-  const sys = `You are an Arabic language test designer. Generate listening comprehension items. Respond ONLY with valid JSON array, no markdown.`;
-  const usr = `Generate 5 Arabic listening comprehension items for level ${lvDesc}.
-Return JSON array of 5 objects:
-[{
-  "script": "Arabic audio script (2-4 sentences spoken Arabic with diacritics, natural conversational tone)",
-  "question": "Question about what was said (in English)",
-  "options": ["A) option","B) option","C) option","D) option"],
-  "correct": 0,
-  "explanation": "Why this answer is correct"
-}]
-Scripts should simulate real conversations: greetings, directions, announcements, dialogues.`;
-  return await groq(sys, usr);
+async function genSpeaking(lvDesc){
+  return await groq(
+    'You are an Arabic speaking test designer. Respond ONLY with valid JSON array, no markdown.',
+    `Generate exactly 3 Arabic speaking questions for level ${lvDesc}, following this EXACT structure:
+1. Introduction (perkenalan): simple self-introduction question
+2. Thematic (tematik): question about hobbies, daily life, or interests
+3. Opinion (opini): question asking opinion on a social/cultural issue
+
+JSON array of exactly 3:
+[
+  {"stage":"introduction","ar":"Arabic question with diacritics","en":"English translation","hint":"English tip for answer"},
+  {"stage":"thematic","ar":"Arabic question with diacritics","en":"English translation","hint":"English tip for answer"},
+  {"stage":"opinion","ar":"Arabic question with diacritics","en":"English translation","hint":"English tip for answer"}
+]`
+  );
 }
 
-async function generateSpeaking(lvDesc){
-  const sys = `You are an Arabic language test designer. Generate speaking prompts. Respond ONLY with valid JSON array, no markdown.`;
-  const usr = `Generate 3 speaking test questions for level ${lvDesc}.
-Return JSON array of 3 objects:
-[{
-  "ar": "Question in Arabic with full diacritics",
-  "en": "English translation of question",
-  "hint": "Brief tip on what to include in the answer",
-  "min_words": 20
-}]
-Topics: personal, opinion, description. Vary complexity by level.`;
-  return await groq(sys, usr);
+async function genWriting(lvDesc){
+  return await groq(
+    'You are an Arabic writing test designer. Respond ONLY with valid JSON array, no markdown.',
+    `Generate 2 Arabic writing tasks for level ${lvDesc}.
+JSON array of 2:
+[{"ar":"Task instruction in Arabic with diacritics","en":"English translation","hint":"English structure tips","min_words":50,"type":"paragraph or essay"}]
+Task 1: personal/descriptive. Task 2: opinion/argumentative.`
+  );
 }
 
-async function generateWriting(lvDesc){
-  const sys = `You are an Arabic language test designer. Generate writing tasks. Respond ONLY with valid JSON array, no markdown.`;
-  const usr = `Generate 2 writing tasks for level ${lvDesc}.
-Return JSON array of 2 objects:
-[{
-  "ar": "Writing task instruction in Arabic with diacritics",
-  "en": "English translation of task",
-  "hint": "What to include, structure tips",
-  "min_words": 50,
-  "type": "paragraph or essay"
-}]
-Tasks: one personal/descriptive, one opinion/argumentative.`;
-  return await groq(sys, usr);
-}
-
-// ══ SECTION INTROS ════════════════════════════════════════════════════════════
+// ══ SECTION FLOW ══════════════════════════════════════════════════════════════
 const SECTION_META = {
-  reading:{ icon:'📖', title:'Reading', color:'#7eb8e8', desc:'Read Arabic passages and answer comprehension questions.', tips:['Read the passage carefully before answering','Look for key words in the questions','Check all options before selecting'] },
-  listening:{ icon:'🎧', title:'Listening', color:'#e8c87e', desc:'Listen to Arabic audio and answer questions.', tips:['You can play the audio multiple times','Use "Show Text" if needed','Pay attention to context and tone'] },
-  speaking:{ icon:'🎙️', title:'Speaking', color:'#7ed4a4', desc:'Answer questions in Arabic. Your response will be evaluated by AI on fluency, grammar, vocabulary, and relevance.', tips:['Speak naturally — do not memorize scripts','Use the hints as guidance','Type your answer if mic is unavailable'] },
-  writing:{ icon:'✍️', title:'Writing', color:'#b87ee8', desc:'Write Arabic paragraphs or essays. AI will evaluate your grammar, vocabulary, coherence, and task achievement.', tips:['Write in Arabic script with diacritics if possible','Structure: intro, body, conclusion','Meet the minimum word count'] }
+  reading:{icon:'📖',title:'Reading',color:'var(--blue)',desc:'Read Arabic passages and answer questions.',tips:['Read carefully before answering','All options are in Arabic','Use context clues']},
+  listening:{icon:'🎧',title:'Listening',color:'var(--amber)',desc:'Listen to Arabic audio and answer questions.',tips:['Play audio multiple times','Use "Show Text" if needed','Focus on key words']},
+  speaking:{icon:'🎙️',title:'Speaking',color:'var(--green)',desc:'Answer 3 questions: perkenalan → tematik → opini. AI evaluates all answers at the end.',tips:['Speak naturally in Arabic','Save each answer before moving on','AI evaluates after all 3 questions']},
+  writing:{icon:'✍️',title:'Writing',color:'var(--purple)',desc:'Write Arabic paragraphs evaluated by AI.',tips:['Write in Arabic script','Structure: intro, body, conclusion','Meet minimum word count']}
 };
 
-function showSectionIntro(section){
-  currentSection = section;
-  const m = SECTION_META[section];
-  document.getElementById('intro-icon').textContent = m.icon;
-  document.getElementById('intro-title').textContent = m.title;
-  document.getElementById('intro-title').style.color = m.color;
-  document.getElementById('intro-desc').textContent = m.desc;
-  const counts = {reading:5,listening:5,speaking:3,writing:2};
-  document.getElementById('intro-count').textContent = counts[section]+' questions · AI-generated';
-  document.getElementById('intro-tips').innerHTML = '<div class="muted" style="font-size:10px;letter-spacing:2px;margin-bottom:10px">💡 TIPS</div>' +
-    m.tips.map(t=>`<div style="color:var(--body);font-size:13px;line-height:1.6;margin-bottom:6px">· ${t}</div>`).join('');
+function showNextSection(){
+  if(sessionQueue.length===0){ renderFinalResult(); show('result'); return; }
+  currentSection = sessionQueue.shift();
+  const m = SECTION_META[currentSection];
+  document.getElementById('intro-icon').textContent=m.icon;
+  document.getElementById('intro-title').textContent=m.title;
+  document.getElementById('intro-title').style.color=m.color;
+  document.getElementById('intro-desc').textContent=m.desc;
+  const secs=TIMERS[currentSection][TARGET_LEVEL]||TIMERS[currentSection]['mixed'];
+  const mins=Math.round(secs/60);
+  document.getElementById('intro-timer-info').innerHTML=`<span style="color:var(--gold);font-size:13px">⏱ ${mins} menit</span> <span class="muted" style="font-size:12px">· Auto-submit saat habis</span>`;
+  document.getElementById('intro-tips').innerHTML='<div class="muted" style="font-size:10px;letter-spacing:2px;margin-bottom:9px">💡 TIPS</div>'+
+    m.tips.map(t=>`<div style="color:var(--body);font-size:13px;line-height:1.6;margin-bottom:5px">· ${t}</div>`).join('');
   show('section-intro');
 }
 
 function beginSection(){
-  if(currentSection==='reading'){ readIdx=0; renderReading(); show('reading'); }
-  else if(currentSection==='listening'){ listIdx=0; renderListening(); show('listening'); }
-  else if(currentSection==='speaking'){ speakIdx=0; renderSpeak(); show('speaking'); }
-  else if(currentSection==='writing'){ writeIdx=0; renderWrite(); show('writing'); }
+  const secs=TIMERS[currentSection][TARGET_LEVEL]||TIMERS[currentSection]['mixed'];
+  if(currentSection==='reading'){ readIdx=0; renderReading(); show('reading'); startTimer('read',secs,()=>forceFinishReading()); }
+  else if(currentSection==='listening'){ listIdx=0; renderListening(); show('listening'); startTimer('list',secs,()=>forceFinishListening()); }
+  else if(currentSection==='speaking'){ speakIdx=0; speakAnswers=[]; renderSpeak(); show('speaking'); startTimer('speak',secs,()=>forceFinishSpeaking()); }
+  else if(currentSection==='writing'){ writeIdx=0; renderWrite(); show('writing'); startTimer('write',secs,()=>forceFinishWriting()); }
 }
+
+// ══ TIMER ═════════════════════════════════════════════════════════════════════
+function startTimer(prefix, secs, onDone){
+  clearInterval(sectionTimer);
+  sectionTimeLeft=secs;
+  const numEl=document.getElementById(prefix+'-timer');
+  const boxEl=document.getElementById(prefix+'-timer-box');
+  const update=()=>{
+    const m=Math.floor(sectionTimeLeft/60), s=sectionTimeLeft%60;
+    numEl.textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+    if(sectionTimeLeft<=60){ boxEl.classList.add('timer-warn'); numEl.classList.add('pulse-anim'); }
+    else{ boxEl.classList.remove('timer-warn'); numEl.classList.remove('pulse-anim'); }
+    if(sectionTimeLeft<=0){ clearInterval(sectionTimer); notif('⏰ Waktu habis! Section selesai otomatis.',4000); onDone(); return; }
+    sectionTimeLeft--;
+  };
+  update();
+  sectionTimer=setInterval(update,1000);
+}
+
+function stopTimer(){ clearInterval(sectionTimer); }
 
 // ══ READING ═══════════════════════════════════════════════════════════════════
 function renderReading(){
-  const q = testData.reading[readIdx];
-  if(!q) return;
-  const pct = (readIdx/testData.reading.length)*100;
-  document.getElementById('read-progress').style.width=pct+'%';
+  const q=testData.reading[readIdx]; if(!q) return;
+  document.getElementById('read-progress').style.width=(readIdx/testData.reading.length*100)+'%';
   document.getElementById('read-counter').textContent=(readIdx+1)+'/'+testData.reading.length;
   document.getElementById('read-passage').textContent=q.passage;
-  document.getElementById('read-passage-trans').textContent=q.passage_translation||'';
   document.getElementById('read-question').textContent=q.question;
   document.getElementById('read-explanation').style.display='none';
   document.getElementById('read-next').style.display='none';
-
-  const optsEl=document.getElementById('read-options');
-  optsEl.innerHTML='';
-  q.options.forEach((opt,i)=>{
-    const btn=document.createElement('button');
-    btn.className='opt-mcq'; btn.disabled=false;
-    btn.innerHTML=`<span style="width:20px;height:20px;border-radius:50%;border:1.5px solid var(--muted);display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0">${['A','B','C','D'][i]}</span>${opt}`;
-    btn.onclick=()=>selectReading(i);
-    optsEl.appendChild(btn);
-  });
+  const optsEl=document.getElementById('read-options'); optsEl.innerHTML='';
+  q.options.forEach((opt,i)=>{ const btn=document.createElement('button'); btn.className='opt-mcq';
+    btn.innerHTML=`<span style="width:20px;height:20px;border-radius:50%;border:1.5px solid var(--muted);display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0">${['أ','ب','ج','د'][i]}</span><span class="arabic" style="font-size:16px">${opt}</span>`;
+    btn.onclick=()=>selectReading(i); optsEl.appendChild(btn); });
 }
 
 function selectReading(i){
-  const q=testData.reading[readIdx];
-  const correct=i===q.correct;
-  if(correct) results.reading.score++;
-  results.reading.total++;
-  document.querySelectorAll('.opt-mcq').forEach((btn,idx)=>{
+  const q=testData.reading[readIdx]; const correct=i===q.correct;
+  if(correct) results.reading.score++; results.reading.total++;
+  document.querySelectorAll('#read-options .opt-mcq').forEach((btn,idx)=>{
     btn.disabled=true;
     if(idx===q.correct){btn.style.borderColor='var(--green)';btn.style.background='rgba(126,212,164,.09)';btn.style.color='var(--green)';btn.querySelector('span').textContent='✓';}
     else if(idx===i&&!correct){btn.style.borderColor='var(--red)';btn.style.background='rgba(232,126,126,.09)';btn.style.color='var(--red)';btn.querySelector('span').textContent='✗';}
     else{btn.style.borderColor='#1a1006';btn.style.color='#352010';}
   });
-  const expEl=document.getElementById('read-explanation');
-  expEl.style.display='block'; expEl.textContent='💡 '+q.explanation;
-  const nxt=document.getElementById('read-next');
-  nxt.style.display='block';
-  nxt.textContent=readIdx+1>=testData.reading.length?'Finish Reading →':'Next →';
+  document.getElementById('read-explanation').style.display='block';
+  document.getElementById('read-explanation').textContent='💡 '+q.explanation;
+  const nxt=document.getElementById('read-next'); nxt.style.display='block';
   document.getElementById('read-progress').style.width=((readIdx+1)/testData.reading.length*100)+'%';
+  nxt.textContent=readIdx+1>=testData.reading.length?'Finish Reading →':'Next →';
 }
 
-function nextReading(){
-  readIdx++;
-  if(readIdx>=testData.reading.length){ showSectionIntro('listening'); return; }
-  renderReading();
-}
+function nextReading(){ readIdx++; if(readIdx>=testData.reading.length){ stopTimer(); showNextSection(); return; } renderReading(); }
+function forceFinishReading(){ showNextSection(); }
 
 // ══ LISTENING ═════════════════════════════════════════════════════════════════
 function renderListening(){
-  const q=testData.listening[listIdx];
-  if(!q) return;
-  scriptShown=false;
-  document.getElementById('list-script').style.display='none';
+  const q=testData.listening[listIdx]; if(!q) return;
+  scriptShown=false; playCount=0;
   document.getElementById('list-script').textContent=q.script;
+  document.getElementById('list-script').style.display='none';
   document.getElementById('script-btn').textContent='Show Text';
-  document.getElementById('audio-status').textContent='Tap Play to hear the Arabic audio';
-  document.getElementById('play-btn').textContent='▶ Play Audio';
-  const pct=(listIdx/testData.listening.length)*100;
-  document.getElementById('list-progress').style.width=pct+'%';
+  document.getElementById('audio-status').textContent='Tap Play to hear Arabic audio (max 2x)';
+  document.getElementById('play-btn').textContent='▶ Play (1/2)';
+  document.getElementById('play-btn').disabled=false;
+  document.getElementById('play-btn').style.opacity='1';
+  document.getElementById('list-progress').style.width=(listIdx/testData.listening.length*100)+'%';
   document.getElementById('list-counter').textContent=(listIdx+1)+'/'+testData.listening.length;
   document.getElementById('list-question').textContent=q.question;
   document.getElementById('list-explanation').style.display='none';
   document.getElementById('list-next').style.display='none';
-
-  const optsEl=document.getElementById('list-options');
-  optsEl.innerHTML='';
-  q.options.forEach((opt,i)=>{
-    const btn=document.createElement('button');
-    btn.className='opt-mcq';
-    btn.innerHTML=`<span style="width:20px;height:20px;border-radius:50%;border:1.5px solid var(--muted);display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0">${['A','B','C','D'][i]}</span>${opt}`;
-    btn.onclick=()=>selectListening(i);
-    optsEl.appendChild(btn);
-  });
+  const optsEl=document.getElementById('list-options'); optsEl.innerHTML='';
+  q.options.forEach((opt,i)=>{ const btn=document.createElement('button'); btn.className='opt-mcq';
+    btn.innerHTML=`<span style="width:20px;height:20px;border-radius:50%;border:1.5px solid var(--muted);display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0">${['أ','ب','ج','د'][i]}</span><span class="arabic" style="font-size:16px">${opt}</span>`;
+    btn.onclick=()=>selectListening(i); optsEl.appendChild(btn); });
 }
 
 function playAudio(){
-  const q=testData.listening[listIdx];
-  if(!q) return;
-  if(currentUtterance){ speechSynthesis.cancel(); }
+  const q=testData.listening[listIdx]; if(!q) return;
+  if(playCount>=maxPlays){ notif('Maksimal 2x play per soal.',2500); return; }
+  if(currentUtterance) speechSynthesis.cancel();
+  playCount++;
   const utter=new SpeechSynthesisUtterance(q.script);
-  utter.lang='ar-SA'; utter.rate=0.85; utter.pitch=1;
+  utter.lang='ar-SA'; utter.rate=0.85;
   const voices=speechSynthesis.getVoices();
   const arVoice=voices.find(v=>v.lang.startsWith('ar'));
   if(arVoice) utter.voice=arVoice;
-  utter.onstart=()=>{ document.getElementById('audio-status').textContent='🔊 Playing...'; document.getElementById('play-btn').textContent='⏹ Stop'; };
-  utter.onend=()=>{ document.getElementById('audio-status').textContent='Done. You can play again.'; document.getElementById('play-btn').textContent='▶ Play Again'; };
-  currentUtterance=utter;
-  speechSynthesis.speak(utter);
+  utter.onstart=()=>{
+    document.getElementById('audio-status').textContent='🔊 Playing... ('+playCount+'/'+maxPlays+')';
+    document.getElementById('play-btn').textContent='🔊 Playing...';
+    document.getElementById('play-btn').disabled=true;
+    document.getElementById('play-btn').style.opacity='0.6';
+  };
+  utter.onend=()=>{
+    document.getElementById('play-btn').disabled=false;
+    document.getElementById('play-btn').style.opacity='1';
+    if(playCount>=maxPlays){
+      document.getElementById('audio-status').textContent='✅ Batas play tercapai (2/2)';
+      document.getElementById('play-btn').textContent='🚫 Max reached';
+      document.getElementById('play-btn').disabled=true;
+      document.getElementById('play-btn').style.opacity='0.4';
+    } else {
+      document.getElementById('audio-status').textContent='Done. Sisa '+(maxPlays-playCount)+'x play lagi.';
+      document.getElementById('play-btn').textContent='▶ Play Again ('+(playCount+1)+'/'+maxPlays+')';
+    }
+  };
+  currentUtterance=utter; speechSynthesis.speak(utter);
 }
 
-function toggleScript(){
-  scriptShown=!scriptShown;
-  document.getElementById('list-script').style.display=scriptShown?'block':'none';
-  document.getElementById('script-btn').textContent=scriptShown?'Hide Text':'Show Text';
-}
+function toggleScript(){ scriptShown=!scriptShown; document.getElementById('list-script').style.display=scriptShown?'block':'none'; document.getElementById('script-btn').textContent=scriptShown?'Hide Text':'Show Text'; }
 
 function selectListening(i){
-  const q=testData.listening[listIdx];
-  const correct=i===q.correct;
-  if(correct) results.listening.score++;
-  results.listening.total++;
+  const q=testData.listening[listIdx]; const correct=i===q.correct;
+  if(correct) results.listening.score++; results.listening.total++;
   speechSynthesis.cancel();
   document.querySelectorAll('#list-options .opt-mcq').forEach((btn,idx)=>{
     btn.disabled=true;
@@ -578,42 +801,61 @@ function selectListening(i){
     else if(idx===i&&!correct){btn.style.borderColor='var(--red)';btn.style.background='rgba(232,126,126,.09)';btn.style.color='var(--red)';btn.querySelector('span').textContent='✗';}
     else{btn.style.borderColor='#1a1006';btn.style.color='#352010';}
   });
-  const expEl=document.getElementById('list-explanation');
-  expEl.style.display='block'; expEl.textContent='💡 '+q.explanation;
-  const nxt=document.getElementById('list-next');
-  nxt.style.display='block';
-  nxt.textContent=listIdx+1>=testData.listening.length?'Finish Listening →':'Next →';
+  document.getElementById('list-explanation').style.display='block';
+  document.getElementById('list-explanation').textContent='💡 '+q.explanation;
+  const nxt=document.getElementById('list-next'); nxt.style.display='block';
   document.getElementById('list-progress').style.width=((listIdx+1)/testData.listening.length*100)+'%';
+  nxt.textContent=listIdx+1>=testData.listening.length?'Finish Listening →':'Next →';
 }
 
-function nextListening(){
-  listIdx++;
-  if(listIdx>=testData.listening.length){ showSectionIntro('speaking'); return; }
-  renderListening();
-}
+function nextListening(){ listIdx++; if(listIdx>=testData.listening.length){ stopTimer(); showNextSection(); return; } renderListening(); }
+function forceFinishListening(){ showNextSection(); }
 
 // ══ SPEAKING ══════════════════════════════════════════════════════════════════
+const STAGE_LABELS={ introduction:'👤 Perkenalan', thematic:'🎨 Tematik', opinion:'💭 Opini' };
+const STAGE_COLORS={ introduction:'var(--blue)', thematic:'var(--amber)', opinion:'var(--green)' };
+
 function renderSpeak(){
-  const q=testData.speaking[speakIdx];
-  if(!q) return;
-  stopRec();
-  currentTranscript='';
+  const q=testData.speaking[speakIdx]; if(!q) return;
+  stopRec(); currentTranscript='';
   document.getElementById('speak-typed').value='';
   document.getElementById('speak-transcript').textContent='';
   document.getElementById('speak-transcript-box').style.display='none';
   document.getElementById('speak-eval').style.display='none';
-  document.getElementById('speak-eval').innerHTML='';
-  document.getElementById('speak-next').style.display='none';
-  document.getElementById('speak-submit').style.display='block';
-  document.getElementById('speak-submit').disabled=true;
+  document.getElementById('speak-next-section').style.display='none';
+  document.getElementById('speak-save').style.display='block';
+  document.getElementById('speak-save').disabled=true;
+  document.getElementById('speak-submit-all').style.display='none';
   document.getElementById('speak-proc-msg').style.display='none';
-  const pct=(speakIdx/testData.speaking.length)*100;
-  document.getElementById('speak-progress').style.width=pct+'%';
+
+  document.getElementById('speak-progress').style.width=(speakIdx/testData.speaking.length*100)+'%';
   document.getElementById('speak-counter').textContent=(speakIdx+1)+'/'+testData.speaking.length;
   document.getElementById('speak-ar').textContent=q.ar;
-  document.getElementById('speak-en').textContent=q.en;
+  document.getElementById('speak-en').textContent='📌 '+q.en;
   document.getElementById('speak-hint').textContent='💡 '+q.hint;
+
+  // Update stage indicators
+  const stages=['introduction','thematic','opinion'];
+  stages.forEach((s,i)=>{
+    const el=document.getElementById('stage-'+s);
+    if(i<speakIdx){ el.style.background='rgba(126,212,164,.12)'; el.style.color='var(--green)'; el.style.border='1px solid rgba(126,212,164,.3)'; }
+    else if(i===speakIdx){ el.style.background='rgba(212,175,55,.12)'; el.style.color='var(--gold)'; el.style.border='1px solid rgba(212,175,55,.3)'; }
+    else{ el.style.background='rgba(255,255,255,.02)'; el.style.color='var(--muted)'; el.style.border='1px solid var(--border)'; }
+  });
+
+  // Show answers preview if any saved
+  updateAnswersPreview();
   setSpeakMode(speakMode);
+}
+
+function updateAnswersPreview(){
+  if(speakAnswers.length===0){ document.getElementById('speak-answers-preview').style.display='none'; return; }
+  document.getElementById('speak-answers-preview').style.display='block';
+  document.getElementById('speak-answers-list').innerHTML=speakAnswers.map((a,i)=>`
+    <div style="padding:9px 12px;border-radius:9px;border:1px solid rgba(126,212,164,.2);background:rgba(126,212,164,.04);margin-bottom:7px">
+      <div style="color:var(--green);font-size:10px;margin-bottom:4px">${STAGE_LABELS[testData.speaking[i].stage]||'Q'+(i+1)}</div>
+      <div class="arabic" style="font-size:14px;color:#c8e8b0;line-height:1.6;direction:rtl">${a.slice(0,120)}${a.length>120?'...':''}</div>
+    </div>`).join('');
 }
 
 function setSpeakMode(m){
@@ -623,33 +865,107 @@ function setSpeakMode(m){
   document.getElementById('btn-voice').classList.toggle('active',m==='voice');
   document.getElementById('btn-type').classList.toggle('active',m==='type');
   if(m==='type'&&isRec) stopRec();
-  updateSpeakSubmit();
+  updateSpeakSave();
 }
 
-function updateSpeakSubmit(){
+function updateSpeakSave(){
   const ans=speakMode==='voice'?currentTranscript:document.getElementById('speak-typed').value;
-  document.getElementById('speak-submit').disabled=!ans.trim();
+  document.getElementById('speak-save').disabled=!ans.trim();
 }
 
-document.addEventListener('DOMContentLoaded',()=>{
-  checkSavedKey();
-  document.getElementById('speak-typed').addEventListener('input',updateSpeakSubmit);
-  document.getElementById('write-answer').addEventListener('input',()=>{
-    const v=document.getElementById('write-answer').value;
-    const wc=v.trim()?v.trim().split(/\s+/).length:0;
-    document.getElementById('write-wordcount').textContent=wc+' words';
-    const q=testData.writing[writeIdx];
-    document.getElementById('write-submit').disabled=wc<(q?Math.floor(q.min_words/2):10);
-  });
-  speechSynthesis.getVoices();
-});
+function setRecogLang(lang){
+  recogLang=lang;
+  document.querySelectorAll('#lang-btns .btn-outline').forEach(b=>b.classList.toggle('active',b.dataset.lang===lang));
+  if(isRec) stopRec();
+}
+
+function saveSpeak(){
+  const ans=(speakMode==='voice'?currentTranscript:document.getElementById('speak-typed').value).trim();
+  if(!ans) return;
+  if(isRec) stopRec();
+  speakAnswers[speakIdx]=ans;
+  speakIdx++;
+  document.getElementById('speak-progress').style.width=(speakIdx/testData.speaking.length*100)+'%';
+
+  if(speakIdx>=testData.speaking.length){
+    // All 3 answered — show submit all button
+    document.getElementById('speak-save').style.display='none';
+    document.getElementById('speak-submit-all').style.display='block';
+    updateAnswersPreview();
+    // Hide question display
+    document.getElementById('speak-ar').textContent='تم حفظ جميع إجاباتك ✅';
+    document.getElementById('speak-en').textContent='📌 All answers saved. Submit for AI evaluation.';
+    document.getElementById('speak-hint').textContent='';
+    document.getElementById('speak-voice-panel').style.display='none';
+    document.getElementById('speak-type-panel').style.display='none';
+    ['introduction','thematic','opinion'].forEach(s=>{ const el=document.getElementById('stage-'+s); el.style.background='rgba(126,212,164,.12)'; el.style.color='var(--green)'; el.style.border='1px solid rgba(126,212,164,.3)'; });
+  } else {
+    renderSpeak();
+  }
+}
+
+async function submitSpeakAll(){
+  document.getElementById('speak-submit-all').disabled=true;
+  document.getElementById('speak-submit-all').innerHTML='<span class="spin">⚙️</span> Evaluating all answers...';
+  document.getElementById('speak-proc-msg').style.display='block';
+  try{
+    const ev=await evaluateSpeakAll();
+    results.speaking=speakAnswers.map((ans,i)=>({ q:testData.speaking[i], transcript:ans, evaluation:ev }));
+    renderSpeakEval(ev);
+    document.getElementById('speak-submit-all').style.display='none';
+    document.getElementById('speak-proc-msg').style.display='none';
+    document.getElementById('speak-eval').style.display='block';
+    document.getElementById('speak-next-section').style.display='block';
+    stopTimer();
+  }catch(e){ console.error(e); notif('Evaluation failed: '+e.message,4000); document.getElementById('speak-submit-all').disabled=false; document.getElementById('speak-submit-all').textContent='Submit Semua untuk Evaluasi AI →'; document.getElementById('speak-proc-msg').style.display='none'; }
+}
+
+async function evaluateSpeakAll(){
+  const sys=`You are an expert Arabic speaking examiner. Evaluate 3 speaking responses together. Respond ONLY with valid JSON, no markdown.`;
+  const answersText=speakAnswers.map((ans,i)=>`Q${i+1} (${testData.speaking[i].stage}): ${testData.speaking[i].ar}\nAnswer: "${ans}"`).join('\n\n');
+  const usr=`Evaluate these 3 Arabic speaking responses holistically:
+${answersText}
+
+Return JSON:
+{
+  "fluency":{"score":0-10,"comment":"brief"},
+  "grammar":{"score":0-10,"comment":"brief","errors":["err"]},
+  "vocabulary":{"score":0-10,"comment":"brief","highlights":["good"]},
+  "relevance":{"score":0-10,"comment":"brief"},
+  "progression":"comment on how answers improved from introduction to opinion",
+  "overall":{"score":0-10,"cefr_estimate":"A1/A2/B1/B2/C1/C2","summary":"2-3 sentences","tips":["tip1","tip2","tip3"]},
+  "arabic_fb":"1-2 sentences of encouraging feedback in Arabic"
+}`;
+  return await groq(sys, usr);
+}
+
+function renderSpeakEval(ev){
+  const dims=[{k:'fluency',l:'Fluency',i:'🌊',c:'#7eb8e8'},{k:'grammar',l:'Grammar',i:'📐',c:'#b87ee8'},{k:'vocabulary',l:'Vocabulary',i:'📚',c:'#7ed4a4'},{k:'relevance',l:'Relevance',i:'🎯',c:'#e8c87e'}];
+  document.getElementById('speak-eval').innerHTML=`
+    <div style="text-align:center;padding:16px;background:rgba(126,212,164,.06);border:1px solid rgba(126,212,164,.18);border-radius:12px;margin-bottom:12px">
+      ${ev.arabic_fb?`<div class="arabic" style="font-size:17px;color:#e8d070;margin-bottom:10px;line-height:1.7">${ev.arabic_fb}</div>`:''}
+      <div style="display:flex;align-items:center;justify-content:center;gap:10px">
+        <div style="font-size:44px;font-family:'Playfair Display',serif;color:${scoreColor(ev.overall.score)};line-height:1">${ev.overall.score}</div>
+        <div><div style="color:${scoreColor(ev.overall.score)};font-size:15px;font-weight:600">${ev.overall.cefr_estimate}</div><div class="muted" style="font-size:11px">CEFR Estimate</div></div>
+      </div>
+      <p style="font-size:12px;line-height:1.6;margin-top:8px">${ev.overall.summary}</p>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:11px">
+      ${dims.map(d=>{const dim=ev[d.k]||{};return`<div class="dim-card" style="border:1px solid ${d.c}22"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px"><span style="color:${d.c};font-size:12px">${d.i} ${d.l}</span><span style="color:${d.c};font-family:'Playfair Display',serif;font-size:17px">${dim.score||0}</span></div><div class="score-bar"><div class="score-fill" style="width:${(dim.score||0)*10}%;background:${d.c}"></div></div><p class="muted" style="font-size:11px;margin:0;line-height:1.4">${dim.comment||''}</p>${(dim.errors||[]).map(e=>`<div style="font-size:10px;color:var(--red);margin-top:2px">⚠ ${e}</div>`).join('')}${(dim.highlights||[]).map(h=>`<div style="font-size:10px;color:var(--green);margin-top:2px">✓ ${h}</div>`).join('')}</div>`;}).join('')}
+    </div>
+    ${ev.progression?`<div style="padding:10px 13px;background:rgba(212,175,55,.04);border:1px solid rgba(212,175,55,.15);border-radius:9px;margin-bottom:10px"><div style="color:var(--gold);font-size:10px;letter-spacing:1px;margin-bottom:5px">📈 PROGRESSION</div><div class="muted" style="font-size:12px;line-height:1.5">${ev.progression}</div></div>`:''}
+    ${ev.overall.tips?.length?`<div style="padding:10px 13px;background:rgba(212,175,55,.04);border:1px solid rgba(212,175,55,.13);border-radius:9px"><div style="color:var(--gold);font-size:10px;letter-spacing:1px;margin-bottom:6px">🚀 TIPS</div>${ev.overall.tips.map(t=>`<div class="muted" style="font-size:12px;line-height:1.5;margin-bottom:3px">· ${t}</div>`).join('')}</div>`:''}
+  `;
+}
+
+function finishSpeaking(){ stopTimer(); showNextSection(); }
+function forceFinishSpeaking(){ if(speakAnswers.length>0 && speakAnswers.length<3){ while(speakAnswers.length<3) speakAnswers.push('[No answer — time ran out]'); } showNextSection(); }
 
 function toggleRec(){ isRec?stopRec():startRec(); }
-
 function startRec(){
   const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
-  if(!SR){ notif('Speech recognition not supported. Use typing mode.',4000); setSpeakMode('type'); return; }
-  recognition=new SR(); recognition.lang='ar'; recognition.continuous=false; recognition.interimResults=true;
+  if(!SR){ notif('Speech recognition not supported. Use typing.',4000); setSpeakMode('type'); return; }
+  recognition=new SR(); recognition.lang=recogLang; recognition.continuous=false; recognition.interimResults=true;
   recognition.onresult=(e)=>{
     let f='',interim='';
     for(let i=e.resultIndex;i<e.results.length;i++){
@@ -658,299 +974,263 @@ function startRec(){
     }
     if(f) currentTranscript+=f;
     const disp=(currentTranscript+interim).trim();
-    if(disp){ document.getElementById('speak-transcript').textContent=disp; document.getElementById('speak-transcript-box').style.display='block'; updateSpeakSubmit(); }
+    if(disp){ document.getElementById('speak-transcript').textContent=disp; document.getElementById('speak-transcript-box').style.display='block'; updateSpeakSave(); }
   };
-  recognition.onerror=(e)=>{ if(e.error!=='no-speech'){ notif('Mic error: '+e.error+'. Try typing.',4000); stopRec(); } };
+  recognition.onerror=(e)=>{ if(e.error!=='no-speech'){ notif('Mic: '+e.error+'. Try typing.',4000); stopRec(); } };
   recognition.onend=()=>{ if(isRec){ try{recognition.start();}catch(e){stopRec();} } };
   recognition.start(); isRec=true;
   const btn=document.getElementById('mic-btn');
-  btn.style.borderColor='var(--green)'; btn.style.background='rgba(126,212,164,.15)'; btn.textContent='⏹️'; btn.classList.add('pulse');
+  btn.style.borderColor='var(--red)'; btn.style.background='rgba(232,126,126,.12)'; btn.textContent='⏹️'; btn.classList.add('pulse-anim');
   document.getElementById('rpl1').style.display='block'; document.getElementById('rpl2').style.display='block';
   document.getElementById('speak-rec-status').textContent='🔴 Recording... tap ⏹️ to stop';
   startViz();
 }
-
 function stopRec(){
-  if(!isRec&&!recognition) return;
-  isRec=false;
+  if(!isRec&&!recognition) return; isRec=false;
   if(recognition){ recognition.onend=null; recognition.onresult=null; recognition.onerror=null; try{recognition.stop();}catch(e){} recognition=null; }
   stopViz();
   const btn=document.getElementById('mic-btn');
-  btn.style.borderColor='var(--green)'; btn.style.background='rgba(126,212,164,.08)'; btn.textContent='🎙️'; btn.classList.remove('pulse');
+  btn.style.borderColor='var(--green)'; btn.style.background='rgba(126,212,164,.08)'; btn.textContent='🎙️'; btn.classList.remove('pulse-anim');
   document.getElementById('rpl1').style.display='none'; document.getElementById('rpl2').style.display='none';
   document.getElementById('speak-rec-status').textContent='Tap 🎙️ to record';
   if(currentTranscript.trim()){ document.getElementById('speak-transcript').textContent=currentTranscript.trim(); document.getElementById('speak-transcript-box').style.display='block'; }
-  updateSpeakSubmit();
+  updateSpeakSave();
 }
-
-function clearSpeak(){ currentTranscript=''; document.getElementById('speak-transcript').textContent=''; document.getElementById('speak-transcript-box').style.display='none'; updateSpeakSubmit(); }
-
+function clearSpeak(){ currentTranscript=''; document.getElementById('speak-transcript').textContent=''; document.getElementById('speak-transcript-box').style.display='none'; updateSpeakSave(); }
 async function startViz(){
   try{
-    micStream=await navigator.mediaDevices.getUserMedia({audio:true});
-    audioCtx=new(window.AudioContext||window.webkitAudioContext)();
-    analyser=audioCtx.createAnalyser(); analyser.fftSize=128;
-    audioCtx.createMediaStreamSource(micStream).connect(analyser);
+    micStream2=await navigator.mediaDevices.getUserMedia({audio:true});
+    audioCtx2=new(window.AudioContext||window.webkitAudioContext)();
+    analyser2=audioCtx2.createAnalyser(); analyser2.fftSize=128;
+    audioCtx2.createMediaStreamSource(micStream2).connect(analyser2);
     const barsEl=document.getElementById('speak-bars'); barsEl.innerHTML=''; barsEl.style.display='flex';
-    const barEls=Array.from({length:18}).map((_,i)=>{ const b=document.createElement('div'); b.style.cssText=`width:4px;border-radius:2px;opacity:.8;transition:height .07s;background:hsl(${120+i*4},60%,55%)`; barsEl.appendChild(b); return b; });
-    const data=new Uint8Array(analyser.frequencyBinCount);
-    const loop=()=>{ if(!isRec) return; analyser.getByteFrequencyData(data); barEls.forEach((b,i)=>{ b.style.height=Math.max(6,Math.min(100,(data[i*3]||0)*.9))+'%'; }); rafId=requestAnimationFrame(loop); };
+    const barEls=Array.from({length:16}).map((_,i)=>{ const b=document.createElement('div'); b.style.cssText=`width:4px;border-radius:2px;opacity:.8;transition:height .07s;background:hsl(${120+i*5},60%,55%)`; barsEl.appendChild(b); return b; });
+    const data=new Uint8Array(analyser2.frequencyBinCount);
+    const loop=()=>{ if(!isRec) return; analyser2.getByteFrequencyData(data); barEls.forEach((b,i)=>{ b.style.height=Math.max(6,Math.min(100,(data[i*3]||0)*.9))+'%'; }); rafId2=requestAnimationFrame(loop); };
     loop();
-  }catch(e){ console.log('Viz error:',e); }
+  }catch(e){}
 }
-
-function stopViz(){ cancelAnimationFrame(rafId); micStream?.getTracks().forEach(t=>t.stop()); try{audioCtx?.close();}catch(e){} audioCtx=null; analyser=null; micStream=null; document.getElementById('speak-bars').style.display='none'; }
-
-async function submitSpeak(){
-  const ans=speakMode==='voice'?currentTranscript:document.getElementById('speak-typed').value;
-  if(!ans.trim()) return;
-  if(isRec) stopRec();
-  document.getElementById('speak-submit').disabled=true;
-  document.getElementById('speak-submit').innerHTML='<span class="spin">⚙️</span> Evaluating...';
-  document.getElementById('speak-proc-msg').style.display='block';
-  try{
-    const q=testData.speaking[speakIdx];
-    const ev=await evaluateSpeak(q,ans);
-    results.speaking.push({q,transcript:ans,evaluation:ev});
-    renderSpeakEval(ev);
-    document.getElementById('speak-submit').style.display='none';
-    document.getElementById('speak-proc-msg').style.display='none';
-    document.getElementById('speak-eval').style.display='block';
-    document.getElementById('speak-next').style.display='block';
-    document.getElementById('speak-next').textContent=speakIdx+1>=testData.speaking.length?'Finish Speaking →':'Next →';
-    document.getElementById('speak-progress').style.width=((speakIdx+1)/testData.speaking.length*100)+'%';
-  }catch(e){ console.error(e); notif('Evaluation failed: '+e.message,4000); document.getElementById('speak-submit').disabled=false; document.getElementById('speak-submit').textContent='Submit for AI Evaluation →'; document.getElementById('speak-proc-msg').style.display='none'; }
-}
-
-async function evaluateSpeak(question, transcript){
-  const sys=`You are an expert Arabic language examiner. Evaluate the student's spoken Arabic response. Respond ONLY with valid JSON, no markdown.`;
-  const usr=`Question: ${question.ar} (${question.en})
-Student response: "${transcript}"
-
-Return JSON:
-{
-  "fluency":{"score":0-10,"comment":"brief"},
-  "grammar":{"score":0-10,"comment":"brief","errors":["err1"]},
-  "vocabulary":{"score":0-10,"comment":"brief","highlights":["good word"]},
-  "relevance":{"score":0-10,"comment":"brief"},
-  "overall":{"score":0-10,"cefr_estimate":"A1/A2/B1/B2/C1/C2","summary":"2-3 sentences","tips":["tip1","tip2"]},
-  "corrected":"improved Arabic version",
-  "arabic_fb":"1 sentence encouraging feedback in Arabic"
-}`;
-  return await groq(sys, usr);
-}
-
-function renderSpeakEval(ev){
-  const dims=[{k:'fluency',l:'Fluency',i:'🌊',c:'#7eb8e8'},{k:'grammar',l:'Grammar',i:'📐',c:'#b87ee8'},{k:'vocabulary',l:'Vocabulary',i:'📚',c:'#7ed4a4'},{k:'relevance',l:'Relevance',i:'🎯',c:'#e8c87e'}];
-  document.getElementById('speak-eval').innerHTML=`
-    <div style="text-align:center;padding:16px;background:rgba(126,212,164,.06);border:1px solid rgba(126,212,164,.18);border-radius:12px;margin-bottom:14px">
-      ${ev.arabic_fb?`<div class="arabic" style="font-size:17px;color:#e8d070;margin-bottom:10px">${ev.arabic_fb}</div>`:''}
-      <div style="display:flex;align-items:center;justify-content:center;gap:10px">
-        <div style="font-size:44px;font-family:'Playfair Display',serif;color:${scoreColor(ev.overall.score)};line-height:1">${ev.overall.score}</div>
-        <div style="text-align:left"><div style="color:${scoreColor(ev.overall.score)};font-size:14px;font-weight:600">${ev.overall.cefr_estimate}</div><div class="muted" style="font-size:11px">CEFR Estimate</div></div>
-      </div>
-      <p style="font-size:12px;line-height:1.6;margin-top:8px;color:var(--body)">${ev.overall.summary}</p>
-    </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
-      ${dims.map(d=>{const dim=ev[d.k]||{};return`<div class="dim-card" style="border:1px solid ${d.c}22"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px"><span style="color:${d.c};font-size:12px">${d.i} ${d.l}</span><span style="color:${d.c};font-family:'Playfair Display',serif;font-size:18px">${dim.score||0}</span></div><div class="score-bar"><div class="score-fill" style="width:${(dim.score||0)*10}%;background:${d.c}"></div></div><p class="muted" style="font-size:11px;margin:0;line-height:1.4">${dim.comment||''}</p>${(dim.errors||[]).map(e=>`<div style="font-size:10px;color:var(--red);margin-top:3px">⚠ ${e}</div>`).join('')}${(dim.highlights||[]).map(h=>`<div style="font-size:10px;color:var(--green);margin-top:3px">✓ ${h}</div>`).join('')}</div>`;}).join('')}
-    </div>
-    ${ev.corrected?`<div style="padding:11px 14px;background:rgba(126,212,164,.05);border:1px solid rgba(126,212,164,.18);border-radius:9px;margin-bottom:10px"><div style="color:var(--green);font-size:10px;letter-spacing:1px;margin-bottom:6px">✍️ SUGGESTED VERSION</div><div class="arabic" style="color:#a0e8c0;font-size:16px;line-height:1.7">${ev.corrected}</div></div>`:''}
-    ${ev.overall.tips?.length?`<div style="padding:11px 14px;background:rgba(212,175,55,.04);border:1px solid rgba(212,175,55,.13);border-radius:9px"><div style="color:var(--gold);font-size:10px;letter-spacing:1px;margin-bottom:7px">🚀 TIPS</div>${ev.overall.tips.map(t=>`<div class="muted" style="font-size:12px;line-height:1.5;margin-bottom:4px">· ${t}</div>`).join('')}</div>`:''}
-  `;
-}
-
-function nextSpeak(){
-  speakIdx++;
-  if(speakIdx>=testData.speaking.length){ showSectionIntro('writing'); return; }
-  renderSpeak();
-}
+function stopViz(){ cancelAnimationFrame(rafId2); micStream2?.getTracks().forEach(t=>t.stop()); try{audioCtx2?.close();}catch(e){} audioCtx2=null; analyser2=null; micStream2=null; document.getElementById('speak-bars').style.display='none'; }
 
 // ══ WRITING ═══════════════════════════════════════════════════════════════════
 function renderWrite(){
-  const q=testData.writing[writeIdx];
-  if(!q) return;
+  const q=testData.writing[writeIdx]; if(!q) return;
   document.getElementById('write-answer').value='';
-  document.getElementById('write-eval').style.display='none';
-  document.getElementById('write-eval').innerHTML='';
+  document.getElementById('write-eval').style.display='none'; document.getElementById('write-eval').innerHTML='';
   document.getElementById('write-next').style.display='none';
-  document.getElementById('write-submit').style.display='block';
-  document.getElementById('write-submit').disabled=true;
+  document.getElementById('write-submit').style.display='block'; document.getElementById('write-submit').disabled=true;
   document.getElementById('write-proc-msg').style.display='none';
   document.getElementById('write-wordcount').textContent='0 words';
-  const pct=(writeIdx/testData.writing.length)*100;
-  document.getElementById('write-progress').style.width=pct+'%';
+  document.getElementById('write-progress').style.width=(writeIdx/testData.writing.length*100)+'%';
   document.getElementById('write-counter').textContent=(writeIdx+1)+'/'+testData.writing.length;
   document.getElementById('write-ar').textContent=q.ar;
-  document.getElementById('write-en').textContent=q.en;
+  document.getElementById('write-en').textContent='📌 '+q.en;
   document.getElementById('write-hint').textContent='💡 '+q.hint;
   document.getElementById('write-hint-min').textContent='Min. ~'+q.min_words+' words';
 }
 
 async function submitWrite(){
-  const ans=document.getElementById('write-answer').value.trim();
-  if(!ans) return;
+  const ans=document.getElementById('write-answer').value.trim(); if(!ans) return;
   document.getElementById('write-submit').disabled=true;
   document.getElementById('write-submit').innerHTML='<span class="spin">⚙️</span> Evaluating...';
   document.getElementById('write-proc-msg').style.display='block';
   try{
     const q=testData.writing[writeIdx];
-    const ev=await evaluateWrite(q,ans);
+    const ev=await groq(
+      'You are an Arabic writing examiner. Respond ONLY with valid JSON, no markdown.',
+      `Task: ${q.ar} (${q.en})\nStudent answer: "${ans}"\nReturn JSON:{"task_achievement":{"score":0-10,"comment":""},"coherence":{"score":0-10,"comment":""},"grammar":{"score":0-10,"comment":"","errors":[]},"vocabulary":{"score":0-10,"comment":"","highlights":[]},"overall":{"score":0-10,"cefr_estimate":"A1/A2/B1/B2/C1/C2","summary":"2-3 sentences","tips":["tip1","tip2"]},"arabic_fb":"1 sentence feedback in Arabic"}`
+    );
     results.writing.push({q,answer:ans,evaluation:ev});
     renderWriteEval(ev);
     document.getElementById('write-submit').style.display='none';
     document.getElementById('write-proc-msg').style.display='none';
     document.getElementById('write-eval').style.display='block';
     document.getElementById('write-next').style.display='block';
-    document.getElementById('write-next').textContent=writeIdx+1>=testData.writing.length?'Finish Writing →':'Next →';
     document.getElementById('write-progress').style.width=((writeIdx+1)/testData.writing.length*100)+'%';
-  }catch(e){ console.error(e); notif('Evaluation failed: '+e.message,4000); document.getElementById('write-submit').disabled=false; document.getElementById('write-submit').textContent='Submit for AI Evaluation →'; document.getElementById('write-proc-msg').style.display='none'; }
-}
-
-async function evaluateWrite(question, answer){
-  const sys=`You are an expert Arabic writing examiner. Evaluate the student's Arabic writing. Respond ONLY with valid JSON, no markdown.`;
-  const usr=`Task: ${question.ar} (${question.en})
-Student's answer: "${answer}"
-
-Return JSON:
-{
-  "task_achievement":{"score":0-10,"comment":"brief"},
-  "coherence":{"score":0-10,"comment":"brief"},
-  "grammar":{"score":0-10,"comment":"brief","errors":["err1"]},
-  "vocabulary":{"score":0-10,"comment":"brief","highlights":["good word/phrase"]},
-  "overall":{"score":0-10,"cefr_estimate":"A1/A2/B1/B2/C1/C2","summary":"2-3 sentences","tips":["tip1","tip2"]},
-  "improved_version":"A brief improved version of 1-2 sentences from their text",
-  "arabic_fb":"1 sentence encouraging feedback in Arabic"
-}`;
-  return await groq(sys, usr);
+    document.getElementById('write-next').textContent=writeIdx+1>=testData.writing.length?'Finish Writing →':'Next →';
+  }catch(e){ console.error(e); notif('Eval failed: '+e.message,4000); document.getElementById('write-submit').disabled=false; document.getElementById('write-submit').textContent='Submit →'; document.getElementById('write-proc-msg').style.display='none'; }
 }
 
 function renderWriteEval(ev){
-  const dims=[{k:'task_achievement',l:'Task Achievement',i:'🎯',c:'#e8c87e'},{k:'coherence',l:'Coherence',i:'🔗',c:'#7eb8e8'},{k:'grammar',l:'Grammar',i:'📐',c:'#b87ee8'},{k:'vocabulary',l:'Vocabulary',i:'📚',c:'#7ed4a4'}];
+  const dims=[{k:'task_achievement',l:'Task',i:'🎯',c:'#e8c87e'},{k:'coherence',l:'Coherence',i:'🔗',c:'#7eb8e8'},{k:'grammar',l:'Grammar',i:'📐',c:'#b87ee8'},{k:'vocabulary',l:'Vocab',i:'📚',c:'#7ed4a4'}];
   document.getElementById('write-eval').innerHTML=`
-    <div style="text-align:center;padding:16px;background:rgba(184,126,232,.06);border:1px solid rgba(184,126,232,.18);border-radius:12px;margin-bottom:14px">
-      ${ev.arabic_fb?`<div class="arabic" style="font-size:17px;color:#e8d070;margin-bottom:10px">${ev.arabic_fb}</div>`:''}
+    <div style="text-align:center;padding:14px;background:rgba(184,126,232,.06);border:1px solid rgba(184,126,232,.18);border-radius:12px;margin-bottom:11px">
+      ${ev.arabic_fb?`<div class="arabic" style="font-size:16px;color:#e8d070;margin-bottom:9px;line-height:1.7">${ev.arabic_fb}</div>`:''}
       <div style="display:flex;align-items:center;justify-content:center;gap:10px">
-        <div style="font-size:44px;font-family:'Playfair Display',serif;color:${scoreColor(ev.overall.score)};line-height:1">${ev.overall.score}</div>
-        <div style="text-align:left"><div style="color:${scoreColor(ev.overall.score)};font-size:14px;font-weight:600">${ev.overall.cefr_estimate}</div><div class="muted" style="font-size:11px">CEFR Estimate</div></div>
+        <div style="font-size:40px;font-family:'Playfair Display',serif;color:${scoreColor(ev.overall.score)};line-height:1">${ev.overall.score}</div>
+        <div><div style="color:${scoreColor(ev.overall.score)};font-size:14px;font-weight:600">${ev.overall.cefr_estimate}</div><div class="muted" style="font-size:11px">CEFR</div></div>
       </div>
-      <p style="font-size:12px;line-height:1.6;margin-top:8px;color:var(--body)">${ev.overall.summary}</p>
+      <p style="font-size:12px;line-height:1.6;margin-top:7px">${ev.overall.summary}</p>
     </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
-      ${dims.map(d=>{const dim=ev[d.k]||{};return`<div class="dim-card" style="border:1px solid ${d.c}22"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px"><span style="color:${d.c};font-size:12px">${d.i} ${d.l}</span><span style="color:${d.c};font-family:'Playfair Display',serif;font-size:18px">${dim.score||0}</span></div><div class="score-bar"><div class="score-fill" style="width:${(dim.score||0)*10}%;background:${d.c}"></div></div><p class="muted" style="font-size:11px;margin:0;line-height:1.4">${dim.comment||''}</p>${(dim.errors||[]).map(e=>`<div style="font-size:10px;color:var(--red);margin-top:3px">⚠ ${e}</div>`).join('')}${(dim.highlights||[]).map(h=>`<div style="font-size:10px;color:var(--green);margin-top:3px">✓ ${h}</div>`).join('')}</div>`;}).join('')}
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:10px">
+      ${dims.map(d=>{const dim=ev[d.k]||{};return`<div class="dim-card" style="border:1px solid ${d.c}22"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px"><span style="color:${d.c};font-size:12px">${d.i} ${d.l}</span><span style="color:${d.c};font-family:'Playfair Display',serif;font-size:17px">${dim.score||0}</span></div><div class="score-bar"><div class="score-fill" style="width:${(dim.score||0)*10}%;background:${d.c}"></div></div><p class="muted" style="font-size:11px;margin:0;line-height:1.4">${dim.comment||''}</p>${(dim.errors||[]).map(e=>`<div style="font-size:10px;color:var(--red);margin-top:2px">⚠ ${e}</div>`).join('')}${(dim.highlights||[]).map(h=>`<div style="font-size:10px;color:var(--green);margin-top:2px">✓ ${h}</div>`).join('')}</div>`;}).join('')}
     </div>
-    ${ev.improved_version?`<div style="padding:11px 14px;background:rgba(184,126,232,.05);border:1px solid rgba(184,126,232,.18);border-radius:9px;margin-bottom:10px"><div style="color:var(--purple);font-size:10px;letter-spacing:1px;margin-bottom:6px">✍️ IMPROVED EXCERPT</div><div class="arabic" style="color:#d4b0f0;font-size:15px;line-height:1.7">${ev.improved_version}</div></div>`:''}
-    ${ev.overall.tips?.length?`<div style="padding:11px 14px;background:rgba(212,175,55,.04);border:1px solid rgba(212,175,55,.13);border-radius:9px"><div style="color:var(--gold);font-size:10px;letter-spacing:1px;margin-bottom:7px">🚀 TIPS</div>${ev.overall.tips.map(t=>`<div class="muted" style="font-size:12px;line-height:1.5;margin-bottom:4px">· ${t}</div>`).join('')}</div>`:''}
+    ${ev.overall.tips?.length?`<div style="padding:10px 13px;background:rgba(212,175,55,.04);border:1px solid rgba(212,175,55,.13);border-radius:9px"><div style="color:var(--gold);font-size:10px;letter-spacing:1px;margin-bottom:6px">🚀 TIPS</div>${ev.overall.tips.map(t=>`<div class="muted" style="font-size:12px;line-height:1.5;margin-bottom:3px">· ${t}</div>`).join('')}</div>`:''}
   `;
 }
 
-function nextWrite(){
-  writeIdx++;
-  if(writeIdx>=testData.writing.length){ renderFinalResult(); show('result'); return; }
-  renderWrite();
-}
+function nextWrite(){ writeIdx++; if(writeIdx>=testData.writing.length){ stopTimer(); showNextSection(); return; } renderWrite(); }
+function forceFinishWriting(){ showNextSection(); }
+
+// ══ UTILS ═════════════════════════════════════════════════════════════════════
+function scoreColor(n){ return n>=8?'#7ed4a4':n>=6?'#D4AF37':n>=4?'#e8b87e':'#e87e7e'; }
+function cefrFromScore(s){ return s>=9?'C2':s>=7.5?'C1':s>=6?'B2':s>=4.5?'B1':s>=3?'A2':'A1'; }
+function cefrColor(c){ return{A1:'#e87e7e',A2:'#e8a07e',B1:'#e8c87e',B2:'#D4AF37',C1:'#7ed4a4',C2:'#7eb8e8'}[c]||'#D4AF37'; }
 
 // ══ FINAL RESULT ══════════════════════════════════════════════════════════════
 function renderFinalResult(){
-  // Calculate scores per section
-  const readPct = results.reading.total ? results.reading.score/results.reading.total*10 : 0;
-  const listPct = results.listening.total ? results.listening.score/results.listening.total*10 : 0;
-  const speakAvg = results.speaking.length ? results.speaking.reduce((s,r)=>s+(r.evaluation?.overall?.score||0),0)/results.speaking.length : 0;
-  const writeAvg = results.writing.length ? results.writing.reduce((s,r)=>s+(r.evaluation?.overall?.score||0),0)/results.writing.length : 0;
-  const overall = (readPct+listPct+speakAvg+writeAvg)/4;
-  const cefr = cefrFromScore(overall);
+  const sectionScores={};
+  const sess=selectedSessions;
 
-  const cefrColors={'A1':'#e87e7e','A2':'#e8a07e','B1':'#e8c87e','B2':'#D4AF37','C1':'#7ed4a4','C2':'#7eb8e8'};
-  const cefrDescs={'A1':'Beginner','A2':'Elementary','B1':'Intermediate','B2':'Upper Intermediate','C1':'Advanced','C2':'Proficient'};
-  const c=cefrColors[cefr]||'#D4AF37';
+  if(sess.includes('reading')&&results.reading.total>0) sectionScores.reading=results.reading.score/results.reading.total*10;
+  if(sess.includes('listening')&&results.listening.total>0) sectionScores.listening=results.listening.score/results.listening.total*10;
+  if(sess.includes('speaking')&&results.speaking.length>0) sectionScores.speaking=results.speaking.reduce((s,r)=>s+(r.evaluation?.overall?.score||0),0)/results.speaking.length;
+  if(sess.includes('writing')&&results.writing.length>0) sectionScores.writing=results.writing.reduce((s,r)=>s+(r.evaluation?.overall?.score||0),0)/results.writing.length;
+
+  const vals=Object.values(sectionScores);
+  const overall=vals.length?vals.reduce((a,b)=>a+b,0)/vals.length:0;
+  const cefr=cefrFromScore(overall);
+  const c=cefrColor(cefr);
+  const cefrDescs={A1:'Beginner',A2:'Elementary',B1:'Intermediate',B2:'Upper Intermediate',C1:'Advanced',C2:'Proficient'};
 
   document.getElementById('result-hero').innerHTML=`
-    <div style="font-size:52px;margin-bottom:10px">🎓</div>
-    <div class="muted" style="font-size:10px;letter-spacing:4px;text-transform:uppercase;margin-bottom:6px">Arabic Proficiency Result</div>
-    <div style="font-size:72px;font-family:'Playfair Display',serif;color:${c};line-height:1;margin-bottom:4px">${cefr}</div>
-    <div style="font-size:18px;color:${c};font-weight:600;margin-bottom:4px">${cefrDescs[cefr]||''}</div>
-    <div class="muted" style="font-size:12px;margin-bottom:20px">Overall Score: ${overall.toFixed(1)} / 10</div>
-    <div style="height:6px;background:#1a1006;border-radius:3px;max-width:300px;margin:0 auto"><div style="height:100%;width:${overall*10}%;background:linear-gradient(90deg,${c},${c}88);border-radius:3px;transition:width 1.5s ease"></div></div>
-  `;
-
-  const sectionData=[
-    {label:'📖 Reading',score:readPct,color:'#7eb8e8',detail:`${results.reading.score}/${results.reading.total} correct`},
-    {label:'🎧 Listening',score:listPct,color:'#e8c87e',detail:`${results.listening.score}/${results.listening.total} correct`},
-    {label:'🎙️ Speaking',score:speakAvg,color:'#7ed4a4',detail:`${results.speaking.length} questions evaluated`},
-    {label:'✍️ Writing',score:writeAvg,color:'#b87ee8',detail:`${results.writing.length} tasks evaluated`},
-  ];
-
-  document.getElementById('result-sections').innerHTML=`
-    <h3 class="gold" style="font-size:16px;margin-bottom:18px">Section Breakdown</h3>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
-      ${sectionData.map(s=>`
-        <div class="dim-card" style="border:1px solid ${s.color}25">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-            <span style="color:${s.color};font-size:13px">${s.label}</span>
-            <span style="color:${s.color};font-family:'Playfair Display',serif;font-size:22px">${s.score.toFixed(1)}</span>
-          </div>
-          <div class="score-bar"><div class="score-fill" style="width:${s.score*10}%;background:${s.color}"></div></div>
-          <div style="display:flex;justify-content:space-between;margin-top:6px">
-            <span class="muted" style="font-size:10px">${s.detail}</span>
-            <span style="color:${s.color};font-size:10px;font-weight:600">${cefrFromScore(s.score)}</span>
-          </div>
-        </div>
-      `).join('')}
+    <div style="font-size:50px;margin-bottom:8px">🎓</div>
+    <div class="muted" style="font-size:10px;letter-spacing:4px;text-transform:uppercase;margin-bottom:5px">Hasil Tes · ${participant.name}</div>
+    <div style="font-size:70px;font-family:'Playfair Display',serif;color:${c};line-height:1;margin-bottom:3px">${cefr}</div>
+    <div style="font-size:17px;color:${c};font-weight:600;margin-bottom:3px">${cefrDescs[cefr]||''}</div>
+    <div class="muted" style="font-size:12px;margin-bottom:18px">Overall Score: ${overall.toFixed(1)} / 10</div>
+    <div style="height:6px;background:#1a1006;border-radius:3px;max-width:280px;margin:0 auto">
+      <div style="height:100%;width:${overall*10}%;background:linear-gradient(90deg,${c},${c}88);border-radius:3px"></div>
     </div>
   `;
 
-  // Strengths and weaknesses
-  const sorted=[...sectionData].sort((a,b)=>b.score-a.score);
+  const sInfo=[
+    {k:'reading',l:'📖 Reading',c:'#7eb8e8'},{k:'listening',l:'🎧 Listening',c:'#e8c87e'},
+    {k:'speaking',l:'🎙️ Speaking',c:'#7ed4a4'},{k:'writing',l:'✍️ Writing',c:'#b87ee8'}
+  ];
+  document.getElementById('result-sections').innerHTML=`
+    <h3 class="gold" style="font-size:15px;margin-bottom:16px">Section Breakdown</h3>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:11px">
+      ${sInfo.filter(s=>sess.includes(s.k)).map(s=>{
+        const sc=sectionScores[s.k]||0;
+        return`<div class="dim-card" style="border:1px solid ${s.c}25">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:7px">
+            <span style="color:${s.c};font-size:13px">${s.l}</span>
+            <span style="color:${s.c};font-family:'Playfair Display',serif;font-size:20px">${sc.toFixed(1)}</span>
+          </div>
+          <div class="score-bar"><div class="score-fill" style="width:${sc*10}%;background:${s.c}"></div></div>
+          <div style="display:flex;justify-content:space-between;margin-top:5px">
+            <span class="muted" style="font-size:10px">${s.k==='reading'?results.reading.score+'/'+results.reading.total+' correct':s.k==='listening'?results.listening.score+'/'+results.listening.total+' correct':s.k==='speaking'?'AI evaluated':'AI evaluated'}</span>
+            <span style="color:${s.c};font-size:10px;font-weight:700">${cefrFromScore(sc)}</span>
+          </div>
+        </div>`;
+      }).join('')}
+    </div>
+  `;
+
+  const sorted=sInfo.filter(s=>sess.includes(s.k)&&sectionScores[s.k]!==undefined).sort((a,b)=>(sectionScores[b.k]||0)-(sectionScores[a.k]||0));
   const strength=sorted[0], weakness=sorted[sorted.length-1];
   document.getElementById('result-feedback').innerHTML=`
-    <h3 class="gold" style="font-size:16px;margin-bottom:16px">Overall Feedback</h3>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
-      <div style="padding:14px;background:rgba(126,212,164,.06);border:1px solid rgba(126,212,164,.2);border-radius:11px">
-        <div style="color:var(--green);font-size:11px;margin-bottom:6px;letter-spacing:1px">💪 STRONGEST</div>
-        <div style="color:var(--green);font-size:14px;font-weight:600">${strength.label}</div>
-        <div class="muted" style="font-size:12px;margin-top:2px">Score ${strength.score.toFixed(1)} · ${cefrFromScore(strength.score)}</div>
+    <h3 class="gold" style="font-size:15px;margin-bottom:14px">Feedback</h3>
+    ${sorted.length>=2?`<div style="display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-bottom:14px">
+      <div style="padding:13px;background:rgba(126,212,164,.06);border:1px solid rgba(126,212,164,.2);border-radius:11px">
+        <div style="color:var(--green);font-size:10px;margin-bottom:5px;letter-spacing:1px">💪 TERKUAT</div>
+        <div style="color:var(--green);font-size:13px;font-weight:600">${strength?.l||''}</div>
+        <div class="muted" style="font-size:11px;margin-top:2px">${(sectionScores[strength?.k]||0).toFixed(1)} · ${cefrFromScore(sectionScores[strength?.k]||0)}</div>
       </div>
-      <div style="padding:14px;background:rgba(232,126,126,.06);border:1px solid rgba(232,126,126,.2);border-radius:11px">
-        <div style="color:var(--red);font-size:11px;margin-bottom:6px;letter-spacing:1px">📈 FOCUS AREA</div>
-        <div style="color:var(--red);font-size:14px;font-weight:600">${weakness.label}</div>
-        <div class="muted" style="font-size:12px;margin-top:2px">Score ${weakness.score.toFixed(1)} · ${cefrFromScore(weakness.score)}</div>
+      <div style="padding:13px;background:rgba(232,126,126,.06);border:1px solid rgba(232,126,126,.2);border-radius:11px">
+        <div style="color:var(--red);font-size:10px;margin-bottom:5px;letter-spacing:1px">📈 PERLU LATIHAN</div>
+        <div style="color:var(--red);font-size:13px;font-weight:600">${weakness?.l||''}</div>
+        <div class="muted" style="font-size:11px;margin-top:2px">${(sectionScores[weakness?.k]||0).toFixed(1)} · ${cefrFromScore(sectionScores[weakness?.k]||0)}</div>
       </div>
-    </div>
-    <div style="padding:14px;background:rgba(212,175,55,.05);border:1px solid rgba(212,175,55,.15);border-radius:11px">
-      <div style="color:var(--gold);font-size:11px;margin-bottom:8px;letter-spacing:1px">🎯 NEXT STEPS</div>
+    </div>`:''}
+    <div style="padding:13px;background:rgba(212,175,55,.05);border:1px solid rgba(212,175,55,.15);border-radius:11px">
+      <div style="color:var(--gold);font-size:10px;margin-bottom:7px;letter-spacing:1px">🎯 LANGKAH SELANJUTNYA</div>
       <div class="muted" style="font-size:12px;line-height:1.65">
-        ${cefr==='A1'?'Focus on basic vocabulary and greetings. Practice short sentences daily.':
-          cefr==='A2'?'Expand vocabulary and practice simple conversations. Work on verb conjugation.':
-          cefr==='B1'?'Practice expressing opinions and narrating events. Work on grammar accuracy.':
-          cefr==='B2'?'Focus on complex grammar structures and academic vocabulary. Practice argumentation.':
-          cefr==='C1'?'Refine nuanced expression and formal register. Practice sophisticated discourse markers.':
-          'Maintain your excellent level. Focus on specialized vocabulary and literary expression.'}
+        ${cefr==='A1'?'Fokus pada kosa kata dasar dan salam. Latih kalimat pendek setiap hari.':
+          cefr==='A2'?'Perbanyak kosa kata dan latih percakapan sederhana. Pelajari konjugasi kata kerja.':
+          cefr==='B1'?'Latih mengekspresikan pendapat dan menceritakan kejadian. Tingkatkan akurasi tata bahasa.':
+          cefr==='B2'?'Fokus pada struktur tata bahasa kompleks dan kosa kata akademis. Latih argumentasi.':
+          cefr==='C1'?'Perhalus ekspresi bernuansa dan register formal. Pelajari penanda wacana yang canggih.':
+          'Pertahankan level yang luar biasa ini. Fokus pada kosa kata khusus dan ekspresi sastra.'}
       </div>
     </div>
   `;
+
+  // Save result to localStorage
+  saveResult({ participant, sessions:sess, targetLevel:TARGET_LEVEL, sectionScores, overall, cefr, timestamp:new Date().toISOString() });
 }
 
-function forgetKey(){
-  localStorage.removeItem('groq_api_key');
-  API_KEY = '';
-  document.getElementById('api-key-input').value = '';
-  document.getElementById('key-saved-notice').style.display = 'none';
-  document.getElementById('api-key-input').style.display = 'block';
+// ══ DASHBOARD ═════════════════════════════════════════════════════════════════
+function saveResult(data){
+  const all=JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]');
+  all.push(data); localStorage.setItem(STORAGE_KEY,JSON.stringify(all));
 }
 
-function checkSavedKey(){
-  const saved = localStorage.getItem('groq_api_key');
-  if(saved){
-    API_KEY = saved;
-    document.getElementById('key-saved-notice').style.display = 'flex';
-    document.getElementById('api-key-input').style.display = 'none';
-  }
+function renderDashboard(){
+  const all=JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]');
+  document.getElementById('dash-count').textContent=all.length+' results';
+
+  // Stats
+  const avgOverall=all.length?all.reduce((s,r)=>s+r.overall,0)/all.length:0;
+  const cefrDist={A1:0,A2:0,B1:0,B2:0,C1:0,C2:0};
+  all.forEach(r=>{ if(cefrDist[r.cefr]!==undefined) cefrDist[r.cefr]++; });
+  const mostCommon=Object.entries(cefrDist).sort((a,b)=>b[1]-a[1])[0];
+  document.getElementById('dash-stats').innerHTML=`
+    <div class="card" style="padding:16px;text-align:center"><div class="gold" style="font-size:28px;font-family:'Playfair Display',serif">${all.length}</div><div class="muted" style="font-size:11px">Total Peserta</div></div>
+    <div class="card" style="padding:16px;text-align:center"><div class="gold" style="font-size:28px;font-family:'Playfair Display',serif">${avgOverall.toFixed(1)}</div><div class="muted" style="font-size:11px">Rata-rata Score</div></div>
+    <div class="card" style="padding:16px;text-align:center"><div style="font-size:28px;font-family:'Playfair Display',serif;color:${cefrColor(mostCommon?.[0]||'B1')}">${mostCommon?.[0]||'—'}</div><div class="muted" style="font-size:11px">CEFR Terbanyak</div></div>
+    <div class="card" style="padding:16px;text-align:center"><div class="gold" style="font-size:28px;font-family:'Playfair Display',serif">${all.filter(r=>r.overall>=6).length}</div><div class="muted" style="font-size:11px">Lulus (≥B2)</div></div>
+  `;
+
+  if(all.length===0){ document.getElementById('dash-tbody').innerHTML='<tr><td colspan="11" style="text-align:center;padding:30px;color:var(--muted)">Belum ada data peserta</td></tr>'; return; }
+
+  document.getElementById('dash-tbody').innerHTML=all.map((r,i)=>`
+    <tr>
+      <td style="font-weight:600;color:#e8d070">${r.participant?.name||'—'}</td>
+      <td>${r.participant?.campus||'—'}</td>
+      <td style="font-size:11px">${r.participant?.email||'—'}</td>
+      <td style="font-size:11px">${r.participant?.phone||'—'}</td>
+      <td style="font-size:11px">${(r.sessions||[]).join(', ')}</td>
+      <td>${r.sectionScores?.reading!=null?r.sectionScores.reading.toFixed(1):'—'}</td>
+      <td>${r.sectionScores?.listening!=null?r.sectionScores.listening.toFixed(1):'—'}</td>
+      <td>${r.sectionScores?.speaking!=null?r.sectionScores.speaking.toFixed(1):'—'}</td>
+      <td>${r.sectionScores?.writing!=null?r.sectionScores.writing.toFixed(1):'—'}</td>
+      <td><span class="cefr-badge" style="background:${cefrColor(r.cefr)}22;color:${cefrColor(r.cefr)};border:1px solid ${cefrColor(r.cefr)}44">${r.cefr}</span></td>
+      <td style="font-size:11px;color:var(--muted)">${r.timestamp?new Date(r.timestamp).toLocaleString('id-ID',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'}):'—'}</td>
+    </tr>
+  `).join('');
+}
+
+function exportCSV(){
+  const all=JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]');
+  if(!all.length){ notif('Tidak ada data untuk di-export'); return; }
+  const headers=['Nama','Kampus','Email','HP','Sesi','Reading','Listening','Speaking','Writing','CEFR','Overall','Waktu'];
+  const rows=all.map(r=>[
+    r.participant?.name||'',r.participant?.campus||'',r.participant?.email||'',r.participant?.phone||'',
+    (r.sessions||[]).join(';'),
+    r.sectionScores?.reading!=null?r.sectionScores.reading.toFixed(1):'',
+    r.sectionScores?.listening!=null?r.sectionScores.listening.toFixed(1):'',
+    r.sectionScores?.speaking!=null?r.sectionScores.speaking.toFixed(1):'',
+    r.sectionScores?.writing!=null?r.sectionScores.writing.toFixed(1):'',
+    r.cefr||'',r.overall?.toFixed(1)||'',r.timestamp||''
+  ].map(v=>`"${v}"`).join(','));
+  const csv=[headers.join(','),...rows].join('\n');
+  const a=document.createElement('a'); a.href='data:text/csv;charset=utf-8,\uFEFF'+encodeURIComponent(csv);
+  a.download='arabic_test_results_'+new Date().toISOString().slice(0,10)+'.csv'; a.click();
+}
+
+function clearAllResults(){
+  if(!confirm('Hapus semua data peserta? Tindakan ini tidak bisa dibatalkan.')) return;
+  localStorage.removeItem(STORAGE_KEY); renderDashboard(); notif('Semua data dihapus.');
 }
 
 function restart(){
+  stopTimer(); stopRec(); speechSynthesis.cancel();
   results={reading:{score:0,total:0},listening:{score:0,total:0},speaking:[],writing:[]};
   testData={reading:[],listening:[],speaking:[],writing:[]};
   readIdx=0; listIdx=0; speakIdx=0; writeIdx=0;
-  document.getElementById('api-key-input').value='';
+  speakAnswers=[]; participant={};
   show('cover');
 }
 </script>
