@@ -748,17 +748,32 @@ function loginDash(){
 }
 
 // ══ GROQ API ══════════════════════════════════════════════════════════════════
-async function groq(systemPrompt, userMsg){
+async function groq(systemPrompt, userMsg, attempt=1){
   const res = await fetch('https://api.groq.com/openai/v1/chat/completions',{
     method:'POST',
     headers:{'Content-Type':'application/json','Authorization':'Bearer '+API_KEY},
-    body:JSON.stringify({ model:'llama-3.3-70b-versatile', max_tokens:2000, temperature:0.9,
+    body:JSON.stringify({ model:'llama-3.3-70b-versatile', max_tokens:2000, temperature:0.7,
       messages:[{role:'system',content:systemPrompt},{role:'user',content:userMsg}] })
   });
   const data = await res.json();
   if(data.error) throw new Error(data.error.message||JSON.stringify(data.error));
-  const text = data.choices[0].message.content;
-  return JSON.parse(text.replace(/```json|```/g,'').trim());
+  let text = data.choices[0].message.content;
+  // Clean markdown fences
+  text = text.replace(/```json\s*/gi,'').replace(/```\s*/g,'').trim();
+  // Extract first valid JSON array or object
+  const arrMatch = text.match(/\[\s*\{[\s\S]*\}\s*\]/);
+  const objMatch = text.match(/\{[\s\S]*\}/);
+  const jsonStr = arrMatch ? arrMatch[0] : objMatch ? objMatch[0] : text;
+  try {
+    return JSON.parse(jsonStr);
+  } catch(e) {
+    if(attempt < 3){
+      console.warn('JSON parse failed (attempt '+attempt+'), retrying...', e.message);
+      await new Promise(r=>setTimeout(r,800));
+      return groq(systemPrompt, userMsg, attempt+1);
+    }
+    throw new Error('AI returned invalid JSON after 3 attempts: '+e.message);
+  }
 }
 
 // ══ GENERATE TEST ═════════════════════════════════════════════════════════════
