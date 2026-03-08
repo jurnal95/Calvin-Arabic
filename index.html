@@ -676,8 +676,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const v = document.getElementById('write-answer').value;
     const wc = v.trim() ? v.trim().split(/\s+/).length : 0;
     document.getElementById('write-wordcount').textContent = wc + ' words';
-    const q = testData.writing[writeIdx];
-    document.getElementById('write-submit').disabled = wc < (q ? Math.floor(q.min_words/2) : 10);
+    const q = testData.writing[writeIdx] || testData.writing[testData.writing.length-1];
+    const minWc = q ? Math.floor(q.min_words/2) : 5;
+    document.getElementById('write-submit').disabled = wc < minWc;
   });
   speechSynthesis.getVoices();
 });
@@ -1439,7 +1440,11 @@ function renderWrite(){
   document.getElementById('write-answer').value='';
   document.getElementById('write-eval').style.display='none'; document.getElementById('write-eval').innerHTML='';
   document.getElementById('write-next').style.display='none';
-  document.getElementById('write-submit').style.display='block'; document.getElementById('write-submit').disabled=true;
+  document.getElementById('write-submit').style.display='block';
+  // If answer already saved for this question, re-enable submit
+  const existingAns=(writeAnswers[writeIdx]||'').trim();
+  document.getElementById('write-submit').disabled=!existingAns;
+  if(existingAns){ document.getElementById('write-answer').value=existingAns; }
   document.getElementById('write-proc-msg').textContent='Evaluating with AI...';
   document.getElementById('write-proc-msg').style.display='none';
   document.getElementById('write-wordcount').textContent='0 words';
