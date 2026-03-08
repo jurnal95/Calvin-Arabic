@@ -3,941 +3,955 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Arabic Language Assessment</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
+<title>Arabic Proficiency Test</title>
 <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Playfair+Display:wght@500;700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-  *{box-sizing:border-box;margin:0;padding:0}
-  :root{
-    --gold:#D4AF37;--gold2:#9a7010;--bg:#080603;--bg2:#131008;
-    --card:#18110600;--border:#30200a;--body:#b89850;--muted:#5a4020;
-    --green:#7ed4a4;--blue:#7eb8e8;--red:#e87e7e;--purple:#b87ee8;--amber:#e8c87e;
-  }
-  html,body{min-height:100vh;background:linear-gradient(135deg,#080603 0%,#130e06 55%,#080603 100%);color:var(--body);font-family:'Outfit',sans-serif}
-  .arabic{font-family:'Amiri',serif;direction:rtl}
-  .card{background:linear-gradient(160deg,#181006 0%,#201508 100%);border:1px solid var(--border);border-radius:20px;box-shadow:0 20px 56px rgba(0,0,0,.75),inset 0 1px 0 rgba(212,175,55,.08)}
-  .gold{color:var(--gold);font-family:'Playfair Display',serif}
-  .muted{color:var(--muted)}
-  button{cursor:pointer;font-family:'Outfit',sans-serif}
-  .btn-outline{padding:10px 16px;border-radius:9px;border:2px solid var(--border);background:transparent;color:var(--muted);font-size:12px;transition:all .15s}
-  .btn-outline:hover{border-color:var(--gold);color:var(--gold)}
-  .btn-outline.active{border-color:var(--gold);background:rgba(212,175,55,.1);color:var(--gold)}
-  .btn-primary{padding:13px 28px;background:linear-gradient(135deg,var(--gold),var(--gold2));border:none;border-radius:11px;color:#0a0703;font-weight:700;font-size:14px;transition:opacity .15s}
-  .btn-primary:disabled{opacity:.35;cursor:not-allowed}
-  .btn-primary:not(:disabled):hover{opacity:.9}
-  textarea{resize:none;outline:none;background:rgba(255,255,255,.02);border:2px solid var(--border);border-radius:10px;color:#e8d070;font-family:'Amiri',serif;font-size:20px;direction:rtl;line-height:1.7;padding:14px 16px;width:100%;transition:border-color .2s}
-  textarea:focus{border-color:var(--gold)}
-  .screen{display:none;min-height:100vh;padding:24px;justify-content:center;align-items:flex-start}
-  .screen.active{display:flex}
-  .screen-center{align-items:center}
-  .wrap{max-width:640px;width:100%}
-  @keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
-  @keyframes fadeOut{from{opacity:1}to{opacity:0;transform:translateY(-12px)}}
-  @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
-  @keyframes ripple{0%{transform:scale(1);opacity:.5}100%{transform:scale(2.6);opacity:0}}
-  @keyframes spin{to{transform:rotate(360deg)}}
-  @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.07)}}
-  .fade-in{animation:fadeUp .4s cubic-bezier(.22,1,.36,1) both}
-  .bob{animation:bob 3.5s ease-in-out infinite}
-  .spin{animation:spin .9s linear infinite;display:inline-block}
-  .pulse{animation:pulse 1.1s ease-in-out infinite}
-  .progress-bar{height:3px;background:#1a1006;border-radius:2px;overflow:hidden;margin-bottom:24px}
-  .progress-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold2));border-radius:2px;transition:width .35s ease}
-  .badge{padding:3px 10px;border-radius:5px;font-size:10px;font-family:'Outfit',sans-serif;font-weight:600}
-  ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:#0c0904}::-webkit-scrollbar-thumb{background:#4a3208;border-radius:3px}
-  #bars-container{display:flex;align-items:flex-end;justify-content:center;gap:3px;height:36px;margin-bottom:10px}
-  .bar{width:4px;border-radius:2px;opacity:.85;transition:height .07s}
-  .dim-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-bottom:14px}
-  .dim-card{padding:13px 14px;background:rgba(255,255,255,.02);border-radius:11px}
-  .score-bar{height:3px;background:#1a1006;border-radius:2px;margin:7px 0}
-  .score-fill{height:100%;border-radius:2px;transition:width 1.2s ease}
-  #notif{position:fixed;top:20px;right:20px;padding:12px 18px;background:#1a1006;border:1px solid var(--gold);border-radius:10px;color:var(--gold);font-size:13px;z-index:999;display:none;box-shadow:0 8px 24px rgba(0,0,0,.6)}
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --gold:#D4AF37;--gold2:#9a7010;--bg:#080603;--border:#30200a;
+  --body:#b89850;--muted:#5a4020;--green:#7ed4a4;--blue:#7eb8e8;
+  --red:#e87e7e;--purple:#b87ee8;--amber:#e8c87e;--card-bg:#181006;
+}
+html,body{min-height:100vh;background:linear-gradient(135deg,#080603 0%,#130e06 55%,#080603 100%);color:var(--body);font-family:'Outfit',sans-serif;font-size:15px}
+.arabic{font-family:'Amiri',serif;direction:rtl;unicode-bidi:embed}
+.card{background:linear-gradient(160deg,#181006,#201508);border:1px solid var(--border);border-radius:18px;box-shadow:0 16px 48px rgba(0,0,0,.7),inset 0 1px 0 rgba(212,175,55,.07)}
+.gold{color:var(--gold);font-family:'Playfair Display',serif}
+.muted{color:var(--muted)}
+button{cursor:pointer;font-family:'Outfit',sans-serif}
+.btn-outline{padding:9px 14px;border-radius:8px;border:2px solid var(--border);background:transparent;color:var(--muted);font-size:12px;transition:all .15s}
+.btn-outline:hover,.btn-outline.active{border-color:var(--gold);background:rgba(212,175,55,.09);color:var(--gold)}
+.btn-primary{padding:12px 28px;background:linear-gradient(135deg,var(--gold),var(--gold2));border:none;border-radius:10px;color:#0a0703;font-weight:700;font-size:14px;transition:opacity .15s;width:100%}
+.btn-primary:disabled{opacity:.35;cursor:not-allowed}
+textarea{resize:vertical;outline:none;background:rgba(255,255,255,.02);border:2px solid var(--border);border-radius:10px;color:#e8d070;font-family:'Amiri',serif;font-size:18px;direction:rtl;line-height:1.7;padding:14px;width:100%;transition:border-color .2s;min-height:120px}
+textarea:focus{border-color:var(--gold)}
+input[type=text],input[type=password]{outline:none;background:rgba(255,255,255,.03);border:2px solid var(--border);border-radius:10px;color:#e8d070;font-family:'Outfit',sans-serif;font-size:14px;padding:13px 16px;width:100%;transition:border-color .2s}
+input:focus{border-color:var(--gold)}
+.screen{display:none;min-height:100vh;padding:24px;justify-content:center;align-items:flex-start;padding-top:40px}
+.screen.active{display:flex}
+.screen-center{align-items:center;padding-top:0}
+.wrap{max-width:680px;width:100%}
+.progress-bar{height:4px;background:#1a1006;border-radius:2px;overflow:hidden;margin-bottom:20px}
+.progress-fill{height:100%;border-radius:2px;transition:width .4s ease}
+.badge{padding:3px 10px;border-radius:5px;font-size:10px;font-family:'Outfit',sans-serif;font-weight:600;letter-spacing:.5px}
+.section-icon{font-size:32px;margin-bottom:8px}
+.loading-dots::after{content:'...';animation:dots 1.5s infinite}
+@keyframes dots{0%{content:'.'}33%{content:'..'}66%{content:'...'}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+@keyframes ripple{0%{transform:scale(1);opacity:.5}100%{transform:scale(2.5);opacity:0}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+.fade-in{animation:fadeUp .38s cubic-bezier(.22,1,.36,1) both}
+.bob{animation:bob 3s ease-in-out infinite}
+.spin{animation:spin .9s linear infinite;display:inline-block}
+.pulse{animation:pulse 1.1s ease-in-out infinite}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:#0c0904}::-webkit-scrollbar-thumb{background:#4a3208;border-radius:3px}
+#notif{position:fixed;top:18px;right:18px;padding:11px 16px;background:#1a1006;border:1px solid var(--gold);border-radius:9px;color:var(--gold);font-size:13px;z-index:999;display:none;max-width:320px;line-height:1.4}
+.opt-mcq{padding:11px 14px;border-radius:9px;border:2px solid var(--border);background:rgba(255,255,255,.02);color:var(--body);font-size:13px;text-align:left;width:100%;display:flex;align-items:center;gap:10px;transition:all .15s;margin-bottom:8px}
+.opt-mcq:hover:not(:disabled){border-color:var(--gold)}
+.section-tab{padding:10px 16px;border-radius:9px;border:2px solid var(--border);background:transparent;color:var(--muted);font-size:12px;font-weight:600;transition:all .2s;flex:1;text-align:center}
+.section-tab.done{border-color:var(--green);color:var(--green);background:rgba(126,212,164,.08)}
+.section-tab.active{border-color:var(--gold);color:var(--gold);background:rgba(212,175,55,.1)}
+.dim-card{padding:14px;background:rgba(255,255,255,.02);border-radius:11px}
+.score-bar{height:4px;background:#1a1006;border-radius:2px;margin:7px 0}
+.score-fill{height:100%;border-radius:2px;transition:width 1.2s ease}
 </style>
 </head>
 <body>
-
 <div id="notif"></div>
 
-<!-- ══ API KEY SETUP ══ -->
-<div id="screen-apikey" class="screen screen-center active">
-  <div class="wrap fade-in" style="text-align:center;padding-top:40px">
-    <div class="bob" style="font-size:58px;margin-bottom:6px">🔑</div>
-    <h1 class="gold" style="font-size:36px;line-height:1.05;margin-bottom:8px">Arabic Assessment</h1>
-    <p class="muted" style="font-size:12px;letter-spacing:2px;margin-bottom:36px;text-transform:uppercase">Enter your Anthropic API Key to begin</p>
-    <div class="card" style="padding:32px 36px;text-align:left">
-      <div style="padding:12px 14px;background:rgba(126,184,232,.04);border:1px solid rgba(126,184,232,.12);border-radius:10px;margin-bottom:24px">
-        <p style="color:#5a8aaf;font-size:12px;line-height:1.65;margin:0">
-          🔒 API key hanya tersimpan di memory browser — tidak dikirim ke mana pun selain Anthropic API secara langsung. Refresh halaman = key terhapus.
-        </p>
+<!-- ══ COVER ══ -->
+<div id="screen-cover" class="screen screen-center active">
+  <div class="wrap fade-in" style="text-align:center">
+    <div class="bob" style="font-size:64px;margin-bottom:10px">🕌</div>
+    <div class="muted" style="font-size:10px;letter-spacing:5px;text-transform:uppercase;margin-bottom:6px">اختبار الكفاءة في اللغة العربية</div>
+    <h1 class="gold" style="font-size:42px;line-height:1.05;margin-bottom:6px">Arabic Proficiency Test</h1>
+    <p class="muted" style="font-size:11px;letter-spacing:3px;margin-bottom:10px;text-transform:uppercase">CEFR A1 – C2 · AI-Powered · 4 Sections</p>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:28px 0">
+      <div class="card" style="padding:18px;text-align:center">
+        <div style="font-size:24px;margin-bottom:6px">📖</div>
+        <div class="gold" style="font-size:13px;margin-bottom:4px">Reading</div>
+        <div class="muted" style="font-size:11px">Baca teks Arab · Jawab pertanyaan</div>
       </div>
-      <label style="font-size:10px;letter-spacing:3px;text-transform:uppercase;margin-bottom:10px;display:block;color:var(--body)">Anthropic API Key</label>
-      <input id="api-key-input" type="password" placeholder="gsk_..."
-        style="width:100%;padding:13px 16px;background:rgba(255,255,255,.03);border:2px solid var(--border);border-radius:10px;color:#e8d070;font-family:'Outfit',sans-serif;font-size:14px;outline:none;box-sizing:border-box;transition:border-color .2s;margin-bottom:8px"
+      <div class="card" style="padding:18px;text-align:center">
+        <div style="font-size:24px;margin-bottom:6px">🎧</div>
+        <div class="gold" style="font-size:13px;margin-bottom:4px">Listening</div>
+        <div class="muted" style="font-size:11px">Dengar audio Arab · Jawab pertanyaan</div>
+      </div>
+      <div class="card" style="padding:18px;text-align:center">
+        <div style="font-size:24px;margin-bottom:6px">🎙️</div>
+        <div class="gold" style="font-size:13px;margin-bottom:4px">Speaking</div>
+        <div class="muted" style="font-size:11px">Jawab pertanyaan lisan · Dinilai AI</div>
+      </div>
+      <div class="card" style="padding:18px;text-align:center">
+        <div style="font-size:24px;margin-bottom:6px">✍️</div>
+        <div class="gold" style="font-size:13px;margin-bottom:4px">Writing</div>
+        <div class="muted" style="font-size:11px">Tulis essay Arab · Dinilai AI</div>
+      </div>
+    </div>
+
+    <div class="card" style="padding:20px 24px;margin-bottom:20px;text-align:left" id="key-card">
+      <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;margin-bottom:10px;color:var(--body)">Groq API Key</div>
+      <input id="api-key-input" type="password" placeholder="gsk_..." style="margin-bottom:6px"
         onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'"
-        onkeydown="if(event.key==='Enter') saveApiKey()"/>
-      <div class="muted" style="font-size:11px;margin-bottom:20px">
-        Dapatkan API key <b>gratis</b> di <a href="https://console.groq.com/keys" target="_blank" style="color:var(--gold)">console.groq.com/keys</a> — login Google, gratis, tidak perlu kartu kredit
+        onkeydown="if(event.key==='Enter')startTest()"/>
+      <div id="key-saved-notice" style="display:none;padding:8px 12px;background:rgba(126,212,164,.08);border:1px solid rgba(126,212,164,.2);border-radius:8px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center">
+        <span style="color:var(--green);font-size:12px">✅ API key tersimpan di browser ini</span>
+        <button onclick="forgetKey()" style="background:none;border:none;color:var(--muted);font-size:11px;cursor:pointer">Ganti key</button>
       </div>
-      <button class="btn-primary" style="width:100%" onclick="saveApiKey()">Mulai Assessment →</button>
-      <div id="apikey-error" style="display:none;color:var(--red);font-size:12px;text-align:center;margin-top:10px"></div>
-    </div>
-  </div>
-</div>
-
-<!-- ══ HOME ══ -->
-<div id="screen-home" class="screen screen-center">
-  <div class="wrap fade-in" style="text-align:center;padding-top:40px">
-    <div class="bob" style="font-size:58px;margin-bottom:6px">🕌</div>
-    <div class="muted" style="font-size:10px;letter-spacing:5px;text-transform:uppercase;margin-bottom:6px">بِسْمِ اللّٰهِ</div>
-    <h1 class="gold" style="font-size:44px;line-height:1.05;margin-bottom:2px">Arabic Assessment</h1>
-    <p class="muted" style="font-size:11px;letter-spacing:3px;margin-bottom:40px;text-transform:uppercase">Language Proficiency Tool · A1 – C2</p>
-    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:20px">
-      <button class="card" onclick="goMCQ('conversational')" style="padding:22px 14px;border:1px solid var(--border);text-align:center;transition:transform .15s" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
-        <div style="font-size:26px;margin-bottom:10px">💬</div>
-        <div class="gold" style="font-size:13px;margin-bottom:8px">Conversational MCQ</div>
-        <div class="muted" style="font-size:11px;line-height:1.5">Dialog · Grammar · Context · Expressions</div>
-      </button>
-      <button class="card" onclick="goSpeaking()" style="padding:22px 14px;border:1px solid var(--gold);background:linear-gradient(160deg,#1c1408,#261c08);text-align:center;transition:transform .15s" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
-        <div style="font-size:26px;margin-bottom:10px">🎙️</div>
-        <div class="gold" style="font-size:13px;margin-bottom:6px">Speaking Test</div>
-        <div style="font-size:9px;padding:2px 7px;background:rgba(212,175,55,.18);border:1px solid rgba(212,175,55,.35);border-radius:4px;color:var(--gold);margin-bottom:8px;display:inline-block;letter-spacing:1.5px">AI-POWERED</div>
-        <div class="muted" style="font-size:11px;line-height:1.5">AI-scored · Fluency, Grammar, Vocabulary</div>
-      </button>
-      <button class="card" onclick="goMCQ('lexical')" style="padding:22px 14px;border:1px solid var(--border);text-align:center;transition:transform .15s" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
-        <div style="font-size:26px;margin-bottom:10px">📖</div>
-        <div class="gold" style="font-size:13px;margin-bottom:8px">Lexical MCQ</div>
-        <div class="muted" style="font-size:11px;line-height:1.5">Vocab · Themes · Synonyms · Context</div>
-      </button>
-    </div>
-    <button class="btn-outline" onclick="goMCQ('both')">⚖️ Mixed MCQ (Conversational + Lexical)</button>
-    <p class="muted" style="font-size:11px;margin-top:20px">Full diacritics · Transliteration · Instant AI feedback</p>
-  </div>
-</div>
-
-<!-- ══ MCQ SETUP ══ -->
-<div id="screen-mcq-setup" class="screen screen-center">
-  <div class="wrap fade-in">
-    <button onclick="show('home')" class="muted" style="background:none;border:none;margin-bottom:20px;font-size:13px">← Back</button>
-    <div class="card" style="padding:34px 38px">
-      <h2 class="gold" style="font-size:24px;margin-bottom:4px">MCQ Assessment</h2>
-      <p class="muted" style="font-size:13px;margin-bottom:26px">Configure your test</p>
-      <div style="margin-bottom:22px">
-        <label style="font-size:10px;letter-spacing:3px;text-transform:uppercase;margin-bottom:10px;display:block">Mode</label>
-        <div style="display:flex;gap:8px;flex-wrap:wrap" id="mcq-mode-btns">
-          <button class="btn-outline active" data-mode="conversational" onclick="setMcqMode('conversational')">💬 Conversational</button>
-          <button class="btn-outline" data-mode="lexical" onclick="setMcqMode('lexical')">📖 Lexical</button>
-          <button class="btn-outline" data-mode="both" onclick="setMcqMode('both')">⚖️ Both</button>
+      <div class="muted" style="font-size:11px;margin-bottom:16px">
+        🔒 Key disimpan di browser ini saja · Gratis di <a href="https://console.groq.com/keys" target="_blank" style="color:var(--gold)">console.groq.com/keys</a>
+      </div>
+      <div style="margin-bottom:16px">
+        <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;margin-bottom:10px;color:var(--body)">Target Level</div>
+        <div style="display:flex;gap:7px;flex-wrap:wrap" id="level-btns">
+          <button class="btn-outline active" data-lv="mixed" onclick="setLevel('mixed')">🌐 Mixed (All)</button>
+          <button class="btn-outline" data-lv="A1-A2" onclick="setLevel('A1-A2')">A1–A2 Beginner</button>
+          <button class="btn-outline" data-lv="B1-B2" onclick="setLevel('B1-B2')">B1–B2 Intermediate</button>
+          <button class="btn-outline" data-lv="C1-C2" onclick="setLevel('C1-C2')">C1–C2 Advanced</button>
         </div>
       </div>
-      <div style="margin-bottom:32px">
-        <label style="font-size:10px;letter-spacing:3px;text-transform:uppercase;margin-bottom:10px;display:block">Level</label>
-        <div style="display:flex;flex-wrap:wrap;gap:8px" id="mcq-level-btns">
-          <button class="btn-outline active" data-lv="all" onclick="setMcqLevel('all')">All Levels</button>
-          <button class="btn-outline" data-lv="A1" onclick="setMcqLevel('A1')">A1</button>
-          <button class="btn-outline" data-lv="A2" onclick="setMcqLevel('A2')">A2</button>
-          <button class="btn-outline" data-lv="B1" onclick="setMcqLevel('B1')">B1</button>
-          <button class="btn-outline" data-lv="B2" onclick="setMcqLevel('B2')">B2</button>
-          <button class="btn-outline" data-lv="C1" onclick="setMcqLevel('C1')">C1</button>
-          <button class="btn-outline" data-lv="C2" onclick="setMcqLevel('C2')">C2</button>
-        </div>
+      <button class="btn-primary" onclick="startTest()">Mulai Test →</button>
+      <div id="cover-error" style="display:none;color:var(--red);font-size:12px;text-align:center;margin-top:10px"></div>
+    </div>
+    <p class="muted" style="font-size:11px">Soal di-generate AI tiap sesi · Hasil dalam format CEFR</p>
+  </div>
+</div>
+
+<!-- ══ GENERATING ══ -->
+<div id="screen-generating" class="screen screen-center">
+  <div class="wrap fade-in" style="text-align:center">
+    <div style="font-size:56px;margin-bottom:16px"><span class="spin">⚙️</span></div>
+    <h2 class="gold" style="font-size:28px;margin-bottom:8px">Generating Your Test</h2>
+    <p class="muted" id="gen-status" style="font-size:14px;margin-bottom:24px">Preparing questions with AI...</p>
+    <div style="max-width:300px;margin:0 auto">
+      <div style="display:flex;justify-content:space-between;margin-bottom:6px">
+        <span class="muted" style="font-size:11px" id="gen-label">Reading</span>
+        <span class="muted" style="font-size:11px" id="gen-pct">0%</span>
       </div>
-      <button class="btn-primary" style="width:100%" onclick="startMCQ()">Start MCQ Test →</button>
+      <div class="progress-bar" style="margin-bottom:0"><div class="progress-fill" id="gen-bar" style="width:0%;background:linear-gradient(90deg,var(--gold),var(--gold2))"></div></div>
     </div>
   </div>
 </div>
 
-<!-- ══ MCQ QUIZ ══ -->
-<div id="screen-quiz" class="screen" style="padding-top:36px">
-  <div class="wrap">
-    <div style="display:flex;justify-content:space-between;margin-bottom:8px">
-      <span class="muted" style="font-size:12px" id="quiz-counter">Q 1 / 10</span>
-      <span class="muted" style="font-size:12px">Score: <span style="color:var(--gold)" id="quiz-score">0</span></span>
-    </div>
-    <div class="progress-bar"><div class="progress-fill" id="quiz-progress" style="width:0%"></div></div>
-    <div class="card fade-in" id="quiz-card" style="padding:30px 34px">
-      <div style="display:flex;gap:7px;margin-bottom:20px;flex-wrap:wrap" id="quiz-badges"></div>
-      <div style="text-align:center;padding:20px 16px;background:rgba(212,175,55,.04);border:1px solid rgba(212,175,55,.08);border-radius:13px;margin-bottom:22px">
-        <div class="arabic" id="quiz-ar" style="font-size:34px;color:#e8d070;line-height:1.55;margin-bottom:8px"></div>
-        <div class="muted" id="quiz-trans" style="font-size:12px;font-style:italic"></div>
-        <div id="quiz-en" style="font-size:13px;margin-top:4px"></div>
-      </div>
-      <p id="quiz-prompt" style="font-size:14px;margin-bottom:16px;font-weight:500"></p>
-      <div id="quiz-options" style="display:flex;flex-direction:column;gap:8px"></div>
-      <div id="quiz-explanation" style="display:none;margin-top:16px;padding:12px 14px;background:rgba(212,175,55,.05);border:1px solid rgba(212,175,55,.15);border-radius:9px"></div>
-      <button class="btn-primary" id="quiz-next" style="width:100%;margin-top:14px;display:none" onclick="nextMCQ()">Next →</button>
-    </div>
+<!-- ══ SECTION INTRO ══ -->
+<div id="screen-section-intro" class="screen screen-center">
+  <div class="wrap fade-in" style="text-align:center">
+    <div id="intro-icon" style="font-size:64px;margin-bottom:12px"></div>
+    <h2 class="gold" id="intro-title" style="font-size:32px;margin-bottom:6px"></h2>
+    <p id="intro-desc" class="muted" style="font-size:14px;margin-bottom:8px"></p>
+    <p id="intro-count" style="font-size:12px;color:var(--body);margin-bottom:28px"></p>
+    <div class="card" id="intro-tips" style="padding:18px 22px;margin-bottom:24px;text-align:left"></div>
+    <button class="btn-primary" onclick="beginSection()">Mulai Section →</button>
   </div>
 </div>
 
-<!-- ══ SPEAKING SETUP ══ -->
-<div id="screen-speaking-setup" class="screen screen-center">
-  <div class="wrap fade-in">
-    <button onclick="show('home')" class="muted" style="background:none;border:none;margin-bottom:20px;font-size:13px">← Back</button>
-    <div class="card" style="padding:34px 38px">
-      <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
-        <span style="font-size:26px">🎙️</span>
-        <h2 class="gold" style="font-size:24px">Speaking Test</h2>
-        <span style="font-size:9px;padding:3px 7px;background:rgba(212,175,55,.15);border:1px solid rgba(212,175,55,.3);border-radius:4px;color:var(--gold);letter-spacing:1.5px">AI-GRADED</span>
-      </div>
-      <p class="muted" style="font-size:13px;margin-bottom:20px">5 questions · AI scores Fluency, Grammar, Vocabulary & Relevance</p>
-      <div style="padding:12px 14px;background:rgba(126,184,232,.04);border:1px solid rgba(126,184,232,.12);border-radius:10px;margin-bottom:22px">
-        <p style="color:#5a8aaf;font-size:12px;line-height:1.65;margin:0">
-          💡 Jawab dengan <strong style="color:#8ab0d0">bicara Arabic</strong> (tekan 🎙️, izinkan mikrofon) atau <strong style="color:#8ab0d0">ketik jawaban Arabic</strong>. Claude AI menilai setiap jawaban secara langsung.
-        </p>
-      </div>
-      <div style="margin-bottom:20px">
-        <label style="font-size:10px;letter-spacing:3px;text-transform:uppercase;margin-bottom:10px;display:block">Level</label>
-        <div style="display:flex;flex-wrap:wrap;gap:8px" id="speak-level-btns">
-          <button class="btn-outline active" data-lv="all" onclick="setSpeakLevel('all')">All</button>
-          <button class="btn-outline" data-lv="A1" onclick="setSpeakLevel('A1')">A1</button>
-          <button class="btn-outline" data-lv="A2" onclick="setSpeakLevel('A2')">A2</button>
-          <button class="btn-outline" data-lv="B1" onclick="setSpeakLevel('B1')">B1</button>
-          <button class="btn-outline" data-lv="B2" onclick="setSpeakLevel('B2')">B2</button>
-          <button class="btn-outline" data-lv="C1" onclick="setSpeakLevel('C1')">C1</button>
-          <button class="btn-outline" data-lv="C2" onclick="setSpeakLevel('C2')">C2</button>
-        </div>
-      </div>
-      <div style="margin-bottom:30px">
-        <label style="font-size:10px;letter-spacing:3px;text-transform:uppercase;margin-bottom:10px;display:block">Theme</label>
-        <div style="display:flex;flex-wrap:wrap;gap:8px" id="speak-theme-btns">
-          <button class="btn-outline active" data-th="all" onclick="setSpeakTheme('all')">🌐 All</button>
-          <button class="btn-outline" data-th="general" onclick="setSpeakTheme('general')">💬 General</button>
-          <button class="btn-outline" data-th="family" onclick="setSpeakTheme('family')">👨‍👩‍👧 Family</button>
-          <button class="btn-outline" data-th="daily_life" onclick="setSpeakTheme('daily_life')">🌅 Daily Life</button>
-          <button class="btn-outline" data-th="hobbies" onclick="setSpeakTheme('hobbies')">🎨 Hobbies</button>
-          <button class="btn-outline" data-th="travel" onclick="setSpeakTheme('travel')">✈️ Travel</button>
-          <button class="btn-outline" data-th="opinion" onclick="setSpeakTheme('opinion')">💭 Opinion</button>
-          <button class="btn-outline" data-th="society" onclick="setSpeakTheme('society')">🌐 Society</button>
-          <button class="btn-outline" data-th="culture" onclick="setSpeakTheme('culture')">🏛️ Culture</button>
-          <button class="btn-outline" data-th="abstract" onclick="setSpeakTheme('abstract')">🧠 Abstract</button>
-        </div>
-      </div>
-      <button class="btn-primary" style="width:100%" onclick="startSpeaking()">Begin Speaking Test →</button>
-    </div>
-  </div>
-</div>
-
-<!-- ══ SPEAKING QUESTION ══ -->
-<div id="screen-speaking" class="screen" style="padding-top:32px">
+<!-- ══ READING ══ -->
+<div id="screen-reading" class="screen">
   <div class="wrap">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-      <span class="muted" style="font-size:12px">🎙️ Speaking · <span id="speak-counter">Q1/5</span></span>
-      <span class="badge" style="background:rgba(212,175,55,.1);border:1px solid rgba(212,175,55,.2);color:var(--gold)" id="speak-level-badge">A1</span>
+      <span style="color:var(--gold);font-size:13px;font-weight:600">📖 Reading</span>
+      <span class="muted" style="font-size:12px">Q <span id="read-counter">1/5</span></span>
     </div>
-    <div class="progress-bar"><div class="progress-fill" id="speak-progress" style="width:0%;background:linear-gradient(90deg,#e87e7e,var(--gold))"></div></div>
-
-    <div class="card fade-in" id="speak-card" style="padding:30px 34px">
-      <div class="muted" id="speak-theme-label" style="font-size:12px;margin-bottom:16px"></div>
-
-      <!-- Question display -->
-      <div style="text-align:center;padding:22px 16px;background:rgba(212,175,55,.04);border:1px solid rgba(212,175,55,.09);border-radius:13px;margin-bottom:20px">
-        <div class="arabic" id="speak-ar" style="font-size:26px;color:#e8d070;line-height:1.65;margin-bottom:8px"></div>
-        <div class="muted" id="speak-trans" style="font-size:11px;font-style:italic;margin-bottom:4px"></div>
-        <div id="speak-en" style="font-size:13px"></div>
+    <div class="progress-bar"><div class="progress-fill" id="read-progress" style="width:0%;background:linear-gradient(90deg,#7eb8e8,#5a8fc0)"></div></div>
+    <div class="card fade-in" id="read-card" style="padding:28px 32px">
+      <!-- Passage -->
+      <div style="padding:18px;background:rgba(212,175,55,.04);border:1px solid rgba(212,175,55,.09);border-radius:12px;margin-bottom:22px">
+        <div class="muted" style="font-size:10px;letter-spacing:2px;margin-bottom:10px">📄 PASSAGE</div>
+        <div class="arabic" id="read-passage" style="font-size:20px;color:#e8d070;line-height:1.9"></div>
+        <div id="read-passage-trans" style="font-size:12px;color:var(--muted);margin-top:8px;line-height:1.6;font-style:italic"></div>
       </div>
+      <!-- Question -->
+      <p id="read-question" style="font-size:15px;font-weight:500;margin-bottom:16px;color:var(--body)"></p>
+      <div id="read-options" style="display:flex;flex-direction:column;gap:0"></div>
+      <div id="read-explanation" style="display:none;margin-top:14px;padding:12px 14px;background:rgba(212,175,55,.05);border:1px solid rgba(212,175,55,.15);border-radius:9px;font-size:12px;line-height:1.6;color:var(--body)"></div>
+      <button class="btn-primary" id="read-next" style="margin-top:14px;display:none" onclick="nextReading()">Next →</button>
+    </div>
+  </div>
+</div>
 
-      <!-- Hint -->
-      <div style="padding:10px 14px;background:rgba(126,184,232,.04);border:1px solid rgba(126,184,232,.12);border-radius:9px;margin-bottom:20px;display:flex;gap:8px">
-        <span style="font-size:13px">💡</span>
+<!-- ══ LISTENING ══ -->
+<div id="screen-listening" class="screen">
+  <div class="wrap">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+      <span style="color:var(--amber);font-size:13px;font-weight:600">🎧 Listening</span>
+      <span class="muted" style="font-size:12px">Q <span id="list-counter">1/5</span></span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="list-progress" style="width:0%;background:linear-gradient(90deg,var(--amber),#b89030)"></div></div>
+    <div class="card fade-in" id="list-card" style="padding:28px 32px">
+      <!-- Audio player -->
+      <div style="text-align:center;padding:20px;background:rgba(232,200,126,.05);border:1px solid rgba(232,200,126,.15);border-radius:12px;margin-bottom:22px">
+        <div class="muted" style="font-size:10px;letter-spacing:2px;margin-bottom:12px">🎧 AUDIO</div>
+        <div id="list-script" class="arabic" style="font-size:18px;color:#e8d070;line-height:1.9;margin-bottom:14px;display:none"></div>
+        <div style="display:flex;align-items:center;justify-content:center;gap:12px">
+          <button onclick="playAudio()" id="play-btn"
+            style="padding:10px 24px;border-radius:20px;border:2px solid var(--amber);background:rgba(232,200,126,.1);color:var(--amber);font-size:13px;font-weight:600;transition:all .2s">
+            ▶ Play Audio
+          </button>
+          <button onclick="toggleScript()" id="script-btn"
+            style="padding:10px 16px;border-radius:20px;border:2px solid var(--border);background:transparent;color:var(--muted);font-size:12px;transition:all .2s">
+            Show Text
+          </button>
+        </div>
+        <p class="muted" style="font-size:11px;margin-top:10px" id="audio-status">Tap Play to hear the Arabic audio</p>
+      </div>
+      <p id="list-question" style="font-size:15px;font-weight:500;margin-bottom:16px;color:var(--body)"></p>
+      <div id="list-options" style="display:flex;flex-direction:column;gap:0"></div>
+      <div id="list-explanation" style="display:none;margin-top:14px;padding:12px 14px;background:rgba(232,200,126,.05);border:1px solid rgba(232,200,126,.2);border-radius:9px;font-size:12px;line-height:1.6;color:var(--body)"></div>
+      <button class="btn-primary" id="list-next" style="margin-top:14px;display:none;background:linear-gradient(135deg,var(--amber),#b89030);color:#0a0703" onclick="nextListening()">Next →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SPEAKING ══ -->
+<div id="screen-speaking" class="screen">
+  <div class="wrap">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+      <span style="color:var(--green);font-size:13px;font-weight:600">🎙️ Speaking</span>
+      <span class="muted" style="font-size:12px">Q <span id="speak-counter">1/3</span></span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="speak-progress" style="width:0%;background:linear-gradient(90deg,var(--green),#4aa870)"></div></div>
+    <div class="card fade-in" id="speak-card" style="padding:28px 32px">
+      <div style="text-align:center;padding:20px 16px;background:rgba(212,175,55,.04);border:1px solid rgba(212,175,55,.09);border-radius:12px;margin-bottom:18px">
+        <div class="arabic" id="speak-ar" style="font-size:24px;color:#e8d070;line-height:1.65;margin-bottom:8px"></div>
+        <div id="speak-en" style="font-size:13px;color:var(--body)"></div>
+      </div>
+      <div style="padding:10px 14px;background:rgba(126,184,232,.04);border:1px solid rgba(126,184,232,.12);border-radius:9px;margin-bottom:18px">
         <span id="speak-hint" style="color:#5a8aaf;font-size:12px;line-height:1.55"></span>
       </div>
-
-      <!-- Input section (shown before done) -->
-      <div id="speak-input-section">
-        <!-- Mode toggle -->
-        <div style="display:flex;gap:8px;margin-bottom:20px">
-          <button class="btn-outline active" id="btn-voice" onclick="setInputMode('voice')">🎙️ Voice (Arabic)</button>
-          <button class="btn-outline" id="btn-type" onclick="setInputMode('type')">⌨️ Type (Arabic)</button>
-        </div>
-
-        <!-- Voice panel -->
-        <div id="voice-panel">
-          <!-- Language selector -->
-          <div style="margin-bottom:14px;padding:10px 14px;background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:9px">
-            <div class="muted" style="font-size:10px;letter-spacing:2px;margin-bottom:8px;text-transform:uppercase">Recognition Language</div>
-            <div style="display:flex;gap:7px;flex-wrap:wrap" id="lang-btns">
-              <button class="btn-outline active" data-lang="ar" onclick="setRecogLang('ar')">🇸🇦 Arabic</button>
-              <button class="btn-outline" data-lang="id-ID" onclick="setRecogLang('id-ID')">🇮🇩 Indonesia</button>
-              <button class="btn-outline" data-lang="en-US" onclick="setRecogLang('en-US')">🇺🇸 English</button>
-            </div>
-            <div class="muted" style="font-size:10px;margin-top:7px">⚠️ Kalau Arabic tidak terdeteksi, coba pilih Indonesia atau English dulu untuk test</div>
-          </div>
-          <div style="position:relative;width:100px;height:100px;margin:0 auto 16px;display:flex;align-items:center;justify-content:center">
-            <div id="ripple1" style="display:none;position:absolute;width:100%;height:100%;border-radius:50%;border:2px solid rgba(232,126,126,.35);animation:ripple 1.6s ease-out infinite"></div>
-            <div id="ripple2" style="display:none;position:absolute;width:82%;height:82%;border-radius:50%;border:2px solid rgba(232,126,126,.2);animation:ripple 1.6s ease-out infinite .55s"></div>
-            <button id="mic-btn" onclick="toggleRecording()"
-              style="width:72px;height:72px;border-radius:50%;border:3px solid var(--gold);background:rgba(212,175,55,.08);font-size:26px;display:flex;align-items:center;justify-content:center;z-index:1;transition:all .2s">
-              🎙️
-            </button>
-          </div>
-          <div id="bars-container" style="display:none"></div>
-          <p class="muted" id="rec-status" style="font-size:12px;text-align:center;margin-bottom:14px">Tap 🎙️ to record your answer</p>
-          <div id="transcript-box" style="display:none;padding:12px 14px;background:rgba(255,255,255,.025);border:1px solid var(--border);border-radius:9px;text-align:right;margin-bottom:14px">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
-              <div class="muted" style="font-size:10px;letter-spacing:2px">TRANSCRIBED</div>
-              <button onclick="clearTranscript()" style="background:none;border:none;color:var(--muted);font-size:11px;cursor:pointer">✕ Clear</button>
-            </div>
-            <div class="arabic" id="transcript-text" style="color:#e8d070;font-size:17px;line-height:1.7"></div>
-          </div>
-        </div>
-
-        <!-- Type panel -->
-        <div id="type-panel" style="display:none;margin-bottom:16px">
-          <div class="muted" style="font-size:10px;margin-bottom:8px;letter-spacing:2px;text-transform:uppercase">Type your answer in Arabic</div>
-          <textarea id="typed-answer" rows="4" placeholder="اكتب إجابتك هنا..."></textarea>
-        </div>
-
-        <button class="btn-primary" id="submit-btn" style="width:100%" onclick="submitSpeaking()">Submit for AI Evaluation →</button>
-        <p class="muted" id="processing-msg" style="font-size:12px;text-align:center;margin-top:10px;display:none">Evaluating your Arabic response with AI...</p>
+      <!-- Input toggle -->
+      <div style="display:flex;gap:8px;margin-bottom:18px">
+        <button class="btn-outline active" id="btn-voice" onclick="setSpeakMode('voice')">🎙️ Voice</button>
+        <button class="btn-outline" id="btn-type" onclick="setSpeakMode('type')">⌨️ Type</button>
       </div>
-
-      <!-- Evaluation results (shown after done) -->
-      <div id="speak-eval" style="display:none">
-        <!-- Arabic feedback + overall score -->
-        <div style="text-align:center;padding:20px 16px;background:rgba(212,175,55,.06);border:1px solid rgba(212,175,55,.18);border-radius:13px;margin-bottom:18px">
-          <div class="arabic" id="eval-arabic-fb" style="font-size:20px;color:#e8d070;line-height:1.7;margin-bottom:12px"></div>
-          <div style="display:flex;align-items:center;justify-content:center;gap:12px">
-            <div id="eval-overall-score" style="font-size:50px;font-family:'Playfair Display',serif;line-height:1"></div>
-            <div style="text-align:left">
-              <div id="eval-overall-label" style="font-family:'Outfit',sans-serif;font-size:15px;font-weight:600"></div>
-              <div id="eval-cefr" class="muted" style="font-size:11px"></div>
-            </div>
+      <!-- Voice -->
+      <div id="speak-voice-panel">
+        <div style="position:relative;width:90px;height:90px;margin:0 auto 12px;display:flex;align-items:center;justify-content:center">
+          <div id="rpl1" style="display:none;position:absolute;width:100%;height:100%;border-radius:50%;border:2px solid rgba(126,212,164,.35);animation:ripple 1.6s ease-out infinite"></div>
+          <div id="rpl2" style="display:none;position:absolute;width:82%;height:82%;border-radius:50%;border:2px solid rgba(126,212,164,.2);animation:ripple 1.6s ease-out infinite .55s"></div>
+          <button id="mic-btn" onclick="toggleRec()"
+            style="width:66px;height:66px;border-radius:50%;border:3px solid var(--green);background:rgba(126,212,164,.08);font-size:24px;display:flex;align-items:center;justify-content:center;z-index:1;transition:all .2s">🎙️</button>
+        </div>
+        <div id="speak-bars" style="display:none;display:flex;align-items:flex-end;justify-content:center;gap:3px;height:30px;margin-bottom:8px"></div>
+        <p class="muted" id="speak-rec-status" style="font-size:12px;text-align:center;margin-bottom:12px">Tap 🎙️ to record</p>
+        <div id="speak-transcript-box" style="display:none;padding:11px 14px;background:rgba(255,255,255,.025);border:1px solid var(--border);border-radius:9px;text-align:right;margin-bottom:12px">
+          <div style="display:flex;justify-content:space-between;margin-bottom:5px">
+            <span class="muted" style="font-size:10px;letter-spacing:1px">TRANSCRIPT</span>
+            <button onclick="clearSpeak()" style="background:none;border:none;color:var(--muted);font-size:11px;cursor:pointer">✕</button>
           </div>
-          <p id="eval-summary" style="font-size:13px;line-height:1.65;margin-top:10px"></p>
+          <div class="arabic" id="speak-transcript" style="color:#e8d070;font-size:16px;line-height:1.7"></div>
         </div>
-
-        <!-- 4 dimensions -->
-        <div class="dim-grid" id="eval-dims"></div>
-
-        <!-- Corrected version -->
-        <div id="eval-corrected" style="padding:12px 14px;background:rgba(126,212,164,.05);border:1px solid rgba(126,212,164,.18);border-radius:10px;margin-bottom:12px;display:none">
-          <div style="color:var(--green);font-size:10px;font-family:'Outfit',sans-serif;margin-bottom:7px;letter-spacing:1.5px">✍️ SUGGESTED VERSION</div>
-          <div class="arabic" id="eval-corrected-text" style="color:#a0e8c0;font-size:17px;line-height:1.7"></div>
-        </div>
-
-        <!-- Tips -->
-        <div id="eval-tips" style="padding:12px 14px;background:rgba(212,175,55,.04);border:1px solid rgba(212,175,55,.13);border-radius:10px;margin-bottom:18px;display:none">
-          <div style="color:var(--gold);font-size:10px;font-family:'Outfit',sans-serif;margin-bottom:8px;letter-spacing:1.5px">🚀 TIPS TO IMPROVE</div>
-          <div id="eval-tips-list"></div>
-        </div>
-
-        <button class="btn-primary" style="width:100%" onclick="nextSpeaking()" id="next-speak-btn">Next Question →</button>
       </div>
+      <!-- Type -->
+      <div id="speak-type-panel" style="display:none;margin-bottom:12px">
+        <textarea id="speak-typed" rows="4" placeholder="اكتب إجابتك هنا..."></textarea>
+      </div>
+      <button class="btn-primary" id="speak-submit" onclick="submitSpeak()" style="background:linear-gradient(135deg,var(--green),#4aa870);color:#060e08" disabled>Submit for AI Evaluation →</button>
+      <p class="muted" id="speak-proc-msg" style="font-size:12px;text-align:center;margin-top:8px;display:none">Evaluating with AI...</p>
+      <!-- Eval results -->
+      <div id="speak-eval" style="display:none;margin-top:18px"></div>
+      <button class="btn-primary" id="speak-next" style="margin-top:14px;display:none;background:linear-gradient(135deg,var(--green),#4aa870);color:#060e08" onclick="nextSpeak()">Next →</button>
     </div>
   </div>
 </div>
 
-<!-- ══ MCQ RESULT ══ -->
-<div id="screen-mcq-result" class="screen screen-center" style="padding-top:36px">
-  <div class="wrap fade-in">
-    <div class="card" id="mcq-result-hero" style="padding:34px;text-align:center;margin-bottom:14px"></div>
-    <div class="card" style="padding:22px 26px;margin-bottom:14px">
-      <h3 class="gold" style="font-size:15px;margin-bottom:14px">Answer Review</h3>
-      <div id="mcq-review"></div>
+<!-- ══ WRITING ══ -->
+<div id="screen-writing" class="screen">
+  <div class="wrap">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+      <span style="color:var(--purple);font-size:13px;font-weight:600">✍️ Writing</span>
+      <span class="muted" style="font-size:12px">Q <span id="write-counter">1/2</span></span>
     </div>
-    <div style="display:flex;gap:10px">
-      <button onclick="show('home')" style="flex:1;padding:12px;background:transparent;border:2px solid var(--border);border-radius:11px;color:var(--body);font-size:13px">← Home</button>
-      <button class="btn-primary" style="flex:1" onclick="startMCQ()">Retry →</button>
+    <div class="progress-bar"><div class="progress-fill" id="write-progress" style="width:0%;background:linear-gradient(90deg,var(--purple),#8a4ab8)"></div></div>
+    <div class="card fade-in" id="write-card" style="padding:28px 32px">
+      <div style="padding:16px;background:rgba(184,126,232,.05);border:1px solid rgba(184,126,232,.15);border-radius:12px;margin-bottom:18px">
+        <div class="muted" style="font-size:10px;letter-spacing:2px;margin-bottom:8px">✍️ TASK</div>
+        <div class="arabic" id="write-ar" style="font-size:20px;color:#e8d070;line-height:1.8;margin-bottom:6px"></div>
+        <div id="write-en" style="font-size:13px;color:var(--body);line-height:1.6"></div>
+      </div>
+      <div style="padding:10px 14px;background:rgba(184,126,232,.04);border:1px solid rgba(184,126,232,.1);border-radius:9px;margin-bottom:16px">
+        <span id="write-hint" style="color:#9a6abf;font-size:12px;line-height:1.55"></span>
+      </div>
+      <div class="muted" style="font-size:10px;letter-spacing:2px;margin-bottom:8px;text-transform:uppercase">Your Answer (Arabic)</div>
+      <textarea id="write-answer" rows="6" placeholder="اكتب إجابتك هنا..."></textarea>
+      <div style="display:flex;justify-content:space-between;margin-top:6px;margin-bottom:14px">
+        <span class="muted" style="font-size:11px" id="write-wordcount">0 words</span>
+        <span class="muted" id="write-hint-min" style="font-size:11px"></span>
+      </div>
+      <button class="btn-primary" id="write-submit" onclick="submitWrite()" style="background:linear-gradient(135deg,var(--purple),#8a4ab8);color:#f0e8ff" disabled>Submit for AI Evaluation →</button>
+      <p class="muted" id="write-proc-msg" style="font-size:12px;text-align:center;margin-top:8px;display:none">Evaluating with AI...</p>
+      <div id="write-eval" style="display:none;margin-top:18px"></div>
+      <button class="btn-primary" id="write-next" style="margin-top:14px;display:none;background:linear-gradient(135deg,var(--purple),#8a4ab8);color:#f0e8ff" onclick="nextWrite()">Next →</button>
     </div>
   </div>
 </div>
 
-<!-- ══ SPEAKING RESULT ══ -->
-<div id="screen-speak-result" class="screen screen-center" style="padding-top:36px">
+<!-- ══ FINAL RESULT ══ -->
+<div id="screen-result" class="screen screen-center">
   <div class="wrap fade-in">
-    <div class="card" id="speak-result-hero" style="padding:34px;text-align:center;margin-bottom:14px"></div>
-    <div class="card" style="padding:24px 28px;margin-bottom:14px">
-      <h3 class="gold" style="font-size:15px;margin-bottom:18px">Performance by Dimension</h3>
-      <div class="dim-grid" id="speak-result-dims"></div>
-    </div>
-    <div class="card" style="padding:22px 26px;margin-bottom:14px">
-      <h3 class="gold" style="font-size:15px;margin-bottom:14px">Per-Question Summary</h3>
-      <div id="speak-result-qs"></div>
-    </div>
-    <div style="display:flex;gap:10px">
-      <button onclick="show('home')" style="flex:1;padding:12px;background:transparent;border:2px solid var(--border);border-radius:11px;color:var(--body);font-size:13px">← Home</button>
-      <button class="btn-primary" style="flex:1" onclick="startSpeaking()">Retake Speaking →</button>
-    </div>
+    <div id="result-hero" class="card" style="padding:36px;text-align:center;margin-bottom:16px"></div>
+    <div id="result-sections" class="card" style="padding:26px 30px;margin-bottom:16px"></div>
+    <div id="result-feedback" class="card" style="padding:26px 30px;margin-bottom:16px"></div>
+    <button class="btn-primary" onclick="restart()" style="margin-bottom:40px">🔄 Take New Test</button>
   </div>
 </div>
 
 <script>
-// ══ DATA ══════════════════════════════════════════════════════════════════════
-const SPEAKING_QS = [
-  {id:"s1",theme:"general",level:"A1",ar:"مَا اسْمُكَ وَمِنْ أَيْنَ أَنْت؟",trans:"Mā ismuka wa-min ayna ant?",en:"What is your name and where are you from?",hint:"Introduce yourself with your name and country/city."},
-  {id:"s2",theme:"general",level:"A1",ar:"كَيْفَ حَالُكَ الْيَوْم؟ وَمَاذَا فَعَلْتَ الْيَوْم؟",trans:"Kayfa ḥāluka l-yawm? Wa-mādhā faʿalta l-yawm?",en:"How are you today? And what did you do today?",hint:"Describe your mood and activities today."},
-  {id:"s3",theme:"family",level:"A2",ar:"صِفْ لِي عَائِلَتَكَ. كَمْ عَدَدُ أَفْرَادِهَا؟",trans:"Ṣif lī ʿāʾilataka. Kam ʿadadu afrādihā?",en:"Describe your family. How many members does it have?",hint:"Talk about parents, siblings, and family size."},
-  {id:"s4",theme:"daily_life",level:"A2",ar:"صِفْ يَوْمَكَ الْعَادِيّ مِنَ الصَّبَاحِ حَتَّى الْمَسَاء",trans:"Ṣif yawmaka l-ʿādiyy mina ṣ-ṣabāḥi ḥattā l-masāʾ",en:"Describe your typical day from morning until evening.",hint:"Use time expressions: صباحاً، ظهراً، مساءً and sequence words like ثم، بعد ذلك."},
-  {id:"s5",theme:"hobbies",level:"B1",ar:"مَا هِيَ هِوَايَاتُكَ الْمُفَضَّلَة؟ وَلِمَاذَا تُحِبُّهَا؟",trans:"Mā hiya hiwāyātuka l-mufaḍḍala?",en:"What are your favourite hobbies? And why do you like them?",hint:"Name hobbies and give reasons using لأن or لأنني."},
-  {id:"s6",theme:"travel",level:"B1",ar:"صِفْ مَكَاناً زُرْتَهُ وَأَثَّرَ فِيك. لِمَاذَا كَانَ مُمَيَّزاً؟",trans:"Ṣif makānan zurrtahu wa-aththara fīk.",en:"Describe a place you visited that had an impact on you. Why was it special?",hint:"Use descriptive adjectives, past tense verbs. Mention feelings."},
-  {id:"s7",theme:"opinion",level:"B2",ar:"مَا رَأْيُكَ فِي أَهَمِّيَّةِ تَعَلُّمِ اللُّغَاتِ الأَجْنَبِيَّة؟",trans:"Mā raʾyuka fī ahammiyyati taʿallumi l-lughāt?",en:"What is your opinion on the importance of learning foreign languages?",hint:"Use opinion phrases like في رأيي، أعتقد أن. Give arguments and examples."},
-  {id:"s8",theme:"society",level:"B2",ar:"كَيْفَ أَثَّرَتِ التِّكْنُولُوجْيَا عَلَى حَيَاتِنَا الاِجْتِمَاعِيَّة؟",trans:"Kayfa aththarat al-tiknūlūjiyā ʿalā ḥayātinā?",en:"How has technology impacted our social lives? Positive or negative?",hint:"Discuss both aspects. Use contrast words like بينما، على الرغم من."},
-  {id:"s9",theme:"culture",level:"C1",ar:"قَارِنْ بَيْنَ الثَّقَافَةِ الْعَرَبِيَّةِ وَثَقَافَةٍ أُخْرَى تَعْرِفُهَا",trans:"Qārin bayna th-thaqāfati l-ʿarabiyyati wa-thaqāfatin ukhrā",en:"Compare Arab culture with another culture you know in terms of values and traditions.",hint:"Use comparison structures: في حين أن، على النقيض من."},
-  {id:"s10",theme:"abstract",level:"C2",ar:"نَاقِشْ مَفْهُومَ الْهُوِيَّةِ الثَّقَافِيَّةِ فِي عَصْرِ الْعَوْلَمَة",trans:"Nāqish mafhūm al-huwiyyati th-thaqāfiyya fī ʿaṣr al-ʿawlama",en:"Discuss the concept of cultural identity in the age of globalization.",hint:"Use sophisticated discourse markers and nuanced vocabulary."},
-];
+// ══ STATE ══════════════════════════════════════════════════════════════════════
+let API_KEY = localStorage.getItem('groq_api_key') || '';
+let TARGET_LEVEL = 'mixed';
+let testData = { reading:[], listening:[], speaking:[], writing:[] };
+let results = { reading:{score:0,total:0}, listening:{score:0,total:0}, speaking:[], writing:[] };
+let currentSection = '';
+let readIdx=0, listIdx=0, speakIdx=0, writeIdx=0;
+let speakMode='voice', isRec=false, recognition=null, recogLang='ar';
+let currentTranscript='';
+let audioCtx=null, analyser=null, micStream=null, rafId=null;
+let currentUtterance=null, scriptShown=false;
 
-const CONV_QS = [
-  {type:"conversational",sub:"dialog",level:"A1",ar:"كَيْفَ حَالُكَ؟",trans:"Kayfa ḥāluk?",en:"How are you?",prompt:"Choose the most natural response:",opts:["أَنَا بِخَيْر، شُكْراً","أَنَا ذَهَبْتُ إِلَى السُّوق","هٰذَا كِتَابٌ جَمِيل","السَّمَاءُ زَرْقَاء"],correct:0,exp:"أَنَا بِخَيْر، شُكْراً (I'm fine, thank you) is the natural reply."},
-  {type:"conversational",sub:"grammar",level:"A1",ar:"أَنَا ___ طَالِبٌ",trans:"Anā ___ ṭālib",en:"I ___ a student",prompt:"Fill in the blank:",opts:["أَكَلَ","لَسْتُ","أَكُونُ (am)","ذَهَبَ"],correct:2,exp:"أَكُونُ means 'am' in Arabic."},
-  {type:"conversational",sub:"context",level:"A2",ar:"أَيْنَ الْمَطْعَمُ؟",trans:"Ayna l-maṭʿam?",en:"Where is the restaurant?",prompt:"Most helpful response?",opts:["الطَّعَامُ لَذِيذٌ","هُوَ فِي الشَّارِعِ الثَّالِث","أُحِبُّ الأَكْلَ الإِيطَالِي","سَأَذْهَبُ غَداً"],correct:1,exp:"هُوَ فِي الشَّارِعِ الثَّالِث directly answers the location question."},
-  {type:"conversational",sub:"expression",level:"A2",ar:"مَبْرُوك!",trans:"Mabrūk!",en:"Congratulations!",prompt:"When would you say this?",opts:["When someone is sick","When someone achieves something","When saying goodbye","When asking for help"],correct:1,exp:"مَبْرُوك is used to congratulate on achievement."},
-  {type:"conversational",sub:"grammar",level:"B1",ar:"لَوْ كُنْتُ غَنِيًّا، ___ سَافَرْتُ حَوْلَ الْعَالَم",trans:"Law kuntu ghaniyyan, ___ sāfartu",en:"If I were rich, I would have traveled",prompt:"Choose the correct conditional particle:",opts:["وَ","لَ","أَوْ","ثُمَّ"],correct:1,exp:"لَ is used in conditional sentences with لَوْ."},
-  {type:"conversational",sub:"dialog",level:"B1",ar:"مَاذَا تَفْعَلُ فِي وَقْتِ فَرَاغِك؟",trans:"Mādhā tafʿalu fī waqti farāghik?",en:"What do you do in your free time?",prompt:"Which response best answers this?",opts:["أَنَا أَعِيشُ فِي الْقَاهِرَة","أُحِبُّ الْقِرَاءَةَ وَمُشَاهَدَةَ الأَفْلَام","كَانَ الطَّقْسُ بَارِداً أَمْس","سَيَجِيءُ أَخِي غَداً"],correct:1,exp:"أُحِبُّ الْقِرَاءَةَ directly answers about free time activities."},
-  {type:"conversational",sub:"context",level:"B2",ar:"مَا رَأْيُكَ فِي هٰذِهِ الْقَضِيَّة؟",trans:"Mā raʾyuka fī hādhihi l-qaḍiyya?",en:"What is your opinion on this issue?",prompt:"Best formal opinion opener?",opts:["مِنْ وِجْهَةِ نَظَرِي...","أَعْتَقِدُ أَنَّ...","فِي رَأْيِي الْمُتَوَاضِع...","كُلُّ هٰذِهِ صَحِيحَة"],correct:3,exp:"All three phrases are valid formal opinion openers."},
-  {type:"conversational",sub:"expression",level:"B2",ar:"إِنْ شَاءَ اللّٰه",trans:"In shāʾa Allāh",en:"God willing",prompt:"This phrase implies:",opts:["A definite yes","A definite no","Uncertainty or hope about the future","An apology"],correct:2,exp:"إِنْ شَاءَ اللّٰه expresses hope or uncertainty about the future."},
-  {type:"conversational",sub:"grammar",level:"C1",ar:"الْكِتَابُ الَّذِي قَرَأْتُهُ كَانَ مُمْتِعاً",trans:"Al-kitābu lladhī qaraʾtuhu kāna mumtiʿan",en:"The book that I read was enjoyable",prompt:"Grammatical structure used?",opts:["Simple past tense","Relative clause with الَّذِي","Conditional sentence","Passive voice"],correct:1,exp:"الَّذِي forms a relative clause modifying الْكِتَاب."},
-  {type:"conversational",sub:"context",level:"C2",ar:"تَكَادُ تَكُونُ الْعَرَبِيَّةُ لُغَةَ الْقُرْآن",trans:"Takādu takūnu l-ʿarabiyyatu lughat al-Qurʾān",en:"Arabic is almost the language of the Quran",prompt:"تَكَاد expresses:",opts:["Certainty","Near certainty / approximation","Impossibility","Past habitual action"],correct:1,exp:"تَكَادُ is an auxiliary expressing nearness — 'almost' or 'nearly'."},
-];
+// ══ UTILS ═════════════════════════════════════════════════════════════════════
+function show(id){ document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active')); document.getElementById('screen-'+id).classList.add('active'); window.scrollTo(0,0); }
+function notif(msg,dur=3500){ const el=document.getElementById('notif'); el.textContent=msg; el.style.display='block'; setTimeout(()=>el.style.display='none',dur); }
+function scoreColor(n){ return n>=8?'#7ed4a4':n>=6?'#D4AF37':n>=4?'#e8b87e':'#e87e7e'; }
+function cefrFromScore(s){ return s>=9?'C2':s>=7.5?'C1':s>=6?'B2':s>=4.5?'B1':s>=3?'A2':'A1'; }
 
-const LEX_QS = [
-  {type:"lexical",sub:"basic",level:"A1",ar:"بَيْت",trans:"Bayt",prompt:"What does this mean?",opts:["School","House/Home","Car","Book"],correct:1,exp:"بَيْت (Bayt) means 'house' or 'home'."},
-  {type:"lexical",sub:"basic",level:"A1",ar:"مَاء",trans:"Māʾ",prompt:"What does this mean?",opts:["Fire","Air","Water","Earth"],correct:2,exp:"مَاء (Māʾ) means 'water'."},
-  {type:"lexical",sub:"thematic",level:"A2",ar:"الأُسْرَة",trans:"Al-usra",en:"The family",prompt:"Which word does NOT belong to family theme?",opts:["أَب (father)","أُم (mother)","سَيَّارَة (car)","أَخ (brother)"],correct:2,exp:"سَيَّارَة (car) belongs to transportation, not family."},
-  {type:"lexical",sub:"synonym",level:"A2",ar:"جَمِيل",trans:"Jamīl",en:"Beautiful",prompt:"Closest synonym?",opts:["قَبِيح (ugly)","حَسَن (good/handsome)","صَغِير (small)","بَعِيد (far)"],correct:1,exp:"حَسَن (ḥasan) means 'good' or 'handsome/beautiful'."},
-  {type:"lexical",sub:"context",level:"B1",ar:"ذَهَبَ مُحَمَّدٌ إِلَى الْمَكْتَبَة لِـ___",trans:"Dhahaba Muḥammadun ilā l-maktaba li-___",prompt:"Complete logically:",opts:["يَأْكُلَ الطَّعَام","يَقْرَأَ الْكُتُب","يَسْبَحَ فِي الْبَحْر","يُشَاهِدَ التِّلْفِيزْيُون"],correct:1,exp:"يَقْرَأَ الْكُتُب (to read books) is the most logical reason."},
-  {type:"lexical",sub:"thematic",level:"B1",ar:"الطَّقْس",trans:"Al-ṭaqs",en:"Weather",prompt:"Which group belongs to weather?",opts:["طَبِيب، مَرِيض، دَوَاء","مَطَر، رِيح، سَحَاب","كِتَاب، قَلَم، مَدْرَسَة","أَسَد، قِرْد، فِيل"],correct:1,exp:"مَطَر (rain), رِيح (wind), سَحَاب (clouds) — all weather vocabulary."},
-  {type:"lexical",sub:"antonym",level:"B2",ar:"مَا ضِدُّ كَلِمَة 'سَعِيد'؟",trans:"Mā ḍiddu kalimat 'saʿīd'?",en:"Antonym of 'happy'?",prompt:"Choose the antonym:",opts:["فَرِح (joyful)","مَسْرُور (pleased)","حَزِين (sad)","نَشِيط (active)"],correct:2,exp:"حَزِين (ḥazīn) is the direct antonym of سَعِيد."},
-  {type:"lexical",sub:"context",level:"B2",ar:"كَانَ الْخِطَابُ ___ جِدًّا وَأَثَّرَ فِي الْجُمْهُور",trans:"Kāna l-khiṭābu ___ jiddan",en:"The speech was very ___ and moved the audience",prompt:"Most appropriate word:",opts:["بَارِد (cold)","مُؤَثِّر (moving)","قَدِيم (old)","بَسِيط (simple)"],correct:1,exp:"مُؤَثِّر (muʾaththir) meaning 'impactful/moving' fits best."},
-  {type:"lexical",sub:"synonym",level:"C1",ar:"اِسْتَمَرَّ",trans:"Istamarr",en:"Continued/persisted",prompt:"Closest synonym?",opts:["اِنْتَهَى (ended)","تَوَاصَلَ (continued)","بَدَأَ (started)","انْقَطَعَ (interrupted)"],correct:1,exp:"تَوَاصَلَ is a close synonym meaning 'to continue'."},
-  {type:"lexical",sub:"context",level:"C2",ar:"يَتَّسِمُ أُسْلُوبُهُ بِالدِّقَّةِ وَالْإِيجَاز",trans:"Yattasimu uslūbuhu bi-d-diqqa wa-l-ījāz",en:"His style is characterized by precision and conciseness",prompt:"الْإِيجَاز means:",opts:["Verbosity","Ambiguity","Conciseness/brevity","Metaphor"],correct:2,exp:"الْإِيجَاز (al-ījāz) means 'conciseness' or 'brevity'."},
-];
-
-const THEME_ICONS = {general:"💬",family:"👨‍👩‍👧",daily_life:"🌅",hobbies:"🎨",travel:"✈️",opinion:"💭",society:"🌐",culture:"🏛️",abstract:"🧠"};
-const THEME_LABELS = {general:"General",family:"Family · الأسرة",daily_life:"Daily Life · الحياة اليومية",hobbies:"Hobbies · الهوايات",travel:"Travel · السفر",opinion:"Opinion · الرأي",society:"Society · المجتمع",culture:"Culture · الثقافة",abstract:"Abstract · مجرد"};
-const DIM_INFO = [{k:"fluency",l:"Fluency",i:"🌊",c:"#7eb8e8"},{k:"grammar",l:"Grammar",i:"📐",c:"#b87ee8"},{k:"vocabulary",l:"Vocabulary",i:"📚",c:"#7ed4a4"},{k:"relevance",l:"Relevance",i:"🎯",c:"#e8c87e"}];
-
-// ══ STATE ═════════════════════════════════════════════════════════════════════
-let apiKey = '';
-let mcqMode = 'conversational', mcqLevel = 'all';
-let speakLevel = 'all', speakTheme = 'all';
-let mcqQuestions = [], mcqIdx = 0, mcqScore = 0, mcqAnswers = [];
-let speakQuestions = [], speakIdx = 0, speakResults = [];
-let inputMode = 'voice', isRecording = false;
-let recognition = null, audioCtx = null, analyser = null, stream = null, rafId = null;
-let recogLang = 'ar';
-let barsInterval = null;
-let currentTranscript = '';
-
-// ══ NAVIGATION ════════════════════════════════════════════════════════════════
-function show(id) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById('screen-' + id).classList.add('active');
-  window.scrollTo(0, 0);
+function setLevel(lv){
+  TARGET_LEVEL=lv;
+  document.querySelectorAll('#level-btns .btn-outline').forEach(b=>b.classList.toggle('active',b.dataset.lv===lv));
 }
 
-function notif(msg, dur=3000) {
-  const el = document.getElementById('notif');
-  el.textContent = msg; el.style.display = 'block';
-  setTimeout(() => el.style.display = 'none', dur);
-}
-
-function scoreColor(n) { return n>=8?'#7ed4a4':n>=6?'#D4AF37':n>=4?'#e8b87e':'#e87e7e'; }
-function scoreLabel(n) { return n>=9?'Excellent':n>=7?'Good':n>=5?'Fair':'Needs Work'; }
-
-// ══ MCQ ═══════════════════════════════════════════════════════════════════════
-function goMCQ(mode) { mcqMode = mode; setMcqMode(mode); show('mcq-setup'); }
-
-function setMcqMode(m) {
-  mcqMode = m;
-  document.querySelectorAll('#mcq-mode-btns .btn-outline').forEach(b => { b.classList.toggle('active', b.dataset.mode === m); });
-}
-
-function setMcqLevel(lv) {
-  mcqLevel = lv;
-  document.querySelectorAll('#mcq-level-btns .btn-outline').forEach(b => { b.classList.toggle('active', b.dataset.lv === lv); });
-}
-
-function startMCQ() {
-  let pool = mcqMode==='conversational' ? CONV_QS : mcqMode==='lexical' ? LEX_QS : [...CONV_QS,...LEX_QS];
-  if (mcqLevel !== 'all') pool = pool.filter(q => q.level === mcqLevel);
-  if (!pool.length) pool = [...CONV_QS,...LEX_QS];
-  mcqQuestions = pool.sort(()=>Math.random()-.5).slice(0,10);
-  mcqIdx = 0; mcqScore = 0; mcqAnswers = [];
-  renderMCQ(); show('quiz');
-}
-
-function renderMCQ() {
-  const q = mcqQuestions[mcqIdx];
-  if (!q) return;
-  const pct = ((mcqIdx + 0) / mcqQuestions.length) * 100;
-  document.getElementById('quiz-progress').style.width = pct + '%';
-  document.getElementById('quiz-counter').textContent = `Q ${mcqIdx+1} / ${mcqQuestions.length}`;
-  document.getElementById('quiz-score').textContent = mcqScore;
-  document.getElementById('quiz-ar').textContent = q.ar;
-  document.getElementById('quiz-trans').textContent = q.trans;
-  const enEl = document.getElementById('quiz-en');
-  enEl.textContent = q.en || ''; enEl.style.color = '#b89850';
-  document.getElementById('quiz-prompt').textContent = q.prompt;
-
-  const modeColor = q.type === 'conversational' ? '#7eb8e8' : '#7ed4a4';
-  const subtypeLabels = {dialog:'Dialog',grammar:'Grammar',context:'Context',expression:'Expression',basic:'Basic Vocab',thematic:'Thematic',synonym:'Synonym',antonym:'Antonym'};
-  document.getElementById('quiz-badges').innerHTML = `
-    <span class="badge" style="background:rgba(212,175,55,.1);border:1px solid rgba(212,175,55,.2);color:var(--gold)">Level ${q.level}</span>
-    <span class="badge" style="background:rgba(126,184,232,.1);border:1px solid rgba(126,184,232,.2);color:${modeColor};text-transform:capitalize">${q.type}</span>
-    <span class="badge" style="background:rgba(255,255,255,.03);border:1px solid var(--border);color:var(--muted)">${subtypeLabels[q.sub]||q.sub}</span>
-  `;
-
-  const optsEl = document.getElementById('quiz-options');
-  optsEl.innerHTML = '';
-  q.opts.forEach((opt, i) => {
-    const btn = document.createElement('button');
-    btn.className = 'opt-btn';
-    btn.style.cssText = `padding:12px 14px;border-radius:9px;border:2px solid var(--border);background:rgba(255,255,255,.02);color:var(--body);font-family:'Outfit',sans-serif;font-size:13px;text-align:left;width:100%;display:flex;align-items:center;gap:10px;transition:all .15s`;
-    btn.innerHTML = `<span style="width:21px;height:21px;border-radius:50%;border:1.5px solid var(--muted);display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0">${['A','B','C','D'][i]}</span>${opt}`;
-    btn.onmouseenter = () => { if(!btn.disabled) btn.style.borderColor='var(--gold)'; };
-    btn.onmouseleave = () => { if(!btn.disabled) btn.style.borderColor='var(--border)'; };
-    btn.onclick = () => selectMCQ(i);
-    optsEl.appendChild(btn);
-  });
-
-  document.getElementById('quiz-explanation').style.display = 'none';
-  document.getElementById('quiz-next').style.display = 'none';
-}
-
-function selectMCQ(i) {
-  const q = mcqQuestions[mcqIdx];
-  const correct = i === q.correct;
-  if (correct) mcqScore++;
-  mcqAnswers.push({q, chosen:i, correct});
-
-  const btns = document.querySelectorAll('#quiz-options button');
-  btns.forEach((btn, idx) => {
-    btn.disabled = true;
-    if (idx === q.correct) { btn.style.borderColor='var(--green)'; btn.style.background='rgba(126,212,164,.09)'; btn.style.color='var(--green)'; btn.querySelector('span').textContent='✓'; }
-    else if (idx === i && !correct) { btn.style.borderColor='var(--red)'; btn.style.background='rgba(232,126,126,.09)'; btn.style.color='var(--red)'; btn.querySelector('span').textContent='✗'; }
-    else { btn.style.borderColor='#1a1006'; btn.style.color='#352010'; }
-  });
-  document.getElementById('quiz-score').textContent = mcqScore;
-
-  const expEl = document.getElementById('quiz-explanation');
-  expEl.style.display = 'block';
-  expEl.innerHTML = `<p style="font-size:12px;line-height:1.6;margin:0;color:var(--body)">💡 ${q.exp}</p>`;
-
-  const nextBtn = document.getElementById('quiz-next');
-  nextBtn.style.display = 'block';
-  nextBtn.textContent = mcqIdx+1 >= mcqQuestions.length ? 'View Results →' : 'Next Question →';
-  document.getElementById('quiz-progress').style.width = ((mcqIdx+1)/mcqQuestions.length*100)+'%';
-}
-
-function nextMCQ() {
-  mcqIdx++;
-  if (mcqIdx >= mcqQuestions.length) { renderMCQResult(); show('mcq-result'); return; }
-  renderMCQ();
-}
-
-function renderMCQResult() {
-  const pct = Math.round(mcqScore / mcqQuestions.length * 100);
-  const gi = pct>=90?{l:'Excellent',ar:'مُمْتَاز',c:'#D4AF37'}:pct>=75?{l:'Good',ar:'جَيِّد جِدًّا',c:'#7ed4a4'}:pct>=60?{l:'Fair',ar:'جَيِّد',c:'#7eb8e8'}:{l:'Needs Work',ar:'يَحْتَاجُ تَحْسِين',c:'#e87e7e'};
-  document.getElementById('mcq-result-hero').innerHTML = `
-    <div style="font-size:48px;margin-bottom:8px">${pct>=90?'🌟':pct>=75?'✨':pct>=60?'📚':'💪'}</div>
-    <div class="arabic" style="font-size:26px;color:${gi.c};margin-bottom:2px">${gi.ar}</div>
-    <h2 class="gold" style="font-size:24px;margin-bottom:14px">${gi.l}</h2>
-    <div style="font-size:52px;font-family:'Playfair Display',serif;color:var(--gold);line-height:1">${mcqScore}<span style="font-size:22px;color:var(--muted)">/${mcqQuestions.length}</span></div>
-    <div class="muted" style="font-size:12px;margin-top:4px">${pct}% Correct</div>
-  `;
-  document.getElementById('mcq-review').innerHTML = mcqAnswers.map(a => `
-    <div style="padding:9px 13px;border-radius:9px;border:1px solid ${a.correct?'rgba(126,212,164,.18)':'rgba(232,126,126,.18)'};background:rgba(${a.correct?'126,212,164':'232,126,126'},.04);display:flex;gap:9px;align-items:flex-start;margin-bottom:7px">
-      <span>${a.correct?'✅':'❌'}</span>
-      <div style="flex:1">
-        <div class="arabic" style="color:#e8d070;font-size:14px">${a.q.ar}</div>
-        <div class="muted" style="font-size:10px;margin-top:2px">
-          ${!a.correct?`<span style="color:var(--red)">Chose: ${a.q.opts[a.chosen]} · </span>`:''}
-          <span style="color:var(--green)">Correct: ${a.q.opts[a.q.correct]}</span>
-        </div>
-      </div>
-      <span class="badge muted" style="border:1px solid var(--border);border-radius:4px">${a.q.level}</span>
-    </div>
-  `).join('');
-}
-
-// ══ SPEAKING ══════════════════════════════════════════════════════════════════
-function goSpeaking() { show('speaking-setup'); }
-
-function setSpeakLevel(lv) {
-  speakLevel = lv;
-  document.querySelectorAll('#speak-level-btns .btn-outline').forEach(b => b.classList.toggle('active', b.dataset.lv === lv));
-}
-
-function setSpeakTheme(th) {
-  speakTheme = th;
-  document.querySelectorAll('#speak-theme-btns .btn-outline').forEach(b => b.classList.toggle('active', b.dataset.th === th));
-}
-
-function startSpeaking() {
-  let pool = SPEAKING_QS;
-  if (speakLevel !== 'all') pool = pool.filter(q => q.level === speakLevel);
-  if (speakTheme !== 'all') pool = pool.filter(q => q.theme === speakTheme);
-  if (!pool.length) pool = SPEAKING_QS;
-  speakQuestions = pool.sort(()=>Math.random()-.5).slice(0,5);
-  speakIdx = 0; speakResults = [];
-  renderSpeakQ(); show('speaking');
-}
-
-function renderSpeakQ() {
-  const q = speakQuestions[speakIdx];
-  if (!q) return;
-  stopRecording();
-  currentTranscript = '';
-  document.getElementById('typed-answer').value = '';
-  document.getElementById('transcript-text').textContent = '';
-  document.getElementById('transcript-box').style.display = 'none';
-  document.getElementById('speak-eval').style.display = 'none';
-  document.getElementById('speak-input-section').style.display = 'block';
-  document.getElementById('processing-msg').style.display = 'none';
-
-  document.getElementById('speak-counter').textContent = `Q${speakIdx+1}/${speakQuestions.length}`;
-  document.getElementById('speak-level-badge').textContent = 'Level ' + q.level;
-  document.getElementById('speak-progress').style.width = (speakIdx/speakQuestions.length*100)+'%';
-  document.getElementById('speak-theme-label').textContent = (THEME_ICONS[q.theme]||'💬') + ' ' + (THEME_LABELS[q.theme]||q.theme);
-  document.getElementById('speak-ar').textContent = q.ar;
-  document.getElementById('speak-trans').textContent = q.trans;
-  document.getElementById('speak-en').textContent = q.en;
-  document.getElementById('speak-hint').textContent = q.hint;
-
-  setInputMode(inputMode);
-  updateSubmitBtn();
-}
-
-function setInputMode(mode) {
-  inputMode = mode;
-  document.getElementById('voice-panel').style.display = mode==='voice'?'block':'none';
-  document.getElementById('type-panel').style.display = mode==='type'?'block':'none';
-  document.getElementById('btn-voice').classList.toggle('active', mode==='voice');
-  document.getElementById('btn-type').classList.toggle('active', mode==='type');
-  if (mode==='type' && isRecording) stopRecording();
-  updateSubmitBtn();
-}
-
-function updateSubmitBtn() {
-  const btn = document.getElementById('submit-btn');
-  const ans = inputMode==='voice' ? currentTranscript : document.getElementById('typed-answer').value;
-  btn.disabled = !ans.trim();
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('typed-answer').addEventListener('input', updateSubmitBtn);
-});
-
-// ── Voice recording ──────────────────────────────────────────────────────────
-function setRecogLang(lang) {
-  recogLang = lang;
-  document.querySelectorAll('#lang-btns .btn-outline').forEach(b => b.classList.toggle('active', b.dataset.lang === lang));
-  if (isRecording) { stopRecording(); }
-}
-
-function clearTranscript() {
-  currentTranscript = '';
-  document.getElementById('transcript-text').textContent = '';
-  document.getElementById('transcript-box').style.display = 'none';
-  updateSubmitBtn();
-}
-
-function saveApiKey() {
-  const key = document.getElementById('api-key-input').value.trim();
-  const errEl = document.getElementById('apikey-error');
-  if (key.length < 10) {
-    errEl.style.display = 'block';
-    errEl.textContent = 'API key tidak valid. Pastikan sudah copy dengan benar.';
-    return;
-  }
-  apiKey = key;
-  errEl.style.display = 'none';
-  show('home');
-}
-
-function toggleRecording() {
-  isRecording ? stopRecording() : startRecording();
-}
-
-function startRecording() {
-  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-  if (!SR) {
-    notif('Speech recognition requires Chrome or Edge. Please use typing mode.', 4000);
-    setInputMode('type'); return;
-  }
-
-  recognition = new SR();
-  recognition.lang = recogLang;
-  recognition.continuous = false;
-  recognition.interimResults = true;
-  recognition.maxAlternatives = 1;
-
-  recognition.onresult = (e) => {
-    let interim = '', final = '';
-    for (let i = e.resultIndex; i < e.results.length; i++) {
-      const t = e.results[i][0].transcript;
-      if (e.results[i].isFinal) final += t + ' ';
-      else interim += t;
-    }
-    if (final) currentTranscript += final;
-    const display = (currentTranscript + interim).trim();
-    if (display) {
-      document.getElementById('transcript-text').textContent = display;
-      document.getElementById('transcript-box').style.display = 'block';
-      updateSubmitBtn();
-    }
-  };
-
-  recognition.onerror = (e) => {
-    console.log('Speech error:', e.error);
-    if (e.error === 'no-speech') {
-      // silently ignore, onend will restart
-    } else if (e.error === 'language-not-supported' || e.error === 'service-not-allowed') {
-      stopRecording();
-      notif('Arabic not supported on this device. Try Indonesia or English language option.', 5000);
-    } else if (e.error === 'network') {
-      stopRecording();
-      notif('Network error. Check internet connection.', 4000);
-    } else {
-      stopRecording();
-      notif('Error: ' + e.error + '. Try typing mode instead.', 4000);
-    }
-  };
-
-  recognition.onend = () => {
-    // restart loop while user hasn't tapped stop
-    if (isRecording) {
-      try { recognition.start(); } catch(err) { stopRecording(); }
-    }
-  };
-
-  recognition.start();
-  isRecording = true;
-
-  // UI
-  const btn = document.getElementById('mic-btn');
-  btn.style.borderColor = '#e87e7e'; btn.style.background = 'rgba(232,126,126,.12)'; btn.textContent = '⏹️';
-  btn.classList.add('pulse');
-  document.getElementById('ripple1').style.display = 'block';
-  document.getElementById('ripple2').style.display = 'block';
-  document.getElementById('rec-status').textContent = '🔴 Recording Arabic... tap ⏹️ to stop';
-
-  // Audio visualizer
-  startVisualizer();
-}
-
-function stopRecording() {
-  if (!isRecording) return;
-  isRecording = false;
-  if (recognition) {
-    recognition.onend = null;
-    recognition.onresult = null;
-    recognition.onerror = null;
-    try { recognition.stop(); } catch(e) {}
-    recognition = null;
-  }
-  stopVisualizer();
-  const btn = document.getElementById('mic-btn');
-  btn.style.borderColor = 'var(--gold)'; btn.style.background = 'rgba(212,175,55,.08)'; btn.textContent = '🎙️';
-  btn.classList.remove('pulse');
-  document.getElementById('ripple1').style.display = 'none';
-  document.getElementById('ripple2').style.display = 'none';
-  document.getElementById('rec-status').textContent = 'Tap 🎙️ to record your Arabic answer';
-  document.getElementById('bars-container').style.display = 'none';
-  const display = currentTranscript.trim();
-  if (display) {
-    document.getElementById('transcript-text').textContent = display;
-    document.getElementById('transcript-box').style.display = 'block';
-  }
-  updateSubmitBtn();
-}
-
-async function startVisualizer() {
-  try {
-    stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    analyser = audioCtx.createAnalyser(); analyser.fftSize = 128;
-    audioCtx.createMediaStreamSource(stream).connect(analyser);
-
-    const barsEl = document.getElementById('bars-container');
-    barsEl.innerHTML = '';
-    barsEl.style.display = 'flex';
-    const barEls = Array.from({length:20}).map((_,i) => {
-      const b = document.createElement('div');
-      b.className = 'bar';
-      b.style.background = `hsl(${10+i*6},80%,60%)`;
-      barsEl.appendChild(b); return b;
-    });
-
-    const data = new Uint8Array(analyser.frequencyBinCount);
-    const loop = () => {
-      if (!isRecording) return;
-      analyser.getByteFrequencyData(data);
-      barEls.forEach((b, i) => {
-        const v = data[Math.floor(i*3)]||0;
-        b.style.height = Math.max(6, Math.min(100, v*0.9)) + '%';
-      });
-      rafId = requestAnimationFrame(loop);
-    };
-    loop();
-  } catch(e) { console.log('Visualizer failed:', e); }
-}
-
-function stopVisualizer() {
-  cancelAnimationFrame(rafId);
-  stream?.getTracks().forEach(t => t.stop());
-  audioCtx?.close(); audioCtx = null; analyser = null; stream = null;
-}
-
-// ── AI Evaluation ─────────────────────────────────────────────────────────────
-async function submitSpeaking() {
-  const answer = inputMode==='voice' ? currentTranscript : document.getElementById('typed-answer').value;
-  if (!answer.trim()) return;
-  if (isRecording) stopRecording();
-
-  const btn = document.getElementById('submit-btn');
-  btn.disabled = true;
-  btn.innerHTML = '<span class="spin">⚙️</span> Evaluating with AI...';
-  document.getElementById('processing-msg').style.display = 'block';
-
-  try {
-    const q = speakQuestions[speakIdx];
-    const ev = await callClaudeAPI(q, answer);
-    speakResults.push({q, transcript:answer, evaluation:ev});
-    renderEvaluation(ev);
-    document.getElementById('speak-input-section').style.display = 'none';
-    document.getElementById('speak-eval').style.display = 'block';
-    document.getElementById('next-speak-btn').textContent = speakIdx+1>=speakQuestions.length ? 'View Final Results →' : `Next Question (${speakIdx+2}/${speakQuestions.length}) →`;
-  } catch(e) {
-    console.error(e);
-    notif('Evaluation failed. Please try again.', 3000);
-    btn.disabled = false;
-    btn.textContent = 'Submit for AI Evaluation →';
-    document.getElementById('processing-msg').style.display = 'none';
-  }
-}
-
-async function callClaudeAPI(question, transcript) {
-  const systemPrompt = `You are an expert Arabic language examiner with deep knowledge of CEFR levels. Evaluate the student's Arabic response. Be honest but encouraging.
-
-Respond ONLY with a valid JSON object, no markdown, no preamble:
-{
-  "fluency": { "score": 0-10, "comment": "brief comment" },
-  "grammar": { "score": 0-10, "comment": "brief comment", "errors": ["error1"] },
-  "vocabulary": { "score": 0-10, "comment": "brief comment", "highlights": ["good word"] },
-  "relevance": { "score": 0-10, "comment": "brief comment" },
-  "overall": { "score": 0-10, "cefr_estimate": "A1/A2/B1/B2/C1/C2", "summary": "2-3 sentence summary", "improvement_tips": ["tip1", "tip2", "tip3"] },
-  "corrected_version": "An improved Arabic version of what the student said",
-  "arabic_feedback": "1-2 sentences of encouraging feedback in Arabic"
-}`;
-
-  const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + apiKey
-    },
-    body: JSON.stringify({
-      model: 'llama-3.3-70b-versatile',
-      max_tokens: 1000,
-      temperature: 0.3,
-      messages: [
-        { role: 'system', content: systemPrompt },
-        { role: 'user', content: 'Question (Level ' + question.level + '): ' + question.ar + '\nTranslation: ' + question.en + '\n\nStudent response: "' + transcript + '"\n\nEvaluate fluency, grammar, vocabulary, and relevance.' }
-      ]
+// ══ GROQ API ══════════════════════════════════════════════════════════════════
+async function groq(systemPrompt, userMsg, json=true){
+  const res = await fetch('https://api.groq.com/openai/v1/chat/completions',{
+    method:'POST',
+    headers:{'Content-Type':'application/json','Authorization':'Bearer '+API_KEY},
+    body:JSON.stringify({
+      model:'llama-3.3-70b-versatile',
+      max_tokens:1500,
+      temperature:0.4,
+      messages:[{role:'system',content:systemPrompt},{role:'user',content:userMsg}]
     })
   });
   const data = await res.json();
-  if (data.error) throw new Error(data.error.message || JSON.stringify(data.error));
+  if(data.error) throw new Error(data.error.message||JSON.stringify(data.error));
   const text = data.choices[0].message.content;
+  if(!json) return text;
   return JSON.parse(text.replace(/```json|```/g,'').trim());
 }
 
-function renderEvaluation(ev) {
-  // Arabic feedback
-  document.getElementById('eval-arabic-fb').textContent = ev.arabic_feedback || '';
-  // Overall score
-  const sc = ev.overall.score;
-  document.getElementById('eval-overall-score').textContent = sc;
-  document.getElementById('eval-overall-score').style.color = scoreColor(sc);
-  document.getElementById('eval-overall-label').textContent = scoreLabel(sc);
-  document.getElementById('eval-overall-label').style.color = scoreColor(sc);
-  document.getElementById('eval-cefr').textContent = 'Est. CEFR: ' + ev.overall.cefr_estimate;
-  document.getElementById('eval-summary').textContent = ev.overall.summary;
-
-  // Dimensions
-  document.getElementById('eval-dims').innerHTML = DIM_INFO.map(d => {
-    const dim = ev[d.k] || {};
-    const errors = (dim.errors||[]).map(e=>`<div style="font-size:10px;color:var(--red);margin-top:3px">⚠ ${e}</div>`).join('');
-    const highlights = (dim.highlights||[]).map(h=>`<div style="font-size:10px;color:var(--green);margin-top:3px">✓ ${h}</div>`).join('');
-    return `<div class="dim-card" style="border:1px solid ${d.c}25">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:7px">
-        <span style="color:${d.c};font-size:12px">${d.i} ${d.l}</span>
-        <span style="color:${d.c};font-family:'Playfair Display',serif;font-size:20px">${dim.score||0}</span>
-      </div>
-      <div class="score-bar"><div class="score-fill" style="width:${(dim.score||0)*10}%;background:${d.c}"></div></div>
-      <p class="muted" style="font-size:11px;margin:0;line-height:1.5">${dim.comment||''}</p>
-      ${errors}${highlights}
-    </div>`;
-  }).join('');
-
-  // Corrected version
-  if (ev.corrected_version) {
-    document.getElementById('eval-corrected').style.display = 'block';
-    document.getElementById('eval-corrected-text').textContent = ev.corrected_version;
-  }
-
-  // Tips
-  if (ev.overall.improvement_tips?.length) {
-    document.getElementById('eval-tips').style.display = 'block';
-    document.getElementById('eval-tips-list').innerHTML = ev.overall.improvement_tips.map(t=>`<div class="muted" style="font-size:12px;line-height:1.55;margin-bottom:5px">· ${t}</div>`).join('');
+// ══ GENERATE TEST ═════════════════════════════════════════════════════════════
+async function startTest(){
+  const inputKey = document.getElementById('api-key-input').value.trim();
+  const savedKey = localStorage.getItem('groq_api_key') || '';
+  const key = inputKey || savedKey;
+  const errEl = document.getElementById('cover-error');
+  if(!key){ errEl.style.display='block'; errEl.textContent='Masukkan API key terlebih dahulu.'; return; }
+  if(inputKey) localStorage.setItem('groq_api_key', inputKey);
+  API_KEY = key; errEl.style.display='none';
+  show('generating');
+  try {
+    await generateAll();
+    showSectionIntro('reading');
+  } catch(e){
+    console.error(e);
+    show('cover');
+    errEl.style.display='block';
+    errEl.textContent='Gagal generate soal: '+e.message+'. Cek API key dan koneksi internet.';
   }
 }
 
-function nextSpeaking() {
+function setGen(label, pct){ document.getElementById('gen-label').textContent=label; document.getElementById('gen-pct').textContent=pct+'%'; document.getElementById('gen-bar').style.width=pct+'%'; }
+
+async function generateAll(){
+  const lvMap = {'mixed':'A1 to C2, mix of levels','A1-A2':'A1 and A2 beginner','B1-B2':'B1 and B2 intermediate','C1-C2':'C1 and C2 advanced'};
+  const lvDesc = lvMap[TARGET_LEVEL]||'mixed levels';
+
+  setGen('Reading questions...', 10);
+  testData.reading = await generateReading(lvDesc);
+  setGen('Listening scripts...', 35);
+  testData.listening = await generateListening(lvDesc);
+  setGen('Speaking questions...', 65);
+  testData.speaking = await generateSpeaking(lvDesc);
+  setGen('Writing tasks...', 85);
+  testData.writing = await generateWriting(lvDesc);
+  setGen('Ready!', 100);
+  await new Promise(r=>setTimeout(r,500));
+}
+
+async function generateReading(lvDesc){
+  const sys = `You are an Arabic language test designer. Generate reading comprehension questions. Respond ONLY with valid JSON array, no markdown.`;
+  const usr = `Generate 5 Arabic reading comprehension question sets for level ${lvDesc}.
+Return JSON array of 5 objects:
+[{
+  "passage": "Arabic text passage (3-6 sentences, with full diacritics/harakat)",
+  "passage_translation": "English translation of passage",
+  "question": "Question about the passage (in English)",
+  "options": ["A) option","B) option","C) option","D) option"],
+  "correct": 0,
+  "explanation": "Why this answer is correct"
+}]
+Make passages varied: daily life, culture, narrative, descriptive, informational.`;
+  return await groq(sys, usr);
+}
+
+async function generateListening(lvDesc){
+  const sys = `You are an Arabic language test designer. Generate listening comprehension items. Respond ONLY with valid JSON array, no markdown.`;
+  const usr = `Generate 5 Arabic listening comprehension items for level ${lvDesc}.
+Return JSON array of 5 objects:
+[{
+  "script": "Arabic audio script (2-4 sentences spoken Arabic with diacritics, natural conversational tone)",
+  "question": "Question about what was said (in English)",
+  "options": ["A) option","B) option","C) option","D) option"],
+  "correct": 0,
+  "explanation": "Why this answer is correct"
+}]
+Scripts should simulate real conversations: greetings, directions, announcements, dialogues.`;
+  return await groq(sys, usr);
+}
+
+async function generateSpeaking(lvDesc){
+  const sys = `You are an Arabic language test designer. Generate speaking prompts. Respond ONLY with valid JSON array, no markdown.`;
+  const usr = `Generate 3 speaking test questions for level ${lvDesc}.
+Return JSON array of 3 objects:
+[{
+  "ar": "Question in Arabic with full diacritics",
+  "en": "English translation of question",
+  "hint": "Brief tip on what to include in the answer",
+  "min_words": 20
+}]
+Topics: personal, opinion, description. Vary complexity by level.`;
+  return await groq(sys, usr);
+}
+
+async function generateWriting(lvDesc){
+  const sys = `You are an Arabic language test designer. Generate writing tasks. Respond ONLY with valid JSON array, no markdown.`;
+  const usr = `Generate 2 writing tasks for level ${lvDesc}.
+Return JSON array of 2 objects:
+[{
+  "ar": "Writing task instruction in Arabic with diacritics",
+  "en": "English translation of task",
+  "hint": "What to include, structure tips",
+  "min_words": 50,
+  "type": "paragraph or essay"
+}]
+Tasks: one personal/descriptive, one opinion/argumentative.`;
+  return await groq(sys, usr);
+}
+
+// ══ SECTION INTROS ════════════════════════════════════════════════════════════
+const SECTION_META = {
+  reading:{ icon:'📖', title:'Reading', color:'#7eb8e8', desc:'Read Arabic passages and answer comprehension questions.', tips:['Read the passage carefully before answering','Look for key words in the questions','Check all options before selecting'] },
+  listening:{ icon:'🎧', title:'Listening', color:'#e8c87e', desc:'Listen to Arabic audio and answer questions.', tips:['You can play the audio multiple times','Use "Show Text" if needed','Pay attention to context and tone'] },
+  speaking:{ icon:'🎙️', title:'Speaking', color:'#7ed4a4', desc:'Answer questions in Arabic. Your response will be evaluated by AI on fluency, grammar, vocabulary, and relevance.', tips:['Speak naturally — do not memorize scripts','Use the hints as guidance','Type your answer if mic is unavailable'] },
+  writing:{ icon:'✍️', title:'Writing', color:'#b87ee8', desc:'Write Arabic paragraphs or essays. AI will evaluate your grammar, vocabulary, coherence, and task achievement.', tips:['Write in Arabic script with diacritics if possible','Structure: intro, body, conclusion','Meet the minimum word count'] }
+};
+
+function showSectionIntro(section){
+  currentSection = section;
+  const m = SECTION_META[section];
+  document.getElementById('intro-icon').textContent = m.icon;
+  document.getElementById('intro-title').textContent = m.title;
+  document.getElementById('intro-title').style.color = m.color;
+  document.getElementById('intro-desc').textContent = m.desc;
+  const counts = {reading:5,listening:5,speaking:3,writing:2};
+  document.getElementById('intro-count').textContent = counts[section]+' questions · AI-generated';
+  document.getElementById('intro-tips').innerHTML = '<div class="muted" style="font-size:10px;letter-spacing:2px;margin-bottom:10px">💡 TIPS</div>' +
+    m.tips.map(t=>`<div style="color:var(--body);font-size:13px;line-height:1.6;margin-bottom:6px">· ${t}</div>`).join('');
+  show('section-intro');
+}
+
+function beginSection(){
+  if(currentSection==='reading'){ readIdx=0; renderReading(); show('reading'); }
+  else if(currentSection==='listening'){ listIdx=0; renderListening(); show('listening'); }
+  else if(currentSection==='speaking'){ speakIdx=0; renderSpeak(); show('speaking'); }
+  else if(currentSection==='writing'){ writeIdx=0; renderWrite(); show('writing'); }
+}
+
+// ══ READING ═══════════════════════════════════════════════════════════════════
+function renderReading(){
+  const q = testData.reading[readIdx];
+  if(!q) return;
+  const pct = (readIdx/testData.reading.length)*100;
+  document.getElementById('read-progress').style.width=pct+'%';
+  document.getElementById('read-counter').textContent=(readIdx+1)+'/'+testData.reading.length;
+  document.getElementById('read-passage').textContent=q.passage;
+  document.getElementById('read-passage-trans').textContent=q.passage_translation||'';
+  document.getElementById('read-question').textContent=q.question;
+  document.getElementById('read-explanation').style.display='none';
+  document.getElementById('read-next').style.display='none';
+
+  const optsEl=document.getElementById('read-options');
+  optsEl.innerHTML='';
+  q.options.forEach((opt,i)=>{
+    const btn=document.createElement('button');
+    btn.className='opt-mcq'; btn.disabled=false;
+    btn.innerHTML=`<span style="width:20px;height:20px;border-radius:50%;border:1.5px solid var(--muted);display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0">${['A','B','C','D'][i]}</span>${opt}`;
+    btn.onclick=()=>selectReading(i);
+    optsEl.appendChild(btn);
+  });
+}
+
+function selectReading(i){
+  const q=testData.reading[readIdx];
+  const correct=i===q.correct;
+  if(correct) results.reading.score++;
+  results.reading.total++;
+  document.querySelectorAll('.opt-mcq').forEach((btn,idx)=>{
+    btn.disabled=true;
+    if(idx===q.correct){btn.style.borderColor='var(--green)';btn.style.background='rgba(126,212,164,.09)';btn.style.color='var(--green)';btn.querySelector('span').textContent='✓';}
+    else if(idx===i&&!correct){btn.style.borderColor='var(--red)';btn.style.background='rgba(232,126,126,.09)';btn.style.color='var(--red)';btn.querySelector('span').textContent='✗';}
+    else{btn.style.borderColor='#1a1006';btn.style.color='#352010';}
+  });
+  const expEl=document.getElementById('read-explanation');
+  expEl.style.display='block'; expEl.textContent='💡 '+q.explanation;
+  const nxt=document.getElementById('read-next');
+  nxt.style.display='block';
+  nxt.textContent=readIdx+1>=testData.reading.length?'Finish Reading →':'Next →';
+  document.getElementById('read-progress').style.width=((readIdx+1)/testData.reading.length*100)+'%';
+}
+
+function nextReading(){
+  readIdx++;
+  if(readIdx>=testData.reading.length){ showSectionIntro('listening'); return; }
+  renderReading();
+}
+
+// ══ LISTENING ═════════════════════════════════════════════════════════════════
+function renderListening(){
+  const q=testData.listening[listIdx];
+  if(!q) return;
+  scriptShown=false;
+  document.getElementById('list-script').style.display='none';
+  document.getElementById('list-script').textContent=q.script;
+  document.getElementById('script-btn').textContent='Show Text';
+  document.getElementById('audio-status').textContent='Tap Play to hear the Arabic audio';
+  document.getElementById('play-btn').textContent='▶ Play Audio';
+  const pct=(listIdx/testData.listening.length)*100;
+  document.getElementById('list-progress').style.width=pct+'%';
+  document.getElementById('list-counter').textContent=(listIdx+1)+'/'+testData.listening.length;
+  document.getElementById('list-question').textContent=q.question;
+  document.getElementById('list-explanation').style.display='none';
+  document.getElementById('list-next').style.display='none';
+
+  const optsEl=document.getElementById('list-options');
+  optsEl.innerHTML='';
+  q.options.forEach((opt,i)=>{
+    const btn=document.createElement('button');
+    btn.className='opt-mcq';
+    btn.innerHTML=`<span style="width:20px;height:20px;border-radius:50%;border:1.5px solid var(--muted);display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0">${['A','B','C','D'][i]}</span>${opt}`;
+    btn.onclick=()=>selectListening(i);
+    optsEl.appendChild(btn);
+  });
+}
+
+function playAudio(){
+  const q=testData.listening[listIdx];
+  if(!q) return;
+  if(currentUtterance){ speechSynthesis.cancel(); }
+  const utter=new SpeechSynthesisUtterance(q.script);
+  utter.lang='ar-SA'; utter.rate=0.85; utter.pitch=1;
+  const voices=speechSynthesis.getVoices();
+  const arVoice=voices.find(v=>v.lang.startsWith('ar'));
+  if(arVoice) utter.voice=arVoice;
+  utter.onstart=()=>{ document.getElementById('audio-status').textContent='🔊 Playing...'; document.getElementById('play-btn').textContent='⏹ Stop'; };
+  utter.onend=()=>{ document.getElementById('audio-status').textContent='Done. You can play again.'; document.getElementById('play-btn').textContent='▶ Play Again'; };
+  currentUtterance=utter;
+  speechSynthesis.speak(utter);
+}
+
+function toggleScript(){
+  scriptShown=!scriptShown;
+  document.getElementById('list-script').style.display=scriptShown?'block':'none';
+  document.getElementById('script-btn').textContent=scriptShown?'Hide Text':'Show Text';
+}
+
+function selectListening(i){
+  const q=testData.listening[listIdx];
+  const correct=i===q.correct;
+  if(correct) results.listening.score++;
+  results.listening.total++;
+  speechSynthesis.cancel();
+  document.querySelectorAll('#list-options .opt-mcq').forEach((btn,idx)=>{
+    btn.disabled=true;
+    if(idx===q.correct){btn.style.borderColor='var(--green)';btn.style.background='rgba(126,212,164,.09)';btn.style.color='var(--green)';btn.querySelector('span').textContent='✓';}
+    else if(idx===i&&!correct){btn.style.borderColor='var(--red)';btn.style.background='rgba(232,126,126,.09)';btn.style.color='var(--red)';btn.querySelector('span').textContent='✗';}
+    else{btn.style.borderColor='#1a1006';btn.style.color='#352010';}
+  });
+  const expEl=document.getElementById('list-explanation');
+  expEl.style.display='block'; expEl.textContent='💡 '+q.explanation;
+  const nxt=document.getElementById('list-next');
+  nxt.style.display='block';
+  nxt.textContent=listIdx+1>=testData.listening.length?'Finish Listening →':'Next →';
+  document.getElementById('list-progress').style.width=((listIdx+1)/testData.listening.length*100)+'%';
+}
+
+function nextListening(){
+  listIdx++;
+  if(listIdx>=testData.listening.length){ showSectionIntro('speaking'); return; }
+  renderListening();
+}
+
+// ══ SPEAKING ══════════════════════════════════════════════════════════════════
+function renderSpeak(){
+  const q=testData.speaking[speakIdx];
+  if(!q) return;
+  stopRec();
+  currentTranscript='';
+  document.getElementById('speak-typed').value='';
+  document.getElementById('speak-transcript').textContent='';
+  document.getElementById('speak-transcript-box').style.display='none';
+  document.getElementById('speak-eval').style.display='none';
+  document.getElementById('speak-eval').innerHTML='';
+  document.getElementById('speak-next').style.display='none';
+  document.getElementById('speak-submit').style.display='block';
+  document.getElementById('speak-submit').disabled=true;
+  document.getElementById('speak-proc-msg').style.display='none';
+  const pct=(speakIdx/testData.speaking.length)*100;
+  document.getElementById('speak-progress').style.width=pct+'%';
+  document.getElementById('speak-counter').textContent=(speakIdx+1)+'/'+testData.speaking.length;
+  document.getElementById('speak-ar').textContent=q.ar;
+  document.getElementById('speak-en').textContent=q.en;
+  document.getElementById('speak-hint').textContent='💡 '+q.hint;
+  setSpeakMode(speakMode);
+}
+
+function setSpeakMode(m){
+  speakMode=m;
+  document.getElementById('speak-voice-panel').style.display=m==='voice'?'block':'none';
+  document.getElementById('speak-type-panel').style.display=m==='type'?'block':'none';
+  document.getElementById('btn-voice').classList.toggle('active',m==='voice');
+  document.getElementById('btn-type').classList.toggle('active',m==='type');
+  if(m==='type'&&isRec) stopRec();
+  updateSpeakSubmit();
+}
+
+function updateSpeakSubmit(){
+  const ans=speakMode==='voice'?currentTranscript:document.getElementById('speak-typed').value;
+  document.getElementById('speak-submit').disabled=!ans.trim();
+}
+
+document.addEventListener('DOMContentLoaded',()=>{
+  checkSavedKey();
+  document.getElementById('speak-typed').addEventListener('input',updateSpeakSubmit);
+  document.getElementById('write-answer').addEventListener('input',()=>{
+    const v=document.getElementById('write-answer').value;
+    const wc=v.trim()?v.trim().split(/\s+/).length:0;
+    document.getElementById('write-wordcount').textContent=wc+' words';
+    const q=testData.writing[writeIdx];
+    document.getElementById('write-submit').disabled=wc<(q?Math.floor(q.min_words/2):10);
+  });
+  speechSynthesis.getVoices();
+});
+
+function toggleRec(){ isRec?stopRec():startRec(); }
+
+function startRec(){
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!SR){ notif('Speech recognition not supported. Use typing mode.',4000); setSpeakMode('type'); return; }
+  recognition=new SR(); recognition.lang='ar'; recognition.continuous=false; recognition.interimResults=true;
+  recognition.onresult=(e)=>{
+    let f='',interim='';
+    for(let i=e.resultIndex;i<e.results.length;i++){
+      const t=e.results[i][0].transcript;
+      if(e.results[i].isFinal) f+=t+' '; else interim+=t;
+    }
+    if(f) currentTranscript+=f;
+    const disp=(currentTranscript+interim).trim();
+    if(disp){ document.getElementById('speak-transcript').textContent=disp; document.getElementById('speak-transcript-box').style.display='block'; updateSpeakSubmit(); }
+  };
+  recognition.onerror=(e)=>{ if(e.error!=='no-speech'){ notif('Mic error: '+e.error+'. Try typing.',4000); stopRec(); } };
+  recognition.onend=()=>{ if(isRec){ try{recognition.start();}catch(e){stopRec();} } };
+  recognition.start(); isRec=true;
+  const btn=document.getElementById('mic-btn');
+  btn.style.borderColor='var(--green)'; btn.style.background='rgba(126,212,164,.15)'; btn.textContent='⏹️'; btn.classList.add('pulse');
+  document.getElementById('rpl1').style.display='block'; document.getElementById('rpl2').style.display='block';
+  document.getElementById('speak-rec-status').textContent='🔴 Recording... tap ⏹️ to stop';
+  startViz();
+}
+
+function stopRec(){
+  if(!isRec&&!recognition) return;
+  isRec=false;
+  if(recognition){ recognition.onend=null; recognition.onresult=null; recognition.onerror=null; try{recognition.stop();}catch(e){} recognition=null; }
+  stopViz();
+  const btn=document.getElementById('mic-btn');
+  btn.style.borderColor='var(--green)'; btn.style.background='rgba(126,212,164,.08)'; btn.textContent='🎙️'; btn.classList.remove('pulse');
+  document.getElementById('rpl1').style.display='none'; document.getElementById('rpl2').style.display='none';
+  document.getElementById('speak-rec-status').textContent='Tap 🎙️ to record';
+  if(currentTranscript.trim()){ document.getElementById('speak-transcript').textContent=currentTranscript.trim(); document.getElementById('speak-transcript-box').style.display='block'; }
+  updateSpeakSubmit();
+}
+
+function clearSpeak(){ currentTranscript=''; document.getElementById('speak-transcript').textContent=''; document.getElementById('speak-transcript-box').style.display='none'; updateSpeakSubmit(); }
+
+async function startViz(){
+  try{
+    micStream=await navigator.mediaDevices.getUserMedia({audio:true});
+    audioCtx=new(window.AudioContext||window.webkitAudioContext)();
+    analyser=audioCtx.createAnalyser(); analyser.fftSize=128;
+    audioCtx.createMediaStreamSource(micStream).connect(analyser);
+    const barsEl=document.getElementById('speak-bars'); barsEl.innerHTML=''; barsEl.style.display='flex';
+    const barEls=Array.from({length:18}).map((_,i)=>{ const b=document.createElement('div'); b.style.cssText=`width:4px;border-radius:2px;opacity:.8;transition:height .07s;background:hsl(${120+i*4},60%,55%)`; barsEl.appendChild(b); return b; });
+    const data=new Uint8Array(analyser.frequencyBinCount);
+    const loop=()=>{ if(!isRec) return; analyser.getByteFrequencyData(data); barEls.forEach((b,i)=>{ b.style.height=Math.max(6,Math.min(100,(data[i*3]||0)*.9))+'%'; }); rafId=requestAnimationFrame(loop); };
+    loop();
+  }catch(e){ console.log('Viz error:',e); }
+}
+
+function stopViz(){ cancelAnimationFrame(rafId); micStream?.getTracks().forEach(t=>t.stop()); try{audioCtx?.close();}catch(e){} audioCtx=null; analyser=null; micStream=null; document.getElementById('speak-bars').style.display='none'; }
+
+async function submitSpeak(){
+  const ans=speakMode==='voice'?currentTranscript:document.getElementById('speak-typed').value;
+  if(!ans.trim()) return;
+  if(isRec) stopRec();
+  document.getElementById('speak-submit').disabled=true;
+  document.getElementById('speak-submit').innerHTML='<span class="spin">⚙️</span> Evaluating...';
+  document.getElementById('speak-proc-msg').style.display='block';
+  try{
+    const q=testData.speaking[speakIdx];
+    const ev=await evaluateSpeak(q,ans);
+    results.speaking.push({q,transcript:ans,evaluation:ev});
+    renderSpeakEval(ev);
+    document.getElementById('speak-submit').style.display='none';
+    document.getElementById('speak-proc-msg').style.display='none';
+    document.getElementById('speak-eval').style.display='block';
+    document.getElementById('speak-next').style.display='block';
+    document.getElementById('speak-next').textContent=speakIdx+1>=testData.speaking.length?'Finish Speaking →':'Next →';
+    document.getElementById('speak-progress').style.width=((speakIdx+1)/testData.speaking.length*100)+'%';
+  }catch(e){ console.error(e); notif('Evaluation failed: '+e.message,4000); document.getElementById('speak-submit').disabled=false; document.getElementById('speak-submit').textContent='Submit for AI Evaluation →'; document.getElementById('speak-proc-msg').style.display='none'; }
+}
+
+async function evaluateSpeak(question, transcript){
+  const sys=`You are an expert Arabic language examiner. Evaluate the student's spoken Arabic response. Respond ONLY with valid JSON, no markdown.`;
+  const usr=`Question: ${question.ar} (${question.en})
+Student response: "${transcript}"
+
+Return JSON:
+{
+  "fluency":{"score":0-10,"comment":"brief"},
+  "grammar":{"score":0-10,"comment":"brief","errors":["err1"]},
+  "vocabulary":{"score":0-10,"comment":"brief","highlights":["good word"]},
+  "relevance":{"score":0-10,"comment":"brief"},
+  "overall":{"score":0-10,"cefr_estimate":"A1/A2/B1/B2/C1/C2","summary":"2-3 sentences","tips":["tip1","tip2"]},
+  "corrected":"improved Arabic version",
+  "arabic_fb":"1 sentence encouraging feedback in Arabic"
+}`;
+  return await groq(sys, usr);
+}
+
+function renderSpeakEval(ev){
+  const dims=[{k:'fluency',l:'Fluency',i:'🌊',c:'#7eb8e8'},{k:'grammar',l:'Grammar',i:'📐',c:'#b87ee8'},{k:'vocabulary',l:'Vocabulary',i:'📚',c:'#7ed4a4'},{k:'relevance',l:'Relevance',i:'🎯',c:'#e8c87e'}];
+  document.getElementById('speak-eval').innerHTML=`
+    <div style="text-align:center;padding:16px;background:rgba(126,212,164,.06);border:1px solid rgba(126,212,164,.18);border-radius:12px;margin-bottom:14px">
+      ${ev.arabic_fb?`<div class="arabic" style="font-size:17px;color:#e8d070;margin-bottom:10px">${ev.arabic_fb}</div>`:''}
+      <div style="display:flex;align-items:center;justify-content:center;gap:10px">
+        <div style="font-size:44px;font-family:'Playfair Display',serif;color:${scoreColor(ev.overall.score)};line-height:1">${ev.overall.score}</div>
+        <div style="text-align:left"><div style="color:${scoreColor(ev.overall.score)};font-size:14px;font-weight:600">${ev.overall.cefr_estimate}</div><div class="muted" style="font-size:11px">CEFR Estimate</div></div>
+      </div>
+      <p style="font-size:12px;line-height:1.6;margin-top:8px;color:var(--body)">${ev.overall.summary}</p>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
+      ${dims.map(d=>{const dim=ev[d.k]||{};return`<div class="dim-card" style="border:1px solid ${d.c}22"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px"><span style="color:${d.c};font-size:12px">${d.i} ${d.l}</span><span style="color:${d.c};font-family:'Playfair Display',serif;font-size:18px">${dim.score||0}</span></div><div class="score-bar"><div class="score-fill" style="width:${(dim.score||0)*10}%;background:${d.c}"></div></div><p class="muted" style="font-size:11px;margin:0;line-height:1.4">${dim.comment||''}</p>${(dim.errors||[]).map(e=>`<div style="font-size:10px;color:var(--red);margin-top:3px">⚠ ${e}</div>`).join('')}${(dim.highlights||[]).map(h=>`<div style="font-size:10px;color:var(--green);margin-top:3px">✓ ${h}</div>`).join('')}</div>`;}).join('')}
+    </div>
+    ${ev.corrected?`<div style="padding:11px 14px;background:rgba(126,212,164,.05);border:1px solid rgba(126,212,164,.18);border-radius:9px;margin-bottom:10px"><div style="color:var(--green);font-size:10px;letter-spacing:1px;margin-bottom:6px">✍️ SUGGESTED VERSION</div><div class="arabic" style="color:#a0e8c0;font-size:16px;line-height:1.7">${ev.corrected}</div></div>`:''}
+    ${ev.overall.tips?.length?`<div style="padding:11px 14px;background:rgba(212,175,55,.04);border:1px solid rgba(212,175,55,.13);border-radius:9px"><div style="color:var(--gold);font-size:10px;letter-spacing:1px;margin-bottom:7px">🚀 TIPS</div>${ev.overall.tips.map(t=>`<div class="muted" style="font-size:12px;line-height:1.5;margin-bottom:4px">· ${t}</div>`).join('')}</div>`:''}
+  `;
+}
+
+function nextSpeak(){
   speakIdx++;
-  if (speakIdx >= speakQuestions.length) { renderSpeakResult(); show('speak-result'); return; }
-  renderSpeakQ();
+  if(speakIdx>=testData.speaking.length){ showSectionIntro('writing'); return; }
+  renderSpeak();
 }
 
-function renderSpeakResult() {
-  const avgOverall = speakResults.length ? Math.round(speakResults.reduce((s,r)=>s+(r.evaluation?.overall?.score||0),0)/speakResults.length*10)/10 : 0;
-  const cefr = speakResults[speakResults.length-1]?.evaluation?.overall?.cefr_estimate || '—';
+// ══ WRITING ═══════════════════════════════════════════════════════════════════
+function renderWrite(){
+  const q=testData.writing[writeIdx];
+  if(!q) return;
+  document.getElementById('write-answer').value='';
+  document.getElementById('write-eval').style.display='none';
+  document.getElementById('write-eval').innerHTML='';
+  document.getElementById('write-next').style.display='none';
+  document.getElementById('write-submit').style.display='block';
+  document.getElementById('write-submit').disabled=true;
+  document.getElementById('write-proc-msg').style.display='none';
+  document.getElementById('write-wordcount').textContent='0 words';
+  const pct=(writeIdx/testData.writing.length)*100;
+  document.getElementById('write-progress').style.width=pct+'%';
+  document.getElementById('write-counter').textContent=(writeIdx+1)+'/'+testData.writing.length;
+  document.getElementById('write-ar').textContent=q.ar;
+  document.getElementById('write-en').textContent=q.en;
+  document.getElementById('write-hint').textContent='💡 '+q.hint;
+  document.getElementById('write-hint-min').textContent='Min. ~'+q.min_words+' words';
+}
 
-  document.getElementById('speak-result-hero').innerHTML = `
-    <div style="font-size:46px;margin-bottom:8px">🎙️</div>
-    <h2 class="gold" style="font-size:26px;margin-bottom:4px">Speaking Assessment Complete</h2>
-    <p class="muted" style="font-size:12px;margin-bottom:22px">${speakResults.length} questions evaluated by AI</p>
-    <div style="display:flex;justify-content:center;align-items:flex-end;gap:24px">
-      <div>
-        <div style="font-size:52px;font-family:'Playfair Display',serif;color:${scoreColor(avgOverall)};line-height:1">${avgOverall}</div>
-        <div class="muted" style="font-size:11px;margin-top:4px">Average Score /10</div>
+async function submitWrite(){
+  const ans=document.getElementById('write-answer').value.trim();
+  if(!ans) return;
+  document.getElementById('write-submit').disabled=true;
+  document.getElementById('write-submit').innerHTML='<span class="spin">⚙️</span> Evaluating...';
+  document.getElementById('write-proc-msg').style.display='block';
+  try{
+    const q=testData.writing[writeIdx];
+    const ev=await evaluateWrite(q,ans);
+    results.writing.push({q,answer:ans,evaluation:ev});
+    renderWriteEval(ev);
+    document.getElementById('write-submit').style.display='none';
+    document.getElementById('write-proc-msg').style.display='none';
+    document.getElementById('write-eval').style.display='block';
+    document.getElementById('write-next').style.display='block';
+    document.getElementById('write-next').textContent=writeIdx+1>=testData.writing.length?'Finish Writing →':'Next →';
+    document.getElementById('write-progress').style.width=((writeIdx+1)/testData.writing.length*100)+'%';
+  }catch(e){ console.error(e); notif('Evaluation failed: '+e.message,4000); document.getElementById('write-submit').disabled=false; document.getElementById('write-submit').textContent='Submit for AI Evaluation →'; document.getElementById('write-proc-msg').style.display='none'; }
+}
+
+async function evaluateWrite(question, answer){
+  const sys=`You are an expert Arabic writing examiner. Evaluate the student's Arabic writing. Respond ONLY with valid JSON, no markdown.`;
+  const usr=`Task: ${question.ar} (${question.en})
+Student's answer: "${answer}"
+
+Return JSON:
+{
+  "task_achievement":{"score":0-10,"comment":"brief"},
+  "coherence":{"score":0-10,"comment":"brief"},
+  "grammar":{"score":0-10,"comment":"brief","errors":["err1"]},
+  "vocabulary":{"score":0-10,"comment":"brief","highlights":["good word/phrase"]},
+  "overall":{"score":0-10,"cefr_estimate":"A1/A2/B1/B2/C1/C2","summary":"2-3 sentences","tips":["tip1","tip2"]},
+  "improved_version":"A brief improved version of 1-2 sentences from their text",
+  "arabic_fb":"1 sentence encouraging feedback in Arabic"
+}`;
+  return await groq(sys, usr);
+}
+
+function renderWriteEval(ev){
+  const dims=[{k:'task_achievement',l:'Task Achievement',i:'🎯',c:'#e8c87e'},{k:'coherence',l:'Coherence',i:'🔗',c:'#7eb8e8'},{k:'grammar',l:'Grammar',i:'📐',c:'#b87ee8'},{k:'vocabulary',l:'Vocabulary',i:'📚',c:'#7ed4a4'}];
+  document.getElementById('write-eval').innerHTML=`
+    <div style="text-align:center;padding:16px;background:rgba(184,126,232,.06);border:1px solid rgba(184,126,232,.18);border-radius:12px;margin-bottom:14px">
+      ${ev.arabic_fb?`<div class="arabic" style="font-size:17px;color:#e8d070;margin-bottom:10px">${ev.arabic_fb}</div>`:''}
+      <div style="display:flex;align-items:center;justify-content:center;gap:10px">
+        <div style="font-size:44px;font-family:'Playfair Display',serif;color:${scoreColor(ev.overall.score)};line-height:1">${ev.overall.score}</div>
+        <div style="text-align:left"><div style="color:${scoreColor(ev.overall.score)};font-size:14px;font-weight:600">${ev.overall.cefr_estimate}</div><div class="muted" style="font-size:11px">CEFR Estimate</div></div>
       </div>
-      <div style="padding-bottom:8px">
-        <div class="gold" style="font-size:28px;font-family:'Playfair Display',serif">${cefr}</div>
-        <div class="muted" style="font-size:11px">CEFR Estimate</div>
-      </div>
+      <p style="font-size:12px;line-height:1.6;margin-top:8px;color:var(--body)">${ev.overall.summary}</p>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
+      ${dims.map(d=>{const dim=ev[d.k]||{};return`<div class="dim-card" style="border:1px solid ${d.c}22"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px"><span style="color:${d.c};font-size:12px">${d.i} ${d.l}</span><span style="color:${d.c};font-family:'Playfair Display',serif;font-size:18px">${dim.score||0}</span></div><div class="score-bar"><div class="score-fill" style="width:${(dim.score||0)*10}%;background:${d.c}"></div></div><p class="muted" style="font-size:11px;margin:0;line-height:1.4">${dim.comment||''}</p>${(dim.errors||[]).map(e=>`<div style="font-size:10px;color:var(--red);margin-top:3px">⚠ ${e}</div>`).join('')}${(dim.highlights||[]).map(h=>`<div style="font-size:10px;color:var(--green);margin-top:3px">✓ ${h}</div>`).join('')}</div>`;}).join('')}
+    </div>
+    ${ev.improved_version?`<div style="padding:11px 14px;background:rgba(184,126,232,.05);border:1px solid rgba(184,126,232,.18);border-radius:9px;margin-bottom:10px"><div style="color:var(--purple);font-size:10px;letter-spacing:1px;margin-bottom:6px">✍️ IMPROVED EXCERPT</div><div class="arabic" style="color:#d4b0f0;font-size:15px;line-height:1.7">${ev.improved_version}</div></div>`:''}
+    ${ev.overall.tips?.length?`<div style="padding:11px 14px;background:rgba(212,175,55,.04);border:1px solid rgba(212,175,55,.13);border-radius:9px"><div style="color:var(--gold);font-size:10px;letter-spacing:1px;margin-bottom:7px">🚀 TIPS</div>${ev.overall.tips.map(t=>`<div class="muted" style="font-size:12px;line-height:1.5;margin-bottom:4px">· ${t}</div>`).join('')}</div>`:''}
+  `;
+}
+
+function nextWrite(){
+  writeIdx++;
+  if(writeIdx>=testData.writing.length){ renderFinalResult(); show('result'); return; }
+  renderWrite();
+}
+
+// ══ FINAL RESULT ══════════════════════════════════════════════════════════════
+function renderFinalResult(){
+  // Calculate scores per section
+  const readPct = results.reading.total ? results.reading.score/results.reading.total*10 : 0;
+  const listPct = results.listening.total ? results.listening.score/results.listening.total*10 : 0;
+  const speakAvg = results.speaking.length ? results.speaking.reduce((s,r)=>s+(r.evaluation?.overall?.score||0),0)/results.speaking.length : 0;
+  const writeAvg = results.writing.length ? results.writing.reduce((s,r)=>s+(r.evaluation?.overall?.score||0),0)/results.writing.length : 0;
+  const overall = (readPct+listPct+speakAvg+writeAvg)/4;
+  const cefr = cefrFromScore(overall);
+
+  const cefrColors={'A1':'#e87e7e','A2':'#e8a07e','B1':'#e8c87e','B2':'#D4AF37','C1':'#7ed4a4','C2':'#7eb8e8'};
+  const cefrDescs={'A1':'Beginner','A2':'Elementary','B1':'Intermediate','B2':'Upper Intermediate','C1':'Advanced','C2':'Proficient'};
+  const c=cefrColors[cefr]||'#D4AF37';
+
+  document.getElementById('result-hero').innerHTML=`
+    <div style="font-size:52px;margin-bottom:10px">🎓</div>
+    <div class="muted" style="font-size:10px;letter-spacing:4px;text-transform:uppercase;margin-bottom:6px">Arabic Proficiency Result</div>
+    <div style="font-size:72px;font-family:'Playfair Display',serif;color:${c};line-height:1;margin-bottom:4px">${cefr}</div>
+    <div style="font-size:18px;color:${c};font-weight:600;margin-bottom:4px">${cefrDescs[cefr]||''}</div>
+    <div class="muted" style="font-size:12px;margin-bottom:20px">Overall Score: ${overall.toFixed(1)} / 10</div>
+    <div style="height:6px;background:#1a1006;border-radius:3px;max-width:300px;margin:0 auto"><div style="height:100%;width:${overall*10}%;background:linear-gradient(90deg,${c},${c}88);border-radius:3px;transition:width 1.5s ease"></div></div>
+  `;
+
+  const sectionData=[
+    {label:'📖 Reading',score:readPct,color:'#7eb8e8',detail:`${results.reading.score}/${results.reading.total} correct`},
+    {label:'🎧 Listening',score:listPct,color:'#e8c87e',detail:`${results.listening.score}/${results.listening.total} correct`},
+    {label:'🎙️ Speaking',score:speakAvg,color:'#7ed4a4',detail:`${results.speaking.length} questions evaluated`},
+    {label:'✍️ Writing',score:writeAvg,color:'#b87ee8',detail:`${results.writing.length} tasks evaluated`},
+  ];
+
+  document.getElementById('result-sections').innerHTML=`
+    <h3 class="gold" style="font-size:16px;margin-bottom:18px">Section Breakdown</h3>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      ${sectionData.map(s=>`
+        <div class="dim-card" style="border:1px solid ${s.color}25">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+            <span style="color:${s.color};font-size:13px">${s.label}</span>
+            <span style="color:${s.color};font-family:'Playfair Display',serif;font-size:22px">${s.score.toFixed(1)}</span>
+          </div>
+          <div class="score-bar"><div class="score-fill" style="width:${s.score*10}%;background:${s.color}"></div></div>
+          <div style="display:flex;justify-content:space-between;margin-top:6px">
+            <span class="muted" style="font-size:10px">${s.detail}</span>
+            <span style="color:${s.color};font-size:10px;font-weight:600">${cefrFromScore(s.score)}</span>
+          </div>
+        </div>
+      `).join('')}
     </div>
   `;
 
-  const dims = ['fluency','grammar','vocabulary','relevance'];
-  const dimColors = {fluency:'#7eb8e8',grammar:'#b87ee8',vocabulary:'#7ed4a4',relevance:'#e8c87e'};
-  const dimIcons = {fluency:'🌊',grammar:'📐',vocabulary:'📚',relevance:'🎯'};
-  document.getElementById('speak-result-dims').innerHTML = dims.map(d => {
-    const avg = speakResults.length ? Math.round(speakResults.reduce((s,r)=>s+(r.evaluation?.[d]?.score||0),0)/speakResults.length*10)/10 : 0;
-    return `<div class="dim-card" style="border:1px solid ${dimColors[d]}22">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-        <span style="color:${dimColors[d]};font-size:12px">${dimIcons[d]} ${d.charAt(0).toUpperCase()+d.slice(1)}</span>
-        <span style="color:${dimColors[d]};font-family:'Playfair Display',serif;font-size:20px">${avg}</span>
+  // Strengths and weaknesses
+  const sorted=[...sectionData].sort((a,b)=>b.score-a.score);
+  const strength=sorted[0], weakness=sorted[sorted.length-1];
+  document.getElementById('result-feedback').innerHTML=`
+    <h3 class="gold" style="font-size:16px;margin-bottom:16px">Overall Feedback</h3>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
+      <div style="padding:14px;background:rgba(126,212,164,.06);border:1px solid rgba(126,212,164,.2);border-radius:11px">
+        <div style="color:var(--green);font-size:11px;margin-bottom:6px;letter-spacing:1px">💪 STRONGEST</div>
+        <div style="color:var(--green);font-size:14px;font-weight:600">${strength.label}</div>
+        <div class="muted" style="font-size:12px;margin-top:2px">Score ${strength.score.toFixed(1)} · ${cefrFromScore(strength.score)}</div>
       </div>
-      <div class="score-bar"><div class="score-fill" style="width:${avg*10}%;background:${dimColors[d]}"></div></div>
-      <div class="muted" style="font-size:10px;margin-top:5px">${scoreLabel(avg)}</div>
-    </div>`;
-  }).join('');
-
-  document.getElementById('speak-result-qs').innerHTML = speakResults.map((r,i) => `
-    <div style="padding:12px 14px;border-radius:10px;border:1px solid #251808;background:rgba(255,255,255,.015);margin-bottom:9px">
-      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px">
-        <div>
-          <div class="muted" style="font-size:10px;margin-bottom:3px">Q${i+1} · ${THEME_LABELS[r.q.theme]||r.q.theme} · ${r.q.level}</div>
-          <div class="arabic" style="color:#e8d070;font-size:14px">${r.q.ar}</div>
-        </div>
-        <div style="color:${scoreColor(r.evaluation?.overall?.score||0)};font-family:'Playfair Display',serif;font-size:22px;flex-shrink:0">${r.evaluation?.overall?.score||'—'}</div>
+      <div style="padding:14px;background:rgba(232,126,126,.06);border:1px solid rgba(232,126,126,.2);border-radius:11px">
+        <div style="color:var(--red);font-size:11px;margin-bottom:6px;letter-spacing:1px">📈 FOCUS AREA</div>
+        <div style="color:var(--red);font-size:14px;font-weight:600">${weakness.label}</div>
+        <div class="muted" style="font-size:12px;margin-top:2px">Score ${weakness.score.toFixed(1)} · ${cefrFromScore(weakness.score)}</div>
       </div>
-      ${r.transcript?`<div class="arabic" style="padding:5px 9px;background:rgba(255,255,255,.025);border-radius:7px;color:#7a5828;font-size:12px;line-height:1.5;margin-top:5px">${r.transcript.slice(0,100)}${r.transcript.length>100?'...':''}</div>`:''}
-      ${r.evaluation?.overall?.summary?`<p class="muted" style="font-size:11px;line-height:1.5;margin-top:6px;margin-bottom:0">${r.evaluation.overall.summary}</p>`:''}
     </div>
-  `).join('');
+    <div style="padding:14px;background:rgba(212,175,55,.05);border:1px solid rgba(212,175,55,.15);border-radius:11px">
+      <div style="color:var(--gold);font-size:11px;margin-bottom:8px;letter-spacing:1px">🎯 NEXT STEPS</div>
+      <div class="muted" style="font-size:12px;line-height:1.65">
+        ${cefr==='A1'?'Focus on basic vocabulary and greetings. Practice short sentences daily.':
+          cefr==='A2'?'Expand vocabulary and practice simple conversations. Work on verb conjugation.':
+          cefr==='B1'?'Practice expressing opinions and narrating events. Work on grammar accuracy.':
+          cefr==='B2'?'Focus on complex grammar structures and academic vocabulary. Practice argumentation.':
+          cefr==='C1'?'Refine nuanced expression and formal register. Practice sophisticated discourse markers.':
+          'Maintain your excellent level. Focus on specialized vocabulary and literary expression.'}
+      </div>
+    </div>
+  `;
+}
+
+function forgetKey(){
+  localStorage.removeItem('groq_api_key');
+  API_KEY = '';
+  document.getElementById('api-key-input').value = '';
+  document.getElementById('key-saved-notice').style.display = 'none';
+  document.getElementById('api-key-input').style.display = 'block';
+}
+
+function checkSavedKey(){
+  const saved = localStorage.getItem('groq_api_key');
+  if(saved){
+    API_KEY = saved;
+    document.getElementById('key-saved-notice').style.display = 'flex';
+    document.getElementById('api-key-input').style.display = 'none';
+  }
+}
+
+function restart(){
+  results={reading:{score:0,total:0},listening:{score:0,total:0},speaking:[],writing:[]};
+  testData={reading:[],listening:[],speaking:[],writing:[]};
+  readIdx=0; listIdx=0; speakIdx=0; writeIdx=0;
+  document.getElementById('api-key-input').value='';
+  show('cover');
 }
 </script>
 </body>
