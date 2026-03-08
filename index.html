@@ -71,12 +71,12 @@
         </p>
       </div>
       <label style="font-size:10px;letter-spacing:3px;text-transform:uppercase;margin-bottom:10px;display:block;color:var(--body)">Anthropic API Key</label>
-      <input id="api-key-input" type="password" placeholder="sk-ant-..."
+      <input id="api-key-input" type="password" placeholder="gsk_..."
         style="width:100%;padding:13px 16px;background:rgba(255,255,255,.03);border:2px solid var(--border);border-radius:10px;color:#e8d070;font-family:'Outfit',sans-serif;font-size:14px;outline:none;box-sizing:border-box;transition:border-color .2s;margin-bottom:8px"
         onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'"
         onkeydown="if(event.key==='Enter') saveApiKey()"/>
       <div class="muted" style="font-size:11px;margin-bottom:20px">
-        Dapatkan $5 free credit di <a href="https://console.anthropic.com" target="_blank" style="color:var(--gold)">console.anthropic.com</a> — cukup untuk ~1600 evaluasi
+        Dapatkan API key <b>gratis</b> di <a href="https://console.groq.com/keys" target="_blank" style="color:var(--gold)">console.groq.com/keys</a> — login Google, gratis, tidak perlu kartu kredit
       </div>
       <button class="btn-primary" style="width:100%" onclick="saveApiKey()">Mulai Assessment →</button>
       <div id="apikey-error" style="display:none;color:var(--red);font-size:12px;text-align:center;margin-top:10px"></div>
@@ -821,24 +821,25 @@ Respond ONLY with a valid JSON object, no markdown, no preamble:
   "arabic_feedback": "1-2 sentences of encouraging feedback in Arabic"
 }`;
 
-  const res = await fetch('https://api.anthropic.com/v1/messages', {
+  const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'x-api-key': apiKey,
-      'anthropic-version': '2023-06-01',
-      'anthropic-dangerous-direct-browser-access': 'true'
+      'Authorization': 'Bearer ' + apiKey
     },
     body: JSON.stringify({
-      model: 'claude-haiku-4-5-20251001',
+      model: 'llama-3.3-70b-versatile',
       max_tokens: 1000,
-      system: systemPrompt,
-      messages: [{ role: 'user', content: `Question (Level ${question.level}): ${question.ar}\nTranslation: ${question.en}\n\nStudent response: "${transcript}"\n\nEvaluate fluency, grammar, vocabulary, and relevance.` }]
+      temperature: 0.3,
+      messages: [
+        { role: 'system', content: systemPrompt },
+        { role: 'user', content: 'Question (Level ' + question.level + '): ' + question.ar + '\nTranslation: ' + question.en + '\n\nStudent response: "' + transcript + '"\n\nEvaluate fluency, grammar, vocabulary, and relevance.' }
+      ]
     })
   });
   const data = await res.json();
-  if (data.error) throw new Error(data.error.error || JSON.stringify(data.error));
-  const text = data.content.map(b => b.text||'').join('');
+  if (data.error) throw new Error(data.error.message || JSON.stringify(data.error));
+  const text = data.choices[0].message.content;
   return JSON.parse(text.replace(/```json|```/g,'').trim());
 }
 
