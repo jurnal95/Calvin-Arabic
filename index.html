@@ -58,8 +58,34 @@
 
 <div id="notif"></div>
 
+<!-- ══ API KEY SETUP ══ -->
+<div id="screen-apikey" class="screen screen-center active">
+  <div class="wrap fade-in" style="text-align:center;padding-top:40px">
+    <div class="bob" style="font-size:58px;margin-bottom:6px">🔑</div>
+    <h1 class="gold" style="font-size:36px;line-height:1.05;margin-bottom:8px">Arabic Assessment</h1>
+    <p class="muted" style="font-size:12px;letter-spacing:2px;margin-bottom:36px;text-transform:uppercase">Enter your Anthropic API Key to begin</p>
+    <div class="card" style="padding:32px 36px;text-align:left">
+      <div style="padding:12px 14px;background:rgba(126,184,232,.04);border:1px solid rgba(126,184,232,.12);border-radius:10px;margin-bottom:24px">
+        <p style="color:#5a8aaf;font-size:12px;line-height:1.65;margin:0">
+          🔒 API key hanya tersimpan di memory browser — tidak dikirim ke mana pun selain Anthropic API secara langsung. Refresh halaman = key terhapus.
+        </p>
+      </div>
+      <label style="font-size:10px;letter-spacing:3px;text-transform:uppercase;margin-bottom:10px;display:block;color:var(--body)">Anthropic API Key</label>
+      <input id="api-key-input" type="password" placeholder="AIza..."
+        style="width:100%;padding:13px 16px;background:rgba(255,255,255,.03);border:2px solid var(--border);border-radius:10px;color:#e8d070;font-family:'Outfit',sans-serif;font-size:14px;outline:none;box-sizing:border-box;transition:border-color .2s;margin-bottom:8px"
+        onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'"
+        onkeydown="if(event.key==='Enter') saveApiKey()"/>
+      <div class="muted" style="font-size:11px;margin-bottom:20px">
+        Dapatkan API key <b>gratis</b> di <a href="https://aistudio.google.com/apikey" target="_blank" style="color:var(--gold)">aistudio.google.com/apikey</a> (login Google, gratis)
+      </div>
+      <button class="btn-primary" style="width:100%" onclick="saveApiKey()">Mulai Assessment →</button>
+      <div id="apikey-error" style="display:none;color:var(--red);font-size:12px;text-align:center;margin-top:10px"></div>
+    </div>
+  </div>
+</div>
+
 <!-- ══ HOME ══ -->
-<div id="screen-home" class="screen screen-center active">
+<div id="screen-home" class="screen screen-center">
   <div class="wrap fade-in" style="text-align:center;padding-top:40px">
     <div class="bob" style="font-size:58px;margin-bottom:6px">🕌</div>
     <div class="muted" style="font-size:10px;letter-spacing:5px;text-transform:uppercase;margin-bottom:6px">بِسْمِ اللّٰهِ</div>
@@ -381,6 +407,7 @@ const THEME_LABELS = {general:"General",family:"Family · الأسرة",daily_li
 const DIM_INFO = [{k:"fluency",l:"Fluency",i:"🌊",c:"#7eb8e8"},{k:"grammar",l:"Grammar",i:"📐",c:"#b87ee8"},{k:"vocabulary",l:"Vocabulary",i:"📚",c:"#7ed4a4"},{k:"relevance",l:"Relevance",i:"🎯",c:"#e8c87e"}];
 
 // ══ STATE ═════════════════════════════════════════════════════════════════════
+let apiKey = '';
 let mcqMode = 'conversational', mcqLevel = 'all';
 let speakLevel = 'all', speakTheme = 'all';
 let mcqQuestions = [], mcqIdx = 0, mcqScore = 0, mcqAnswers = [];
@@ -605,6 +632,19 @@ function clearTranscript() {
   updateSubmitBtn();
 }
 
+function saveApiKey() {
+  const key = document.getElementById('api-key-input').value.trim();
+  const errEl = document.getElementById('apikey-error');
+  if (key.length < 10) {
+    errEl.style.display = 'block';
+    errEl.textContent = 'API key tidak valid. Pastikan sudah copy dengan benar.';
+    return;
+  }
+  apiKey = key;
+  errEl.style.display = 'none';
+  show('home');
+}
+
 function toggleRecording() {
   isRecording ? stopRecording() : startRecording();
 }
@@ -768,32 +808,35 @@ async function submitSpeaking() {
 }
 
 async function callClaudeAPI(question, transcript) {
-  const systemPrompt = `You are an expert Arabic language examiner with deep knowledge of CEFR levels. Evaluate the student's Arabic response. Be honest but encouraging.
+  const prompt = `You are an expert Arabic language examiner with deep knowledge of CEFR levels. Evaluate the student's Arabic response. Be honest but encouraging.
 
-Respond ONLY with a valid JSON object, no markdown, no preamble.
+Question (Level ${question.level}): ${question.ar}
+Translation: ${question.en}
 
+Student response: "${transcript}"
+
+Respond ONLY with a valid JSON object, no markdown, no preamble:
 {
   "fluency": { "score": 0-10, "comment": "brief comment" },
-  "grammar": { "score": 0-10, "comment": "brief comment", "errors": ["error1", "error2"] },
-  "vocabulary": { "score": 0-10, "comment": "brief comment", "highlights": ["good word used"] },
+  "grammar": { "score": 0-10, "comment": "brief comment", "errors": ["error1"] },
+  "vocabulary": { "score": 0-10, "comment": "brief comment", "highlights": ["good word"] },
   "relevance": { "score": 0-10, "comment": "brief comment" },
   "overall": { "score": 0-10, "cefr_estimate": "A1/A2/B1/B2/C1/C2", "summary": "2-3 sentence summary", "improvement_tips": ["tip1", "tip2", "tip3"] },
   "corrected_version": "An improved Arabic version of what the student said",
   "arabic_feedback": "1-2 sentences of encouraging feedback in Arabic"
 }`;
 
-  const res = await fetch('https://api.anthropic.com/v1/messages', {
+  const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      model: 'claude-sonnet-4-20250514',
-      max_tokens: 1000,
-      system: systemPrompt,
-      messages: [{ role: 'user', content: `Question (Level ${question.level}): ${question.ar}\nTranslation: ${question.en}\n\nStudent response: "${transcript}"\n\nEvaluate fluency, grammar, vocabulary, and relevance.` }]
+      contents: [{ parts: [{ text: prompt }] }],
+      generationConfig: { temperature: 0.3, maxOutputTokens: 1000 }
     })
   });
   const data = await res.json();
-  const text = data.content.map(b => b.text||'').join('');
+  if (data.error) throw new Error(data.error.message);
+  const text = data.candidates[0].content.parts[0].text;
   return JSON.parse(text.replace(/```json|```/g,'').trim());
 }
 
