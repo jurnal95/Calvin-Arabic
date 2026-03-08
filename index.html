@@ -1568,7 +1568,6 @@ function cefrColor(c){ return{A1:'#e87e7e',A2:'#e8a07e',B1:'#e8c87e',B2:'#D4AF37
 function renderFinalResult(){
   const sectionScores={};
   const sess=selectedSessions;
-
   if(sess.includes('reading')&&results.reading.total>0) sectionScores.reading=results.reading.score/results.reading.total*10;
   if(sess.includes('listening')&&results.listening.total>0) sectionScores.listening=results.listening.score/results.listening.total*10;
   if(sess.includes('speaking')&&results.speaking.length>0) sectionScores.speaking=results.speaking.reduce((s,r)=>s+(r.evaluation?.overall?.score||0),0)/results.speaking.length;
@@ -1579,24 +1578,16 @@ function renderFinalResult(){
   const cefr=cefrFromScore(overall);
   const c=cefrColor(cefr);
   const cefrDescs={A1:'Beginner',A2:'Elementary',B1:'Intermediate',B2:'Upper Intermediate',C1:'Advanced',C2:'Proficient'};
-
-  document.getElementById('result-hero').innerHTML=`
-    <div style="font-size:50px;margin-bottom:8px">🎓</div>
-    <div class="muted" style="font-size:10px;letter-spacing:4px;text-transform:uppercase;margin-bottom:5px">Hasil Tes · ${participant.name}</div>
-    <div style="font-size:70px;font-family:'Playfair Display',serif;color:${c};line-height:1;margin-bottom:3px">${cefr}</div>
-    <div style="font-size:17px;color:${c};font-weight:600;margin-bottom:3px">${cefrDescs[cefr]||''}</div>
-    <div class="muted" style="font-size:12px;margin-bottom:18px">Overall Score: ${overall.toFixed(1)} / 10</div>
-    <div style="height:6px;background:#1a1006;border-radius:3px;max-width:280px;margin:0 auto">
-      <div style="height:100%;width:${overall*10}%;background:linear-gradient(90deg,${c},${c}88);border-radius:3px"></div>
-    </div>
-  `;
-
+  const isFullTest=['reading','listening','speaking','writing'].every(s=>sess.includes(s));
   const sInfo=[
     {k:'reading',l:'📖 Reading',c:'#7eb8e8'},{k:'listening',l:'🎧 Listening',c:'#e8c87e'},
     {k:'speaking',l:'🎙️ Speaking',c:'#7ed4a4'},{k:'writing',l:'✍️ Writing',c:'#b87ee8'}
   ];
-  document.getElementById('result-sections').innerHTML=`
-    <h3 class="gold" style="font-size:15px;margin-bottom:16px">Section Breakdown</h3>
+  const certId='CAPT-'+Date.now().toString(36).toUpperCase();
+  const dateStr=new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'long',year:'numeric'});
+
+  const sectionsHTML=()=>`
+    <h3 class="gold" style="font-size:15px;margin-bottom:16px">Section Results</h3>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:11px">
       ${sInfo.filter(s=>sess.includes(s.k)).map(s=>{
         const sc=sectionScores[s.k]||0;
@@ -1607,32 +1598,31 @@ function renderFinalResult(){
           </div>
           <div class="score-bar"><div class="score-fill" style="width:${sc*10}%;background:${s.c}"></div></div>
           <div style="display:flex;justify-content:space-between;margin-top:5px">
-            <span class="muted" style="font-size:10px">${s.k==='reading'?results.reading.score+'/'+results.reading.total+' correct':s.k==='listening'?results.listening.score+'/'+results.listening.total+' correct':s.k==='speaking'?'AI evaluated':'AI evaluated'}</span>
+            <span class="muted" style="font-size:10px">${s.k==='reading'?results.reading.score+'/'+results.reading.total+' correct':s.k==='listening'?results.listening.score+'/'+results.listening.total+' correct':'AI evaluated'}</span>
             <span style="color:${s.c};font-size:10px;font-weight:700">${cefrFromScore(sc)}</span>
           </div>
         </div>`;
       }).join('')}
-    </div>
-  `;
+    </div>`;
 
   const sorted=sInfo.filter(s=>sess.includes(s.k)&&sectionScores[s.k]!==undefined).sort((a,b)=>(sectionScores[b.k]||0)-(sectionScores[a.k]||0));
   const strength=sorted[0], weakness=sorted[sorted.length-1];
-  document.getElementById('result-feedback').innerHTML=`
+  const feedbackHTML=()=>`
     <h3 class="gold" style="font-size:15px;margin-bottom:14px">Feedback</h3>
     ${sorted.length>=2?`<div style="display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-bottom:14px">
       <div style="padding:13px;background:rgba(126,212,164,.06);border:1px solid rgba(126,212,164,.2);border-radius:11px">
-        <div style="color:var(--green);font-size:10px;margin-bottom:5px;letter-spacing:1px">💪 TERKUAT</div>
+        <div style="color:var(--green);font-size:10px;margin-bottom:5px">💪 TERKUAT</div>
         <div style="color:var(--green);font-size:13px;font-weight:600">${strength?.l||''}</div>
-        <div class="muted" style="font-size:11px;margin-top:2px">${(sectionScores[strength?.k]||0).toFixed(1)} · ${cefrFromScore(sectionScores[strength?.k]||0)}</div>
+        <div class="muted" style="font-size:11px">${(sectionScores[strength?.k]||0).toFixed(1)} · ${cefrFromScore(sectionScores[strength?.k]||0)}</div>
       </div>
       <div style="padding:13px;background:rgba(232,126,126,.06);border:1px solid rgba(232,126,126,.2);border-radius:11px">
-        <div style="color:var(--red);font-size:10px;margin-bottom:5px;letter-spacing:1px">📈 PERLU LATIHAN</div>
+        <div style="color:var(--red);font-size:10px;margin-bottom:5px">📈 PERLU LATIHAN</div>
         <div style="color:var(--red);font-size:13px;font-weight:600">${weakness?.l||''}</div>
-        <div class="muted" style="font-size:11px;margin-top:2px">${(sectionScores[weakness?.k]||0).toFixed(1)} · ${cefrFromScore(sectionScores[weakness?.k]||0)}</div>
+        <div class="muted" style="font-size:11px">${(sectionScores[weakness?.k]||0).toFixed(1)} · ${cefrFromScore(sectionScores[weakness?.k]||0)}</div>
       </div>
     </div>`:''}
     <div style="padding:13px;background:rgba(212,175,55,.05);border:1px solid rgba(212,175,55,.15);border-radius:11px">
-      <div style="color:var(--gold);font-size:10px;margin-bottom:7px;letter-spacing:1px">🎯 LANGKAH SELANJUTNYA</div>
+      <div style="color:var(--gold);font-size:10px;margin-bottom:7px">🎯 LANGKAH SELANJUTNYA</div>
       <div class="muted" style="font-size:12px;line-height:1.65">
         ${cefr==='A1'?'Fokus pada kosa kata dasar dan salam. Latih kalimat pendek setiap hari.':
           cefr==='A2'?'Perbanyak kosa kata dan latih percakapan sederhana. Pelajari konjugasi kata kerja.':
@@ -1641,11 +1631,43 @@ function renderFinalResult(){
           cefr==='C1'?'Perhalus ekspresi bernuansa dan register formal. Pelajari penanda wacana yang canggih.':
           'Pertahankan level yang luar biasa ini. Fokus pada kosa kata khusus dan ekspresi sastra.'}
       </div>
-    </div>
-  `;
+    </div>`;
 
-  // Save result to localStorage
-  saveResult({ participant, sessions:sess, targetLevel:TARGET_LEVEL, sectionScores, overall, cefr, timestamp:new Date().toISOString() });
+  if(isFullTest){
+    document.getElementById('cert-container').style.display='block';
+    document.getElementById('report-container').style.display='none';
+    document.getElementById('cert-name').textContent=participant.name;
+    document.getElementById('cert-campus').textContent=participant.campus;
+    document.getElementById('cert-date').textContent=dateStr;
+    document.getElementById('cert-id').textContent=certId;
+    document.getElementById('cert-cefr').textContent=cefr;
+    document.getElementById('cert-cefr').style.color=c;
+    document.getElementById('cert-cefr-desc').textContent=cefrDescs[cefr]||'';
+    document.getElementById('cert-cefr-desc').style.color=c;
+    document.getElementById('cert-score').textContent='Overall Score: '+overall.toFixed(1)+' / 10';
+    document.getElementById('cert-score').style.color=c;
+    document.getElementById('cert-cefr-wrap').style.background='rgba(0,0,0,0.12)';
+    document.getElementById('cert-cefr-wrap').style.border='2px solid '+c+'55';
+    document.getElementById('cert-sections').innerHTML=sInfo.map(s=>{
+      const sc=sectionScores[s.k]||0;
+      return`<div style="padding:10px 8px;background:rgba(255,255,255,.02);border:1px solid ${s.c}22;border-radius:10px;text-align:center">
+        <div style="font-size:13px;margin-bottom:3px">${s.l.split(' ')[0]}</div>
+        <div style="color:${s.c};font-family:'Playfair Display',serif;font-size:22px;line-height:1">${sc.toFixed(1)}</div>
+        <div style="color:${s.c};font-size:10px;font-weight:700;margin-top:2px">${cefrFromScore(sc)}</div>
+      </div>`;
+    }).join('');
+  } else {
+    document.getElementById('cert-container').style.display='none';
+    document.getElementById('report-container').style.display='block';
+    document.getElementById('report-name').textContent=participant.name;
+    document.getElementById('report-campus').textContent=participant.campus;
+    document.getElementById('report-sessions-note').textContent=
+      'Assessment based on: '+sess.map(s=>s.charAt(0).toUpperCase()+s.slice(1)).join(', ')+' · '+dateStr;
+    document.getElementById('result-sections').innerHTML=sectionsHTML();
+    document.getElementById('result-feedback').innerHTML=feedbackHTML();
+  }
+
+  saveResult({ participant, sessions:sess, targetLevel:TARGET_LEVEL, sectionScores, overall, cefr, isFullTest, certId, timestamp:new Date().toISOString() });
 }
 
 // ══ DASHBOARD ═════════════════════════════════════════════════════════════════
