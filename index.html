@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Arabic Proficiency Test</title>
+<title>CAPT — Calvin Arabic Proficiency Test</title>
 <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Playfair+Display:wght@500;700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
@@ -78,12 +78,30 @@ input:focus{border-color:var(--gold)}
 /* PDF print */
 @media print{
   .no-print{display:none!important}
-  body{background:#fff;color:#111}
-  .card{background:#fff;border:1px solid #ddd;box-shadow:none}
-  .gold{color:#9a7010}
-  .arabic{color:#333}
-  #screen-result{display:flex!important;min-height:auto}
+  body{background:#fff!important;color:#111!important}
+  .card{background:#fff!important;border:1px solid #ddd!important;box-shadow:none!important}
+  .gold{color:#9a7010!important}
+  .arabic{color:#333!important}
+  .muted{color:#666!important}
+  #screen-result{display:flex!important;min-height:auto!important}
+  #cert-container{display:block!important}
+  #report-container{display:block!important}
 }
+/* Certificate styles */
+#cert-container{display:none}
+#report-container{display:none}
+.cert-wrap{
+  max-width:760px;margin:0 auto;
+  background:linear-gradient(160deg,#0d0905,#1a1006);
+  border:1px solid var(--border);border-radius:22px;
+  padding:50px 60px;text-align:center;position:relative;overflow:hidden;
+}
+.cert-wrap::before{
+  content:'';position:absolute;inset:8px;border:1px solid rgba(212,175,55,.2);
+  border-radius:16px;pointer-events:none;
+}
+.cert-corner{position:absolute;font-size:36px;opacity:.18}
+.report-wrap{max-width:680px;margin:0 auto;}
 </style>
 </head>
 <body>
@@ -108,9 +126,9 @@ input:focus{border-color:var(--gold)}
 <div id="screen-cover" class="screen screen-center active">
   <div class="wrap fade-in" style="text-align:center">
     <div class="bob" style="font-size:60px;margin-bottom:8px">🕌</div>
-    <div class="muted" style="font-size:10px;letter-spacing:5px;text-transform:uppercase;margin-bottom:4px">اختبار الكفاءة في اللغة العربية</div>
-    <h1 class="gold" style="font-size:40px;line-height:1.05;margin-bottom:4px">Arabic Proficiency Test</h1>
-    <p class="muted" style="font-size:11px;letter-spacing:3px;margin-bottom:28px;text-transform:uppercase">AI-Powered · CEFR A1–C2 · Timed Sections</p>
+    <div class="muted" style="font-size:10px;letter-spacing:5px;text-transform:uppercase;margin-bottom:4px">اختبار كالفن للكفاءة في اللغة العربية</div>
+    <h1 class="gold" style="font-size:40px;line-height:1.05;margin-bottom:4px">Calvin Arabic Proficiency Test</h1>
+    <p class="muted" style="font-size:11px;letter-spacing:3px;margin-bottom:28px;text-transform:uppercase">CAPT · AI-Powered · CEFR A1–C2</p>
     <div class="card" style="padding:24px 28px;text-align:left;margin-bottom:14px">
       <div id="key-saved-notice" style="display:none;padding:9px 13px;background:rgba(126,212,164,.08);border:1px solid rgba(126,212,164,.2);border-radius:8px;margin-bottom:14px;justify-content:space-between;align-items:center">
         <span style="color:var(--green);font-size:12px">✅ API key tersimpan</span>
@@ -543,13 +561,79 @@ input:focus{border-color:var(--gold)}
 
 <!-- ══ FINAL RESULT ══ -->
 <div id="screen-result" class="screen screen-center" style="padding-top:28px">
-  <div class="wrap fade-in">
-    <div id="result-hero" class="card" style="padding:34px;text-align:center;margin-bottom:14px"></div>
-    <div id="result-sections" class="card" style="padding:24px 28px;margin-bottom:14px"></div>
-    <div id="result-feedback" class="card" style="padding:24px 28px;margin-bottom:14px"></div>
-    <div style="display:flex;gap:10px;margin-bottom:40px">
-      <button class="btn-primary no-print" onclick="printResult()" style="background:linear-gradient(135deg,#4a8fc0,#2a6090)">🖨️ Cetak / PDF</button>
-      <button class="btn-primary no-print" onclick="restart()">🔄 Test Baru</button>
+  <div class="wrap fade-in" style="max-width:800px">
+
+    <!-- CERTIFICATE (full 4 sessions) -->
+    <div id="cert-container" style="display:none;margin-bottom:20px">
+      <div class="cert-wrap" id="cert-main">
+        <div class="cert-corner" style="top:18px;left:22px">✦</div>
+        <div class="cert-corner" style="top:18px;right:22px">✦</div>
+        <div class="cert-corner" style="bottom:18px;left:22px">✦</div>
+        <div class="cert-corner" style="bottom:18px;right:22px">✦</div>
+        <!-- Header -->
+        <div style="display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:6px">
+          <div style="font-size:32px">🕌</div>
+          <div style="text-align:left">
+            <div style="font-size:11px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);font-weight:600">CAPT</div>
+            <div style="font-size:13px;color:var(--body);line-height:1.2">Calvin Arabic Proficiency Test</div>
+          </div>
+        </div>
+        <div style="height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:14px 0"></div>
+        <div style="font-size:10px;letter-spacing:5px;text-transform:uppercase;color:var(--muted);margin-bottom:10px">Certificate of Proficiency</div>
+        <div style="font-size:13px;color:var(--body);margin-bottom:6px">This is to certify that</div>
+        <div id="cert-name" style="font-family:'Playfair Display',serif;font-size:36px;color:var(--gold);margin-bottom:4px;line-height:1.2"></div>
+        <div id="cert-campus" style="font-size:13px;color:var(--muted);margin-bottom:18px"></div>
+        <div style="font-size:13px;color:var(--body);margin-bottom:8px">has successfully completed the full Arabic Proficiency Assessment and achieved</div>
+        <!-- CEFR Badge -->
+        <div id="cert-cefr-wrap" style="margin:12px auto 12px;display:inline-block;padding:16px 40px;border-radius:14px">
+          <div id="cert-cefr" style="font-family:'Playfair Display',serif;font-size:64px;line-height:1;font-weight:700"></div>
+          <div id="cert-cefr-desc" style="font-size:14px;font-weight:600;margin-top:2px"></div>
+          <div id="cert-score" style="font-size:12px;margin-top:3px;opacity:.8"></div>
+        </div>
+        <!-- Section scores -->
+        <div id="cert-sections" style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:16px 0"></div>
+        <div style="height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:16px 0"></div>
+        <!-- Footer -->
+        <div style="display:flex;justify-content:space-between;align-items:flex-end">
+          <div style="text-align:left">
+            <div style="font-size:10px;color:var(--muted);margin-bottom:3px">Date Issued</div>
+            <div id="cert-date" style="font-size:12px;color:var(--body)"></div>
+          </div>
+          <div style="text-align:center">
+            <div style="font-size:10px;color:var(--muted);margin-bottom:3px">Certificate ID</div>
+            <div id="cert-id" style="font-size:11px;color:var(--gold);font-family:monospace"></div>
+          </div>
+          <div style="text-align:right">
+            <div style="font-size:10px;color:var(--muted);margin-bottom:3px">Verified by</div>
+            <div style="font-size:12px;color:var(--body)">AI Assessment Engine</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- REPORT (partial sessions) -->
+    <div id="report-container" style="display:none;margin-bottom:20px">
+      <div class="card" style="padding:28px 32px;text-align:center;margin-bottom:14px">
+        <div style="display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:16px">
+          <div style="font-size:28px">🕌</div>
+          <div style="text-align:left">
+            <div style="font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--gold)">CAPT</div>
+            <div style="font-size:12px;color:var(--body)">Calvin Arabic Proficiency Test</div>
+          </div>
+        </div>
+        <div style="font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--muted);margin-bottom:14px">Skills Assessment Report</div>
+        <div id="report-name" style="font-family:'Playfair Display',serif;font-size:28px;color:var(--gold);margin-bottom:3px"></div>
+        <div id="report-campus" style="font-size:12px;color:var(--muted);margin-bottom:16px"></div>
+        <div id="report-sessions-note" style="font-size:12px;color:var(--body);padding:8px 16px;background:rgba(212,175,55,.05);border:1px solid rgba(212,175,55,.12);border-radius:8px;display:inline-block;margin-bottom:16px"></div>
+      </div>
+      <div id="result-sections" class="card" style="padding:24px 28px;margin-bottom:14px"></div>
+      <div id="result-feedback" class="card" style="padding:24px 28px;margin-bottom:14px"></div>
+    </div>
+
+    <!-- Buttons -->
+    <div style="display:flex;gap:10px;margin-bottom:40px" class="no-print">
+      <button class="btn-primary" onclick="downloadResult()" style="background:linear-gradient(135deg,#4a8fc0,#2a6090)">⬇️ Download PDF</button>
+      <button class="btn-primary" onclick="restart()">🔄 Test Baru</button>
     </div>
   </div>
 </div>
@@ -668,7 +752,7 @@ async function groq(systemPrompt, userMsg){
   const res = await fetch('https://api.groq.com/openai/v1/chat/completions',{
     method:'POST',
     headers:{'Content-Type':'application/json','Authorization':'Bearer '+API_KEY},
-    body:JSON.stringify({ model:'llama-3.3-70b-versatile', max_tokens:2000, temperature:0.4,
+    body:JSON.stringify({ model:'llama-3.3-70b-versatile', max_tokens:2000, temperature:0.9,
       messages:[{role:'system',content:systemPrompt},{role:'user',content:userMsg}] })
   });
   const data = await res.json();
@@ -715,7 +799,7 @@ async function startTest(){
 async function genReading(lvDesc){
   return await groq(
     'You are an Arabic test designer. Respond ONLY with valid JSON array, no markdown.',
-    `Generate 5 Arabic reading comprehension questions for level ${lvDesc}.
+    `Generate 5 UNIQUE Arabic reading comprehension questions for level ${lvDesc}. Use VARIED topics — choose from: daily life, history, science, culture, travel, food, environment, technology, literature, or sports. Do NOT repeat topics across questions. Session seed: ${Math.random()}.
 JSON array of 5:
 [{"passage":"Arabic text 3-6 sentences with full diacritics","question":"Question in English","options":["أ) Arabic","ب) Arabic","ج) Arabic","د) Arabic"],"correct":0,"explanation":"English explanation"}]
 All options must be in Arabic. Passage only Arabic.`
@@ -725,7 +809,7 @@ All options must be in Arabic. Passage only Arabic.`
 async function genListening(lvDesc){
   return await groq(
     'You are an Arabic test designer. Respond ONLY with valid JSON array, no markdown.',
-    `Generate 5 Arabic listening items for level ${lvDesc}.
+    `Generate 5 UNIQUE Arabic listening items for level ${lvDesc}. Use VARIED scenarios — choose from: market conversation, phone call, weather report, travel directions, family discussion, news announcement, restaurant order, university lecture intro, doctor visit, or job interview. Do NOT repeat scenarios. Session seed: ${Math.random()}.
 JSON array of 5:
 [{"script":"Arabic 2-4 sentences with diacritics, conversational","question":"Question in English","options":["أ) Arabic","ب) Arabic","ج) Arabic","د) Arabic"],"correct":0,"explanation":"English explanation"}]
 All options in Arabic.`
@@ -735,7 +819,7 @@ All options in Arabic.`
 async function genSpeaking(lvDesc){
   return await groq(
     'You are an Arabic speaking test designer. Respond ONLY with valid JSON array, no markdown.',
-    `Generate exactly 3 Arabic speaking questions for level ${lvDesc}, following this EXACT structure:
+    `Generate exactly 3 FRESH Arabic speaking questions for level ${lvDesc}, following this EXACT structure. Choose DIFFERENT angles each time — vary the personal intro topic, the thematic subject, and the opinion issue. Session seed: ${Math.random()}.
 1. Introduction (perkenalan): simple self-introduction question
 2. Thematic (tematik): question about hobbies, daily life, or interests
 3. Opinion (opini): question asking opinion on a social/cultural issue
@@ -752,7 +836,7 @@ JSON array of exactly 3:
 async function genWriting(lvDesc){
   return await groq(
     'You are an Arabic writing test designer. Respond ONLY with valid JSON array, no markdown.',
-    `Generate 2 Arabic writing tasks for level ${lvDesc}.
+    `Generate 2 UNIQUE Arabic writing tasks for level ${lvDesc}. Pick topics that feel fresh and unexpected — avoid generic 'my family' or 'my hobby' tasks. Session seed: ${Math.random()}.
 JSON array of 2:
 [{"ar":"Task instruction in Arabic with diacritics","en":"English translation","hint":"English structure tips","min_words":50,"type":"paragraph or essay"}]
 Task 1: personal/descriptive. Task 2: opinion/argumentative.`
@@ -1646,7 +1730,7 @@ function copyQrUrl(){
 document.getElementById('qr-modal').addEventListener('click',function(e){ if(e.target===this) closeQr(); });
 
 // ── PRINT / PDF ───────────────────────────────────────────────────────────────
-function printResult(){
+function downloadResult(){
   window.print();
 }
 
